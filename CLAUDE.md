@@ -212,17 +212,246 @@ const categoryOrder = [
 
 ## 🎯 일반적인 작업
 
-### 1. 새 패턴 추가 (수동)
+### 1. 🆕 upstream에서 새 패턴 추가하기
+
+upstream 저장소(nibzard/awesome-agentic-patterns)에서 새로운 패턴이 추가되었을 때 우리 사이트에 추가하는 전체 프로세스입니다.
+
+#### Step 1: 원본 마크다운 파일 확인
 
 ```bash
-# 1. JSON 파일 생성
+# upstream 저장소의 patterns/ 폴더에서 새 패턴 확인
+# 예: patterns/new-pattern-name.md
+```
+
+원본 마크다운 파일 구조:
+```markdown
+---
+title: Pattern Title
+status: emerging
+authors: ["author-name"]
+based_on: ["url1", "url2"]
+category: "Orchestration & Control"
+source: https://example.com
+tags: ["tag1", "tag2"]
+---
+
+# Pattern Title
+
+## Problem
+문제 설명...
+
+## Solution
+해결책 설명...
+
+## How to use it
+사용 방법...
+
+## Trade-offs
+### Pros
+- 장점 1
+- 장점 2
+
+### Cons
+- 단점 1
+- 단점 2
+
+## References
+- [Link 1](url1)
+```
+
+#### Step 2: JSON 파일 생성 및 매핑
+
+```bash
+# src/data/patterns/{id}.json 생성
+# ID는 마크다운 파일명과 동일 (kebab-case)
+```
+
+**필수 필드 매핑:**
+- `id`: 파일명 (예: `new-pattern-name`)
+- `title`: YAML front matter의 `title`
+- `category`: YAML의 `category`
+- `status`: YAML의 `status`
+
+**선택 필드 매핑:**
+- `original_url`: YAML의 `source` 또는 `based_on[0]`
+- `problem.en`: "Problem" 섹션 내용
+- `solution.en`: "Solution" 섹션 내용
+- `when_to_use.en`: "How to use it" 섹션을 배열로 변환
+- `pros.en`: "Trade-offs > Pros" 리스트
+- `cons.en`: "Trade-offs > Cons" 리스트
+- `tags`: YAML의 `tags`
+
+#### Step 3: 한국어 번역 가이드
+
+**번역 원칙:**
+
+1. **어조 및 스타일**
+   - 존댓말 사용 (~합니다, ~됩니다)
+   - 기술 문서 톤 유지
+   - 문장은 간결하고 명확하게
+
+2. **용어 일관성**
+   ```
+   Agent → 에이전트
+   Context → 컨텍스트
+   Pattern → 패턴
+   Tool → 도구
+   Prompt → 프롬프트
+   Injection → 인젝션
+   Orchestration → 오케스트레이션
+   Workflow → 워크플로우
+   Spawning → 생성
+   Reasoning → 추론
+   Feedback → 피드백
+   Loop → 루프
+   ```
+
+3. **문장 형식**
+   - **문제(problem)**: "~합니다" 체
+     - 예: "에이전트가 실행 중 프롬프트 인젝션에 취약합니다."
+   - **해결책(solution)**: "~합니다" 체
+     - 예: "계획 단계를 실행과 분리하여 계획을 잠급니다."
+   - **사용 시기(when_to_use)**: 명사형
+     - 예: "보안 민감 에이전트", "다단계 작업"
+   - **장단점(pros/cons)**: 명사형 또는 "~함"
+     - 예: "프롬프트 인젝션 방어", "유연성 감소", "토큰 비용 증가"
+
+4. **번역하지 않는 것**
+   - 코드 예제 (`code_example`)
+   - ASCII/Mermaid 다이어그램 (영어 라벨 유지)
+   - 태그 (`tags`)
+   - URL
+
+#### Step 4: 다이어그램 생성
+
+**ASCII 다이어그램 작성:**
+```
+┌─────────────┐
+│   Step 1    │  간단한 플로우는 ASCII로
+└──────┬──────┘
+       │
+┌──────▼──────┐
+│   Step 2    │
+└─────────────┘
+```
+
+**Mermaid 다이어그램 작성:**
+```javascript
+// 복잡한 플로우는 Mermaid flowchart TD 형식
+"flowchart TD
+    A[Start] --> B[Process]
+    B --> C{Decision}
+    C -->|Yes| D[Action 1]
+    C -->|No| E[Action 2]"
+```
+
+#### Step 5: 코드 예제 작성 (선택)
+
+실제 사용 가능한 코드 스니펫을 추가합니다:
+```python
+# 간결하고 실용적인 예제
+agent = Agent(task='example')
+result = agent.execute()
+```
+
+#### Step 6: 빌드 및 테스트
+
+```bash
+# 빌드 테스트
+npm run build
+
+# 로컬 미리보기
+npm run preview
+
+# 브라우저에서 확인:
+# - 패턴이 올바른 카테고리에 표시되는지
+# - 한글/영어 전환이 작동하는지
+# - 모달에서 모든 정보가 표시되는지
+```
+
+#### Step 7: 커밋
+
+```bash
+git add src/data/patterns/new-pattern-name.json
+git commit -m "feat: Add [Pattern Title]
+
+- Translate from upstream nibzard/awesome-agentic-patterns
+- Add Korean translation
+- Include diagrams and code examples
+
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+git push
+```
+
+---
+
+### 예시: 실제 패턴 추가 과정
+
+**원본 마크다운** (patterns/example-pattern.md):
+```markdown
+---
+title: Example Pattern
+status: emerging
+category: "Orchestration & Control"
+tags: ["example", "demo"]
+---
+
+## Problem
+Agents struggle with complex tasks requiring multiple steps.
+
+## Solution
+Break down tasks into smaller, manageable sub-tasks.
+
+## Trade-offs
+### Pros
+- Easier to debug
+- Better modularity
+
+### Cons
+- Coordination overhead
+```
+
+**생성할 JSON** (src/data/patterns/example-pattern.json):
+```json
+{
+  "id": "example-pattern",
+  "title": "Example Pattern",
+  "title_ko": "예제 패턴",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "problem": {
+    "en": "Agents struggle with complex tasks requiring multiple steps.",
+    "ko": "에이전트가 여러 단계가 필요한 복잡한 작업에 어려움을 겪습니다."
+  },
+  "solution": {
+    "en": "Break down tasks into smaller, manageable sub-tasks.",
+    "ko": "작업을 더 작고 관리 가능한 하위 작업으로 나눕니다."
+  },
+  "pros": {
+    "en": ["Easier to debug", "Better modularity"],
+    "ko": ["디버깅 용이", "모듈성 향상"]
+  },
+  "cons": {
+    "en": ["Coordination overhead"],
+    "ko": ["조정 오버헤드"]
+  },
+  "tags": ["example", "demo"]
+}
+```
+
+---
+
+### 2. 수동으로 새 패턴 추가 (upstream 없이)
+
+```bash
+# JSON 파일 직접 생성
 cat > src/data/patterns/my-new-pattern.json << 'EOF'
 {
   "id": "my-new-pattern",
   "title": "My New Pattern",
   "title_ko": "나의 새 패턴",
   "category": "Orchestration & Control",
-  "status": "emerging",
+  "status": "proposed",
   "problem": {
     "en": "Problem description...",
     "ko": "문제 설명..."
@@ -231,21 +460,17 @@ cat > src/data/patterns/my-new-pattern.json << 'EOF'
     "en": "Solution description...",
     "ko": "해결책 설명..."
   },
-  "tags": ["new", "pattern"]
+  "tags": ["custom"]
 }
 EOF
 
-# 2. 빌드 테스트
-npm run build
-npm run preview
-
-# 4. 커밋
+# 빌드 및 커밋
+npm run build && npm run preview
 git add src/data/patterns/my-new-pattern.json
-git commit -m "feat: Add my new pattern"
-git push
+git commit -m "feat: Add custom pattern"
 ```
 
-### 2. 기존 패턴 수정
+### 3. 기존 패턴 수정
 
 ```bash
 # 1. 해당 JSON 파일만 읽기 (토큰 절약!)
@@ -263,7 +488,7 @@ git commit -m "fix: Update reflection pattern description"
 git push
 ```
 
-### 3. 카테고리 추가
+### 4. 카테고리 추가
 
 ```astro
 // src/pages/index.astro
@@ -283,7 +508,7 @@ const categoryIcons: Record<string, string> = {
 };
 ```
 
-### 4. UI 컴포넌트 수정
+### 5. UI 컴포넌트 수정
 
 ```bash
 # 컴포넌트 위치
@@ -424,6 +649,13 @@ window.addEventListener('languageChange', (e) => {
 
 ## 📝 작업 시 주의사항
 
+### 새 패턴 추가 시
+- ✅ **ID 규칙**: kebab-case, 영문 소문자와 하이픈만 사용
+- ✅ **번역 일관성**: 기존 패턴의 용어와 어조 유지
+- ✅ **필수 필드**: id, title, title_ko, category, status는 반드시 포함
+- ⚠️ **독자적 번역**: 다른 사이트 번역을 복사하지 말고 직접 번역
+- ⚠️ **원본 출처**: original_url에 upstream 원본 또는 논문 링크 포함
+
 ### 토큰 효율성
 - ✅ **개별 파일만 읽기**: 필요한 패턴 파일만 Read
 - ✅ **Glob 사용**: `src/data/patterns/*.json` 패턴으로 검색
@@ -433,6 +665,7 @@ window.addEventListener('languageChange', (e) => {
 - ⚠️ **localStorage 키**: 반드시 `'aap-language'` 사용 (다른 키 사용 금지)
 - ⚠️ **기본 언어**: 한국어 (`'ko'`)
 - ⚠️ **data-lang 속성**: 모든 다국어 텍스트에 필수
+- ⚠️ **번역 품질**: 존댓말, 기술 문서 톤, 용어 일관성 유지
 
 ### Git 워크플로우
 - ✅ **의미 있는 커밋**: `feat:`, `fix:`, `docs:` 등 prefix 사용
@@ -545,5 +778,20 @@ jobs:
 ---
 
 **마지막 업데이트**: 2025-01-19
-**버전**: 1.0.0
+**버전**: 1.1.0
 **상태**: 프로덕션 준비 완료
+
+---
+
+## 📝 변경 이력
+
+### v1.1.0 (2025-01-19)
+- upstream에서 새 패턴 추가 가이드 추가
+- 한국어 번역 가이드라인 상세화
+- 용어 일관성 테이블 추가
+- 실제 예시 추가
+
+### v1.0.0 (2025-01-19)
+- 초기 문서 작성
+- 프로젝트 구조 및 데이터 스키마 정의
+- 디버깅 가이드 및 워크플로우 문서화
