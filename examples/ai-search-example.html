@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pattern Scout - AI 검색 예제</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #0d1117;
+      color: #c9d1d9;
+    }
+
+    h1 {
+      color: #58a6ff;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      border: 2px solid #30363d;
+      border-radius: 8px;
+      background: #161b22;
+      color: #c9d1d9;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background: #238636;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2ea043;
+    }
+
+    button:disabled {
+      background: #484f58;
+      cursor: not-allowed;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+
+    .error {
+      color: #f85149;
+    }
+
+    .warning {
+      padding: 15px;
+      background: #1e2a3a;
+      border-left: 4px solid #58a6ff;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+
+    code {
+      background: #0d1117;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'SF Mono', Monaco, monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔍 Pattern Scout - AI 검색 예제</h1>
+
+  <div class="warning">
+    ⚠️ <strong>이 예제는 프로토타입입니다.</strong><br>
+    실제 사용을 위해서는 <code>YOUR_GEMINI_API_KEY</code>를 입력하세요.<br>
+    <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #58a6ff;">Gemini API Key 발급받기 →</a>
+  </div>
+
+  <input
+    type="text"
+    class="search-box"
+    id="queryInput"
+    placeholder="예: 에이전트가 자신의 출력을 개선하는 방법이 필요해"
+  />
+
+  <button onclick="searchPatterns()" id="searchBtn">AI로 패턴 검색</button>
+
+  <div id="result" class="result" style="display: none;"></div>
+
+  <script type="module">
+    // 실제 구현 예제 (Gemini 1.5 Flash 사용)
+    import { GoogleGenerativeAI } from 'https://esm.run/@google/generative-ai';
+
+    window.searchPatterns = async function() {
+      const query = document.getElementById('queryInput').value.trim();
+      const resultDiv = document.getElementById('result');
+      const searchBtn = document.getElementById('searchBtn');
+
+      if (!query) {
+        alert('검색어를 입력하세요.');
+        return;
+      }
+
+      // API 키 (실제로는 환경변수나 서버에서 관리)
+      const API_KEY = 'YOUR_GEMINI_API_KEY'; // 여기에 실제 키 입력
+
+      if (API_KEY === 'YOUR_GEMINI_API_KEY') {
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = '<span class="error">⚠️ API 키를 입력하세요. 코드의 API_KEY 변수를 수정하세요.</span>';
+        return;
+      }
+
+      try {
+        searchBtn.disabled = true;
+        searchBtn.textContent = '검색 중...';
+        resultDiv.style.display = 'block';
+        resultDiv.textContent = '🔄 AI가 패턴을 분석하고 있습니다...';
+
+        // 1. AI Manifest 로드
+        const manifestResponse = await fetch('../src/data/ai-manifest.json');
+        const manifest = await manifestResponse.json();
+
+        // 2. 시스템 프롬프트 구성
+        const systemInstruction = `
+You are an expert on AI Agent Design Patterns.
+
+Here is the complete list of patterns in our database:
+${JSON.stringify(manifest)}
+
+Your task:
+1. Analyze the user's problem or use case
+2. Select 2-3 most relevant patterns from the list
+3. For each pattern, explain:
+   - WHY it fits the user's need (2-3 sentences)
+   - Key benefits
+   - Potential trade-offs
+4. Suggest how to combine patterns if applicable
+
+Response format (Korean):
+## 추천 패턴
+
+### 1. [패턴명]
+[설명...]
+
+### 2. [패턴명]
+[설명...]
+
+## 조합 제안
+[있으면...]
+
+IMPORTANT: Only recommend patterns that exist in the provided list. Do not make up patterns.
+`;
+
+        // 3. Gemini 호출
+        const genAI = new GoogleGenerativeAI(API_KEY);
+        const model = genAI.getGenerativeModel({
+          model: "gemini-1.5-flash",
+          systemInstruction: systemInstruction
+        });
+
+        const result = await model.generateContent(query);
+        const response = result.response.text();
+
+        // 4. 결과 표시
+        resultDiv.textContent = response;
+
+      } catch (error) {
+        resultDiv.innerHTML = `<span class="error">❌ 오류: ${error.message}</span>`;
+        console.error(error);
+      } finally {
+        searchBtn.disabled = false;
+        searchBtn.textContent = 'AI로 패턴 검색';
+      }
+    };
+
+    // Enter 키 지원
+    document.getElementById('queryInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchPatterns();
+      }
+    });
+  </script>
+
+  <hr style="margin: 40px 0; border-color: #30363d;">
+
+  <h2>💡 사용 예시</h2>
+  <ul>
+    <li>"에이전트가 자신의 출력을 검증하고 개선하는 방법이 필요해"</li>
+    <li>"대화가 길어질 때 토큰 비용을 줄이고 싶어"</li>
+    <li>"여러 에이전트를 조율해서 복잡한 작업을 처리하고 싶어"</li>
+    <li>"보안이 중요한 환경에서 에이전트를 안전하게 실행하려면?"</li>
+  </ul>
+
+  <h2>📊 비용</h2>
+  <p>
+    Gemini 1.5 Flash 기준:<br>
+    - 입력: ~37,600 토큰 (manifest) + 사용자 쿼리<br>
+    - 비용: 약 $0.01/요청<br>
+    - Context Caching 사용 시: $0.001/요청 (90% 절감)
+  </p>
+
+  <h2>🔧 다음 단계</h2>
+  <ol>
+    <li><strong>Context Caching 구현</strong> - 비용 90% 절감</li>
+    <li><strong>하이브리드 검색</strong> - 클라이언트 필터링 + AI 추천</li>
+    <li><strong>스트리밍 응답</strong> - 사용자 경험 개선</li>
+    <li><strong>대화 기록</strong> - 이전 추천 기억</li>
+  </ol>
+</body>
+</html>
