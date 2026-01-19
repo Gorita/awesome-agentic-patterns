@@ -1,8 +1,8 @@
-# Awesome Agentic Patterns (한국어)
+# Pattern Scout 🔍
 
-![Awesome Agentic Patterns](/agentic-patterns.jpeg)
+![Pattern Scout](/agentic-patterns.jpeg)
 
-[nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns)의 한국어 번역 웹사이트입니다. 실전 프로덕션 환경에서 AI 에이전트를 구축하는 데 필요한 **117개의 에이전트 AI 패턴**을 한국어와 영어로 제공합니다.
+**Pattern Scout**는 AI 에이전트를 구축할 때 적합한 디자인 패턴을 빠르게 찾아주는 웹 애플리케이션입니다. [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns)의 **117개 패턴**을 한국어와 영어로 제공하며, 카테고리별 탐색과 실시간 검색을 지원합니다.
 
 🌐 **웹사이트**: [https://gorita.github.io/awesome-agentic-patterns](https://gorita.github.io/awesome-agentic-patterns)
 

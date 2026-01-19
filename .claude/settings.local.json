@@ -18,7 +18,20 @@
       "Bash(for file in /Users/nikola/dev/awesome-agentic-patterns/patterns/*.md)",
       "Bash(do if [ \"$file\" != \"/Users/nikola/dev/awesome-agentic-patterns/patterns/TEMPLATE.md\" ])",
       "Bash(head:*)",
-      "Bash(fi)"
+      "Bash(fi)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(for:*)",
+      "Bash(do jq -c '{id: .id, title: .title, title_ko: .title_ko, category: .category, status: .status}' \"$f\")",
+      "Bash(jq:*)",
+      "Bash(xargs:*)",
+      "Bash(do cat \"$f\")",
+      "Bash(python3:*)",
+      "Bash(npm install)",
+      "Bash(npm run build:*)",
+      "Bash(git commit:*)",
+      "WebFetch(domain:esc5221.github.io)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

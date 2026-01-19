@@ -6,7 +6,7 @@ AI 에이전트가 이 프로젝트를 효과적으로 작업하기 위한 가�
 
 ## 📋 프로젝트 개요
 
-**Awesome Agentic Patterns (한국어)**는 [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns)를 fork하여 만든 한국어 번역 및 시각화 웹사이트입니다.
+**Pattern Scout**는 AI 에이전트 디자인 패턴을 빠르게 찾아주는 웹 애플리케이션입니다. [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns)를 기반으로 한국어 번역과 탐색 기능을 제공합니다.
 
 ### 주요 특징
 - **기술 스택**: Astro + Tailwind CSS + TypeScript

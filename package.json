@@ -1,8 +1,8 @@
 {
-  "name": "awesome-agentic-patterns-ko",
+  "name": "pattern-scout",
   "type": "module",
   "version": "1.0.0",
-  "description": "Korean Awesome Agentic Patterns - AI Agent Design Patterns Catalogue",
+  "description": "Pattern Scout - AI Agent Design Pattern Finder for Korean Developers",
   "private": true,
   "scripts": {
     "dev": "astro dev",
