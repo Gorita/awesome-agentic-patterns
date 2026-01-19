@@ -1,0 +1,549 @@
+# CLAUDE.md
+
+AI 에이전트가 이 프로젝트를 효과적으로 작업하기 위한 가이드 문서입니다.
+
+---
+
+## 📋 프로젝트 개요
+
+**Awesome Agentic Patterns (한국어)**는 [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns)를 fork하여 만든 한국어 번역 및 시각화 웹사이트입니다.
+
+### 주요 특징
+- **기술 스택**: Astro + Tailwind CSS + TypeScript
+- **데이터 구조**: 117개의 개별 JSON 파일로 패턴 저장 (토큰 효율성)
+- **언어 지원**: 한국어/영어 이중 언어 (AI 번역)
+- **UI 특징**: 사이드바 네비게이션, 모달 상세 보기, 검색 기능(예정)
+- **배포**: GitHub Pages
+- **동기화**: upstream 저장소와 자동 동기화 (예정)
+
+### 배포 URL
+- **메인**: https://gorita.github.io/awesome-agentic-patterns (예정)
+- **개발**: http://localhost:4321
+
+---
+
+## 🚀 빠른 시작
+
+### 개발 서버 실행
+```bash
+npm run dev
+# → http://localhost:4321
+```
+
+### 빌드 & 미리보기
+```bash
+npm run build
+npm run preview
+```
+
+### 배포 테스트
+```bash
+npm run build
+# dist/ 폴더 생성 확인
+```
+
+---
+
+## 📁 프로젝트 구조
+
+```
+awesome-agentic-patterns/
+├── .github/
+│   └── workflows/
+│       ├── deploy.yml          # GitHub Pages 자동 배포
+│       └── check-upstream.yml  # upstream 변경 감지 (예정)
+├── src/
+│   ├── components/             # Astro 컴포넌트
+│   │   ├── PatternCard.astro   # 패턴 카드 (요약)
+│   │   ├── PatternModal.astro  # 패턴 상세 모달
+│   │   ├── SearchBar.astro     # 검색 바 (미구현)
+│   │   └── LanguageToggle.astro # 언어 토글
+│   ├── data/
+│   │   └── patterns/           # 117개의 개별 패턴 JSON 파일 ⭐
+│   ├── layouts/
+│   │   └── MainLayout.astro    # 메인 레이아웃 (헤더, 푸터)
+│   ├── pages/
+│   │   └── index.astro         # 메인 페이지 (사이드바 + 그리드)
+│   └── styles/
+│       └── global.css          # 글로벌 스타일
+├── public/                     # 정적 파일
+│   └── favicon.svg
+├── patterns/                   # upstream 원본 마크다운 (참조용)
+│   └── *.md
+├── scripts/
+│   └── sync-upstream.sh        # upstream 동기화 스크립트 (예정)
+├── astro.config.mjs
+├── tailwind.config.js
+└── package.json
+```
+
+---
+
+## 🔑 핵심 개념: 개별 파일 방식
+
+### 왜 개별 JSON 파일로 관리하나요?
+
+| 상황 | 기존 방식 (1개 대용량 파일) | 개별 파일 방식 |
+|------|----------------------|--------------|
+| 새 패턴 추가 | 500KB 파일 전체 읽기 | 5KB 파일 1개만 생성 |
+| 기존 패턴 수정 | 500KB 파일 읽고 수정 | 5KB 파일만 읽고 수정 |
+| Git diff | 전체 파일 변경으로 표시 | 변경된 파일만 표시 |
+| Claude Code 토큰 | 500KB = 약 125,000 토큰 | 5KB = 약 1,250 토큰 (100배 절약) |
+
+### 데이터 구조
+
+```
+src/data/
+└── patterns/                           # 개별 패턴 파일
+    ├── plan-then-execute-pattern.json  # 약 5KB
+    ├── reflection.json                 # 약 5KB
+    └── ... (117개)
+```
+
+---
+
+## 📊 데이터 스키마
+
+### patterns/{id}.json (개별 패턴 파일)
+
+```json
+{
+  "id": "pattern-id",                    // 필수: URL friendly ID
+  "title": "Pattern Title",              // 필수: 영어 제목
+  "title_ko": "패턴 제목",                // 필수: 한국어 제목
+  "category": "Orchestration & Control", // 필수: 카테고리
+  "status": "best-practice",             // 필수: 상태
+  "original_url": "https://...",         // 선택: 원본 URL
+  "problem": {                           // 선택: 문제 설명
+    "en": "Problem description...",
+    "ko": "문제 설명..."
+  },
+  "solution": {                          // 선택: 해결책
+    "en": "Solution description...",
+    "ko": "해결책 설명..."
+  },
+  "when_to_use": {                       // 선택: 사용 시기
+    "en": ["When...", "When..."],
+    "ko": ["...할 때", "...할 때"]
+  },
+  "pros": {                              // 선택: 장점
+    "en": ["Advantage 1", "Advantage 2"],
+    "ko": ["장점 1", "장점 2"]
+  },
+  "cons": {                              // 선택: 단점
+    "en": ["Limitation 1", "Limitation 2"],
+    "ko": ["단점 1", "단점 2"]
+  },
+  "ascii_diagram": "ASCII art...",       // 선택: ASCII 다이어그램
+  "mermaid_diagram": "graph TD\n...",    // 선택: Mermaid 다이어그램
+  "code_example": "// Code...",          // 선택: 코드 예제
+  "tags": ["tag1", "tag2"]               // 선택: 태그
+}
+```
+
+### 필수 필드
+- `id`, `title`, `title_ko`, `category`, `status`
+
+### 상태 (Status) 타입
+- `best-practice` - 검증된 베스트 프랙티스 (녹색)
+- `validated-in-production` - 프로덕션 검증됨 (파란색)
+- `established` - 확립된 패턴 (보라색)
+- `emerging` - 새롭게 떠오름 (노란색)
+- `proposed` - 제안됨 (회색)
+- `experimental-but-awesome` - 실험적이지만 유망 (분홍색)
+- `rapidly-improving` - 빠르게 개선중 (주황색)
+
+### 카테고리
+```typescript
+const categoryOrder = [
+  'Orchestration & Control',    // 🎛️ 31개
+  'Context & Memory',            // 🧠 13개
+  'Feedback Loops',              // 🔄 13개
+  'Learning & Adaptation',       // 📚 5개
+  'Reliability & Eval',          // ✅ 13개
+  'Security & Safety',           // 🔒 3개
+  'Tool Use & Environment',      // 🔧 26개
+  'UX & Collaboration',          // 👥 13개
+  'Uncategorized'                // 📁
+];
+```
+
+---
+
+## 🔄 워크플로우
+
+### Phase 1: 초기 세팅 (완료)
+
+```
+✅ 프로젝트 초기화 (Astro + Tailwind CSS)
+✅ 원본 repo fork
+✅ 웹사이트 템플릿 구축 (사이드바 + 모달)
+✅ 모든 패턴 AI 처리 (117개 번역 + 시각화)
+✅ 첫 배포 테스트
+⬜ GitHub Actions 설정
+```
+
+### Phase 2: 업데이트 (자동화 예정)
+
+```
+[GitHub Actions: check-upstream.yml]
+  │ 매일 실행, upstream 변경 감지
+  ▼
+[알림 Issue 생성]
+  │ "New pattern detected: pattern-name"
+  ▼
+[Claude Code 실행]
+  │
+  ├── 1. upstream/patterns/*.md 동기화
+  ├── 2. 새 패턴만 AI 처리 (번역 + 시각화)
+  ├── 3. JSON 파일 생성/수정
+  └── 4. git commit & push
+        │
+        ▼
+[GitHub Actions: deploy.yml]
+  │ main 브랜치 push 시 자동 실행
+  │
+  ├── npm run build
+  ├── dist/ 폴더 생성
+  └── GitHub Pages 배포
+```
+
+---
+
+## 🎯 일반적인 작업
+
+### 1. 새 패턴 추가 (수동)
+
+```bash
+# 1. JSON 파일 생성
+cat > src/data/patterns/my-new-pattern.json << 'EOF'
+{
+  "id": "my-new-pattern",
+  "title": "My New Pattern",
+  "title_ko": "나의 새 패턴",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "problem": {
+    "en": "Problem description...",
+    "ko": "문제 설명..."
+  },
+  "solution": {
+    "en": "Solution description...",
+    "ko": "해결책 설명..."
+  },
+  "tags": ["new", "pattern"]
+}
+EOF
+
+# 2. 빌드 테스트
+npm run build
+npm run preview
+
+# 4. 커밋
+git add src/data/patterns/my-new-pattern.json
+git commit -m "feat: Add my new pattern"
+git push
+```
+
+### 2. 기존 패턴 수정
+
+```bash
+# 1. 해당 JSON 파일만 읽기 (토큰 절약!)
+cat src/data/patterns/reflection.json
+
+# 2. 수정
+# Edit tool 사용
+
+# 3. 빌드 테스트
+npm run build
+
+# 4. 커밋
+git add src/data/patterns/reflection.json
+git commit -m "fix: Update reflection pattern description"
+git push
+```
+
+### 3. 카테고리 추가
+
+```astro
+// src/pages/index.astro
+
+// 1. categoryOrder 배열에 추가
+const categoryOrder = [
+  'Orchestration & Control',
+  'Context & Memory',
+  // ... 기존 카테고리
+  'New Category'  // 추가
+];
+
+// 2. categoryIcons 객체에 이모지 추가
+const categoryIcons: Record<string, string> = {
+  // ... 기존 아이콘
+  'New Category': '🆕'
+};
+```
+
+### 4. UI 컴포넌트 수정
+
+```bash
+# 컴포넌트 위치
+src/components/PatternCard.astro      # 카드 UI
+src/components/PatternModal.astro     # 모달 UI
+src/components/SearchBar.astro        # 검색 바 (미구현)
+src/components/LanguageToggle.astro   # 언어 토글
+
+# 레이아웃
+src/layouts/MainLayout.astro          # 헤더, 푸터
+
+# 메인 페이지
+src/pages/index.astro                 # 사이드바, 그리드, 모달 로직
+```
+
+---
+
+## 🔍 언어 전환 메커니즘
+
+### LocalStorage 키
+```javascript
+// 저장 키: 'aap-language'
+// 값: 'ko' 또는 'en'
+```
+
+### HTML 구조
+```html
+<!-- 기본값: 한국어 표시 -->
+<span data-lang="ko">한국어 텍스트</span>
+<span data-lang="en" style="display:none;">English text</span>
+```
+
+### JavaScript 로직
+```javascript
+// src/components/LanguageToggle.astro
+function getCurrentLang() {
+  return localStorage.getItem('aap-language') || 'ko';
+}
+
+function setLang(lang) {
+  localStorage.setItem('aap-language', lang);
+
+  // 모든 언어 요소 업데이트
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    el.style.display = el.dataset.lang === lang ? '' : 'none';
+  });
+
+  // 커스텀 이벤트 발생 (모달 업데이트용)
+  window.dispatchEvent(new CustomEvent('languageChange', {
+    detail: { lang }
+  }));
+}
+
+// src/pages/index.astro (모달 로직)
+window.addEventListener('languageChange', (e) => {
+  if (currentOpenPatternId) {
+    openModal(currentOpenPatternId); // 모달 다시 열어서 언어 업데이트
+  }
+});
+```
+
+---
+
+## 🐛 디버깅 가이드
+
+### 패턴이 표시되지 않을 때
+
+1. **JSON 파일 경로 확인**
+   ```bash
+   ls src/data/patterns/{id}.json
+   ```
+
+2. **JSON 구조 유효성 검증**
+   ```bash
+   cat src/data/patterns/{id}.json | jq .
+   ```
+
+3. **브라우저 콘솔 확인**
+   ```javascript
+   console.log(window.patternsData);  // 모든 패턴 데이터
+   console.log(window.patternsData.find(p => p.id === 'pattern-id'));
+   ```
+
+### 언어 전환이 작동하지 않을 때
+
+1. **localStorage 확인**
+   ```javascript
+   localStorage.getItem('aap-language')  // 'ko' 또는 'en'
+   ```
+
+2. **data-lang 속성 확인**
+   ```javascript
+   document.querySelectorAll('[data-lang]').length  // 0이 아니어야 함
+   ```
+
+3. **이벤트 확인**
+   ```javascript
+   window.addEventListener('languageChange', e => {
+     console.log('Language changed:', e.detail.lang);
+   });
+   ```
+
+### 모달이 열리지 않을 때
+
+1. **패턴 데이터 확인**
+   ```javascript
+   window.patternsData  // 배열이어야 함
+   ```
+
+2. **data-pattern-id 확인**
+   ```html
+   <div class="pattern-card" data-pattern-id="plan-then-execute-pattern">
+   ```
+
+3. **JavaScript 에러 확인**
+   - 브라우저 개발자 도구 → Console
+
+### 빌드 에러
+
+1. **TypeScript 타입 에러**
+   ```bash
+   npm run build
+   # 에러 메시지 확인
+   ```
+
+2. **Astro 설정 확인**
+   ```bash
+   cat astro.config.mjs
+   ```
+
+3. **의존성 재설치**
+   ```bash
+   rm -rf node_modules package-lock.json
+   npm install
+   ```
+
+---
+
+## 📝 작업 시 주의사항
+
+### 토큰 효율성
+- ✅ **개별 파일만 읽기**: 필요한 패턴 파일만 Read
+- ✅ **Glob 사용**: `src/data/patterns/*.json` 패턴으로 검색
+- ❌ **여러 파일 동시 읽기**: 필요한 것만 선택적으로 읽기
+
+### 언어 관련
+- ⚠️ **localStorage 키**: 반드시 `'aap-language'` 사용 (다른 키 사용 금지)
+- ⚠️ **기본 언어**: 한국어 (`'ko'`)
+- ⚠️ **data-lang 속성**: 모든 다국어 텍스트에 필수
+
+### Git 워크플로우
+- ✅ **의미 있는 커밋**: `feat:`, `fix:`, `docs:` 등 prefix 사용
+- ✅ **Co-Authored-By**: 커밋 메시지에 항상 포함
+  ```
+  feat: Add new pattern
+
+  Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
+  ```
+
+---
+
+## 🚀 배포
+
+### GitHub Pages 자동 배포
+
+**트리거**: `main` 브랜치에 push
+
+**워크플로우**: `.github/workflows/deploy.yml`
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm run build
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+```
+
+### 배포 전 체크리스트
+
+- [ ] `npm run build` 성공
+- [ ] `npm run preview` 로컬 확인
+- [ ] 모든 패턴 표시 확인
+- [ ] 언어 전환 테스트 (ko ↔ en)
+- [ ] 모바일 반응형 확인
+- [ ] 사이드바 네비게이션 작동 확인
+- [ ] 모달 열기/닫기 확인
+
+---
+
+## 🔮 향후 확장 계획
+
+### 우선순위 높음
+- [ ] **Pagefind 검색 통합**: 빌드타임 인덱싱
+- [ ] **GitHub Actions**: upstream 자동 동기화
+- [ ] **다크모드**: 테마 토글
+
+### 우선순위 중간
+- [ ] **AI 시맨틱 검색**: Anthropic API 클라이언트 사이드
+- [ ] **즐겨찾기**: localStorage 기반
+- [ ] **패턴 관계 그래프**: Mermaid 또는 D3.js
+
+### 우선순위 낮음
+- [ ] **PDF 내보내기**: 개별 패턴 또는 전체
+- [ ] **댓글 시스템**: GitHub Discussions 통합
+- [ ] **통계 대시보드**: 카테고리별 분포, 상태별 분포 등
+
+---
+
+## 📚 참고 자료
+
+### 공식 문서
+- [Astro 문서](https://docs.astro.build/)
+- [Tailwind CSS 문서](https://tailwindcss.com/docs)
+- [Mermaid 문서](https://mermaid.js.org/)
+- [Pagefind 문서](https://pagefind.app/)
+
+### 원본 프로젝트
+- [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns)
+- [원본 웹사이트](https://agentic-patterns.com/)
+
+### 관련 아티클
+- [What Sourcegraph learned building AI coding agents](https://www.nibzard.com/ampcode)
+
+---
+
+## 🆘 문제 해결
+
+### 이슈 발생 시
+
+1. **이 문서 확인**: 디버깅 가이드 섹션
+2. **브라우저 콘솔**: 개발자 도구 → Console
+3. **빌드 로그**: `npm run build` 에러 메시지
+4. **GitHub Issues**: 새 이슈 생성
+
+### 일반적인 문제
+
+| 문제 | 원인 | 해결 |
+|-----|------|------|
+| 패턴이 안 보임 | JSON 구조 오류 | jq로 검증 |
+| 언어 전환 안됨 | localStorage 키 오류 | `'aap-language'` 확인 |
+| 모달 안 열림 | window.patternsData 없음 | 브라우저 콘솔 확인 |
+| 빌드 실패 | TypeScript 에러 | npm run build 로그 확인 |
+
+---
+
+**마지막 업데이트**: 2025-01-19
+**버전**: 1.0.0
+**상태**: 프로덕션 준비 완료
