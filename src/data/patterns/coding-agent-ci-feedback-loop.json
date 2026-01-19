@@ -1,0 +1,32 @@
+{
+  "id": "coding-agent-ci-feedback-loop",
+  "title": "Coding Agent CI Feedback Loop",
+  "title_ko": "코딩 에이전트 CI 피드백 루프",
+  "category": "Feedback Loops",
+  "status": "best-practice",
+  "original_url": "https://www.youtube.com/watch?v=Xkwok_XXQgw",
+  "problem": {
+    "en": "Synchronous test runs block agents from parallel work, slowing iteration cycles.",
+    "ko": "동기 테스트 실행이 에이전트의 병렬 작업을 차단하여 반복 주기가 느려집니다."
+  },
+  "solution": {
+    "en": "Run agents asynchronously against CI with iterative patch refinement until all tests pass.",
+    "ko": "모든 테스트가 통과할 때까지 반복적인 패치 개선과 함께 CI에 대해 에이전트를 비동기적으로 실행합니다."
+  },
+  "ascii_diagram": "┌──────────┐\n│  Agent   │\n│  Commit  │\n└────┬─────┘\n     │\n┌────▼─────┐\n│   CI     │\n│  Tests   │\n└────┬─────┘\n     │ failures\n┌────▼─────┐\n│  Agent   │\n│  Patch   │\n└────┬─────┘\n     │ re-run\n     └──▶ (repeat until ✅)",
+  "mermaid_diagram": "sequenceDiagram\n    Agent->>CI: Push\n    loop Until Pass\n        CI-->>Agent: Failures\n        Agent->>Code: Patch\n        Agent->>CI: Re-run\n    end\n    CI-->>Agent: ✅ Green",
+  "code_example": "while True:\n    result = ci.run_tests()\n    if result.passed:\n        break\n    patches = agent.fix_failures(result.errors)\n    agent.apply_patches(patches)",
+  "when_to_use": {
+    "en": ["Large-scale refactoring", "Automated bug fixing", "Test-driven development"],
+    "ko": ["대규모 리팩토링", "자동 버그 수정", "테스트 주도 개발"]
+  },
+  "pros": {
+    "en": ["Efficient computing", "Fast iteration", "Autonomous correction"],
+    "ko": ["효율적 컴퓨팅", "빠른 반복", "자율 수정"]
+  },
+  "cons": {
+    "en": ["CI instability issues", "Security considerations"],
+    "ko": ["CI 불안정성", "보안 고려 필요"]
+  },
+  "tags": ["CI", "coding-agent", "asynchronous", "test-driven"]
+}

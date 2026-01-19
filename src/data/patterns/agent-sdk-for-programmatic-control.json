@@ -1,0 +1,32 @@
+{
+  "id": "agent-sdk-for-programmatic-control",
+  "title": "Agent SDK for Programmatic Control",
+  "title_ko": "프로그래밍 방식 제어를 위한 에이전트 SDK",
+  "category": "Tool Use & Environment",
+  "status": "emerging",
+  "original_url": "https://www.nibzard.com/claude-code",
+  "problem": {
+    "en": "Interactive terminal or chat interfaces are not suitable for CI/CD pipelines, scheduled jobs, or building applications on top of agent capabilities.",
+    "ko": "대화형 터미널 또는 채팅 인터페이스는 CI/CD 파이프라인, 예약된 작업, 또는 에이전트 기능 위에 애플리케이션을 구축하는 데 적합하지 않습니다."
+  },
+  "solution": {
+    "en": "Provide an SDK that exposes agent core functionalities for programmatic access via Python/TypeScript libraries, CLI scripting, and headless operation.",
+    "ko": "Python/TypeScript 라이브러리, CLI 스크립팅, 헤드리스 작동을 통해 프로그래밍 방식 액세스를 위한 에이전트 핵심 기능을 노출하는 SDK를 제공합니다."
+  },
+  "ascii_diagram": "┌─────────────────────┐\n│ Application/Script  │\n└──────────┬──────────┘\n           │\n┌──────────▼──────────┐\n│     Agent SDK       │\n├─────────────────────┤\n│ • CLI Interface     │\n│ • Python Library    │\n│ • TypeScript Lib    │\n└──────────┬──────────┘\n           │\n┌──────────▼──────────┐\n│    Agent Core       │\n├─────────────────────┤\n│ Tool Access         │\n│ Memory Management   │\n│ Model Interface     │\n└─────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Application/Script] --> B[Agent SDK]\n    B --> C[Agent Core]\n    B --> D[CLI Interface]\n    B --> E[Python Library]\n    B --> F[TypeScript Library]\n    C --> G[Tool Access]\n    C --> H[Memory Management]\n    C --> I[Model Interface]",
+  "code_example": "# CLI usage for scripting\n$ claude -p \"what did I do this week?\" \\\n  --allowedTools Bash(git log:*) \\\n  --output-format json\n\n# Python SDK usage\nfrom claude_sdk import Agent\n\nagent = Agent(tools=['bash', 'file_read'])\nresult = agent.run(\n    prompt=\"Summarize recent changes\",\n    output_format='json'\n)",
+  "when_to_use": {
+    "en": ["CI/CD pipeline integration", "Automated batch processing", "Building agent-powered applications"],
+    "ko": ["CI/CD 파이프라인 통합", "자동화된 배치 처리", "에이전트 기반 애플리케이션 구축"]
+  },
+  "pros": {
+    "en": ["Enables automation", "Integrates with existing workflows", "Programmable agent behavior"],
+    "ko": ["자동화 가능", "기존 워크플로우와 통합", "프로그래밍 가능한 에이전트 동작"]
+  },
+  "cons": {
+    "en": ["Learning curve for SDK", "Initial auth/setup required", "Version compatibility concerns"],
+    "ko": ["SDK 학습 곡선", "초기 인증/설정 필요", "버전 호환성 우려"]
+  },
+  "tags": ["sdk", "automation", "ci/cd", "programmatic-access", "scripting", "headless-agent"]
+}

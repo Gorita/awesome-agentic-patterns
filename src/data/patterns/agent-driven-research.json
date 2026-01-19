@@ -1,0 +1,32 @@
+{
+  "id": "agent-driven-research",
+  "title": "Agent-Driven Research",
+  "title_ko": "에이전트 주도 리서치",
+  "category": "Orchestration & Control",
+  "status": "established",
+  "original_url": "https://www.youtube.com/watch?v=u85G2aV_5rQ",
+  "problem": {
+    "en": "Traditional research methods lack ability to adapt search strategies based on emerging results, limiting efficiency and potential discoveries.",
+    "ko": "전통적인 리서치 방법은 새로운 결과를 기반으로 검색 전략을 조정하는 능력이 부족하여 효율성과 잠재적 발견을 제한합니다."
+  },
+  "solution": {
+    "en": "Allow AI agents to independently conduct the entire research process: create queries, execute searches, examine data, adjust strategy, and compile summaries.",
+    "ko": "AI 에이전트가 전체 리서치 프로세스를 독립적으로 수행하도록 합니다: 쿼리 생성, 검색 실행, 데이터 검토, 전략 조정, 요약 작성."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│Research Question│\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│Formulate Query  │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Execute Search  │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Analyze Results │\n└────────┬────────┘\n    ┌────┴────┐\n    ▼         ▼\n[Enough?] [Refine]\n    │         │\n    │    ┌────┘\n    ▼    │\n┌────────▼────────┐\n│Synthesize Report│\n└─────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Research Question] --> B[Formulate Search Query]\n    B --> C[Execute Search]\n    C --> D[Analyze Retrieved Information]\n    D --> E{Sufficient Information?}\n    E -->|No| F[Refine Search Strategy]\n    F --> B\n    E -->|Yes| G[Synthesize & Summarize Findings]\n    G --> H[Present Results to User]",
+  "code_example": "class ResearchAgent:\n    def research(self, question: str) -> str:\n        results = []\n        query = self.formulate_query(question)\n        \n        while not self.is_sufficient(results):\n            search_results = self.search(query)\n            analysis = self.analyze(search_results)\n            results.extend(analysis)\n            query = self.refine_query(query, analysis)\n        \n        return self.synthesize(results)",
+  "when_to_use": {
+    "en": ["Deep research tasks", "Multi-source information gathering", "Exploratory analysis"],
+    "ko": ["심층 리서치 작업", "다중 소스 정보 수집", "탐색적 분석"]
+  },
+  "pros": {
+    "en": ["Adapts search strategy dynamically", "Autonomous iteration", "Comprehensive coverage"],
+    "ko": ["검색 전략 동적 적응", "자율적 반복", "포괄적 커버리지"]
+  },
+  "cons": {
+    "en": ["May over-explore", "Token costs can accumulate", "Quality varies with tools"],
+    "ko": ["과도한 탐색 가능", "토큰 비용 누적", "도구에 따라 품질 변동"]
+  },
+  "tags": ["research", "information-retrieval", "tool-use", "iterative-process", "autonomous-search"]
+}

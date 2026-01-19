@@ -1,0 +1,32 @@
+{
+  "id": "tool-use-incentivization-via-reward-shaping",
+  "title": "Tool Use Incentivization via Reward Shaping",
+  "title_ko": "보상 설계를 통한 도구 사용 인센티브",
+  "category": "Feedback Loops",
+  "status": "emerging",
+  "original_url": "https://www.youtube.com/watch?v=Xkwok_XXQgw",
+  "problem": {
+    "en": "Coding agents often underutilize specialized tools, defaulting to thinking tokens instead of invoking compilers, linters, or test runners.",
+    "ko": "코딩 에이전트가 컴파일러, 린터, 테스트 러너를 호출하는 대신 생각 토큰을 기본으로 사용하여 전문 도구를 충분히 활용하지 못합니다."
+  },
+  "solution": {
+    "en": "Provide dense, shaped rewards for every intermediate tool invocation that contributes toward final code correctness.",
+    "ko": "최종 코드 정확성에 기여하는 모든 중간 도구 호출에 대해 밀도 있는 보상을 제공합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Agent     │\n│   Action    │\n└──────┬──────┘\n       │\n   ┌───┴───┐\n   ▼       ▼\n┌─────┐ ┌─────┐\n│Comp │ │Test │\n│+1.0 │ │+2.0 │\n└──┬──┘ └──┬──┘\n   └───┬───┘\n       ▼\n┌─────────────┐\n│ Cumulative  │\n│   Reward    │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Agent Action] --> B{Tool Type}\n    B -->|Compile| C[+1.0 if success]\n    B -->|Test| D[+2.0 if pass]\n    B -->|Lint| E[+0.5 if clean]\n    C & D & E --> F[Aggregate Reward]\n    F --> G[Policy Update]",
+  "code_example": "if action == 'compile':\n    reward = 1.0 if compile_success else -0.5\nelif action == 'run_tests':\n    reward = 2.0 if new_tests_passed else 0\nelif action == 'lint':\n    reward = 0.5 if lint_clean else 0\ntrajectory.append((state, action, reward))",
+  "when_to_use": {
+    "en": ["RL-based agent training", "Tool utilization improvement", "Coding agent development"],
+    "ko": ["RL 기반 에이전트 훈련", "도구 활용 개선", "코딩 에이전트 개발"]
+  },
+  "pros": {
+    "en": ["Denser feedback guiding step-by-step", "Encourages tool adoption"],
+    "ko": ["단계별 안내하는 밀도 높은 피드백", "도구 채택 장려"]
+  },
+  "cons": {
+    "en": ["Reward engineering overhead", "Potential overfitting to intermediate rewards"],
+    "ko": ["보상 설계 오버헤드", "중간 보상에 대한 과적합 가능성"]
+  },
+  "tags": ["tool-use", "reward-shaping", "coding-agent", "RL"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "hybrid-llm-code-workflow-coordinator",
+  "title": "Hybrid LLM/Code Workflow Coordinator",
+  "title_ko": "하이브리드 LLM/코드 워크플로우 코디네이터",
+  "category": "Orchestration & Control",
+  "status": "proposed",
+  "original_url": "https://lethain.com/agents-coordinators/",
+  "problem": {
+    "en": "LLM-driven workflows are non-deterministic. For some tasks, occasional errors are unacceptable. You need both flexibility for prototyping and determinism when it matters.",
+    "ko": "LLM 기반 워크플로우는 비결정적입니다. 일부 작업에서는 간헐적인 오류도 허용할 수 없습니다. 프로토타이핑을 위한 유연성과 중요한 경우 결정론 모두 필요합니다."
+  },
+  "solution": {
+    "en": "Support both LLM-driven and code-driven workflows via configurable coordinator parameter. Start with LLM for rapid prototyping, migrate to code when determinism is needed.",
+    "ko": "구성 가능한 코디네이터 매개변수를 통해 LLM 기반과 코드 기반 워크플로우를 모두 지원합니다. 빠른 프로토타이핑을 위해 LLM으로 시작하고, 결정론이 필요할 때 코드로 마이그레이션합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Trigger   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ coordinator │\n│   config    │\n└──────┬──────┘\n   ┌───┴───┐\n   ▼       ▼\n [llm]  [script]\n   │       │\n┌──▼──┐ ┌──▼──┐\n│ LLM │ │Code │\n│Orch │ │Orch │\n└──┬──┘ └──┬──┘\n   └───┬───┘\n       │\n┌──────▼──────┐\n│   Result    │\n└─────────────┘",
+  "mermaid_diagram": "graph LR\n    A[Trigger] --> B{Coordinator Type}\n    B -->|llm| C[LLM Orchestrates]\n    B -->|script| D[Script Orchestrates]\n    C --> E[Tool Calls]\n    D --> E\n    D -.optional.-> F[Subagent LLM]\n    E --> G[Result]",
+  "code_example": "# Configuration\n# coordinator: llm   # Fast iteration\n# coordinator: script # Deterministic\n\ndef execute_workflow(trigger, config):\n    if config.get('coordinator') == 'script':\n        # Code-driven: deterministic, goes through review\n        script = config['coordinator_script']\n        return run_python_script(script, trigger)\n    else:\n        # LLM-driven: flexible, fast iteration\n        prompt = load_prompt(config['prompt'])\n        tools = load_tools(config['tools'])\n        return llm_orchestrate(trigger, prompt, tools)",
+  "when_to_use": {
+    "en": ["Workflows needing both flexibility and determinism", "Production systems with prototyping phase", "Critical workflows requiring code review"],
+    "ko": ["유연성과 결정론 모두 필요한 워크플로우", "프로토타이핑 단계가 있는 프로덕션 시스템", "코드 리뷰가 필요한 중요 워크플로우"]
+  },
+  "pros": {
+    "en": ["Best of both worlds", "Easy migration path", "Same tool capabilities for both"],
+    "ko": ["양쪽의 장점", "쉬운 마이그레이션 경로", "양쪽에 동일한 도구 기능"]
+  },
+  "cons": {
+    "en": ["Two code paths to maintain", "Rewrite cost when migrating", "Scripts harder to change"],
+    "ko": ["유지할 두 개의 코드 경로", "마이그레이션 시 재작성 비용", "스크립트 변경 어려움"]
+  },
+  "tags": ["hybrid", "llm-driven", "code-driven", "coordinator", "determinism", "workflow-orchestration"]
+}

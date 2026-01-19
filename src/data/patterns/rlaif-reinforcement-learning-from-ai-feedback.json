@@ -1,0 +1,32 @@
+{
+  "id": "rlaif-reinforcement-learning-from-ai-feedback",
+  "title": "RLAIF (Reinforcement Learning from AI Feedback)",
+  "title_ko": "RLAIF (AI 피드백으로부터의 강화 학습)",
+  "category": "Reliability & Eval",
+  "status": "emerging",
+  "original_url": "https://arxiv.org/abs/2212.08073",
+  "problem": {
+    "en": "Traditional RLHF requires expensive human annotation ($1+ per label) which is slow and hard to scale.",
+    "ko": "전통적인 RLHF는 비용이 많이 드는 인간 주석(레이블당 $1+)이 필요하며 느리고 확장하기 어렵습니다."
+  },
+  "solution": {
+    "en": "Use AI models to generate preference feedback and evaluation data, reducing costs to <$0.01 per annotation.",
+    "ko": "AI 모델을 사용하여 선호도 피드백과 평가 데이터를 생성하여 비용을 주석당 $0.01 미만으로 줄입니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│  Response A │\n│  Response B │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ AI Critic   │\n│ (with rules)│\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Preference  │\n│ A > B       │\n│ + Reasoning │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│  Train on   │\n│ AI feedback │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Generate Responses A, B] --> B[AI Critic Evaluates]\n    B --> C[Preference + Explanation]\n    C --> D[Train Reward Model]\n    D --> E[Use for RLHF]",
+  "code_example": "class RLAIFAgent:\n    def generate_preference(self, prompt, response_a, response_b):\n        critique_prompt = f'''\n        Given these principles: {self.constitution}\n        \n        Which response is better for: \"{prompt}\"\n        Response A: {response_a}\n        Response B: {response_b}\n        \n        Choose and explain why.\n        '''\n        return self.critic_model.generate(critique_prompt)",
+  "when_to_use": {
+    "en": ["Reward model training", "Alignment at scale", "Constitutional AI"],
+    "ko": ["보상 모델 훈련", "대규모 정렬", "헌법적 AI"]
+  },
+  "pros": {
+    "en": ["100x cheaper than human feedback", "Scales with compute", "More consistent"],
+    "ko": ["인간 피드백보다 100배 저렴", "컴퓨팅으로 확장", "더 일관적"]
+  },
+  "cons": {
+    "en": ["May amplify biases", "Limited novelty in feedback", "Principle design needed"],
+    "ko": ["편향 증폭 가능", "피드백의 제한된 새로움", "원칙 설계 필요"]
+  },
+  "tags": ["rlhf", "rlaif", "constitutional-ai", "synthetic-data", "alignment"]
+}

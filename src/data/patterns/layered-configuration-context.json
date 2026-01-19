@@ -1,0 +1,32 @@
+{
+  "id": "layered-configuration-context",
+  "title": "Layered Configuration Context",
+  "title_ko": "계층화된 구성 컨텍스트",
+  "category": "Context & Memory",
+  "status": "proposed",
+  "original_url": "https://lethain.com/agents-layered-configuration/",
+  "problem": {
+    "en": "Agents need different configurations at global, project, and task levels, but flat config systems don't support this hierarchy.",
+    "ko": "에이전트가 글로벌, 프로젝트, 작업 수준에서 다른 구성이 필요하지만 플랫 구성 시스템은 이 계층을 지원하지 않습니다."
+  },
+  "solution": {
+    "en": "Implement multi-level configuration that merges global defaults, project settings, and task-specific overrides.",
+    "ko": "글로벌 기본값, 프로젝트 설정, 작업별 오버라이드를 병합하는 다중 수준 구성을 구현합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Global    │ ~/.agent/config\n│  Defaults   │\n└──────┬──────┘\n       │ merge\n┌──────▼──────┐\n│  Project    │ .agent/config\n│  Settings   │\n└──────┬──────┘\n       │ merge\n┌──────▼──────┐\n│   Task      │ inline/flags\n│ Overrides   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│   Final     │\n│   Config    │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Global: ~/.agent/config] --> D[Merge]\n    B[Project: .agent/config] --> D\n    C[Task: inline flags] --> D\n    D --> E[Final Configuration]\n    E --> F[Agent Execution]",
+  "code_example": "class LayeredConfig:\n    def __init__(self):\n        self.global_config = load('~/.agent/config')\n        self.project_config = load('.agent/config')\n    \n    def get_config(self, task_overrides=None):\n        config = {**self.global_config}\n        config.update(self.project_config)\n        if task_overrides:\n            config.update(task_overrides)\n        return config",
+  "when_to_use": {
+    "en": ["Multi-project environments", "Team shared configurations", "Task-specific tuning"],
+    "ko": ["다중 프로젝트 환경", "팀 공유 구성", "작업별 튜닝"]
+  },
+  "pros": {
+    "en": ["Flexibility", "DRY configuration", "Easy overrides"],
+    "ko": ["유연성", "DRY 구성", "쉬운 오버라이드"]
+  },
+  "cons": {
+    "en": ["Debugging complexity", "Merge conflict resolution"],
+    "ko": ["디버깅 복잡성", "병합 충돌 해결"]
+  },
+  "tags": ["configuration", "layered-config", "context-management", "hierarchy"]
+}

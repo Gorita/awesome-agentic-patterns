@@ -1,0 +1,32 @@
+{
+  "id": "action-caching-replay",
+  "title": "Action Caching & Replay Pattern",
+  "title_ko": "액션 캐싱 및 리플레이 패턴",
+  "category": "Reliability & Eval",
+  "status": "emerging",
+  "original_url": "https://github.com/hyperbrowserai/HyperAgent",
+  "problem": {
+    "en": "LLM-based agent execution is expensive (both in costs and latency) and non-deterministic. Running the same workflow multiple times yields different results and incurs repeated LLM costs, making regression testing impossible.",
+    "ko": "LLM 기반 에이전트 실행은 비용과 지연 시간 모두에서 비싸고 비결정적입니다. 동일한 워크플로우를 여러 번 실행하면 다른 결과가 나오고 반복적인 LLM 비용이 발생하여 회귀 테스트가 불가능합니다."
+  },
+  "solution": {
+    "en": "Record every action during execution with precise metadata (XPaths, frame indices, execution details), enabling deterministic replay without LLM calls. Use intelligent fallback to LLM only when XPath resolution fails.",
+    "ko": "실행 중 모든 액션을 정밀한 메타데이터(XPath, 프레임 인덱스, 실행 세부사항)와 함께 기록하여 LLM 호출 없이 결정적 리플레이를 가능하게 합니다. XPath 해석이 실패할 때만 LLM으로 지능적 폴백을 사용합니다."
+  },
+  "ascii_diagram": "┌─────────────────────────────┐\n│       First Run (LLM)       │\n├─────────────────────────────┤\n│ Action 1 → Cache Entry #1   │\n│ Action 2 → Cache Entry #2   │\n│ Action N → Cache Entry #N   │\n└──────────────┬──────────────┘\n               │\n┌──────────────▼──────────────┐\n│      Subsequent Runs        │\n├─────────────────────────────┤\n│ Load Cache → Replay Actions │\n│     ↓                       │\n│ XPath Works? → Execute      │\n│ XPath Fails? → LLM Fallback │\n└──────────────┬──────────────┘\n               │\n┌──────────────▼──────────────┐\n│   Zero/Minimal LLM Cost     │\n└─────────────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[User Request] --> B{Cache Exists?}\n    B -->|No| C[Run with LLM]\n    C --> D[Build Cache Entries]\n    D --> E[Save Cache]\n    B -->|Yes| F[Load Action Cache]\n    F --> G[Replay Action]\n    G --> H{XPath Works?}\n    H -->|Yes| I[Execute Action]\n    H -->|No| J[LLM Fallback]\n    J --> K[Update Cache]\n    I --> L{More Actions?}\n    K --> L\n    L -->|Yes| G\n    L -->|No| M[Complete - Low Cost]",
+  "code_example": "interface ActionCacheEntry {\n  stepIndex: number;\n  instruction: string;\n  elementId: string;\n  method: string;  // click, fill, type\n  arguments: string[];\n  xpath: string;\n  success: boolean;\n}\n\n// First run: build cache\nconst cache = await agent.executeTask(task, {\n  enableActionCache: true\n});\nfs.writeFileSync('workflow-cache.json', JSON.stringify(cache));\n\n// Subsequent runs: replay from cache\nconst result = await page.runFromActionCache(cache, {\n  maxXPathRetries: 3,\n  fallbackToLLM: true\n});",
+  "when_to_use": {
+    "en": ["Regression testing for agent workflows", "Cost reduction for repeated tasks", "CI/CD integration for automation scripts", "Deterministic workflow execution"],
+    "ko": ["에이전트 워크플로우의 회귀 테스트", "반복 작업의 비용 절감", "자동화 스크립트의 CI/CD 통합", "결정적 워크플로우 실행"]
+  },
+  "pros": {
+    "en": ["Dramatic cost reduction (near-zero for replays)", "10-100x faster than LLM execution", "Enables deterministic regression testing", "Graceful degradation with LLM fallback"],
+    "ko": ["극적인 비용 절감 (리플레이 시 거의 제로)", "LLM 실행보다 10-100배 빠름", "결정적 회귀 테스트 가능", "LLM 폴백으로 우아한 성능 저하"]
+  },
+  "cons": {
+    "en": ["Cache management overhead", "Brittle to significant UI changes", "Initial LLM cost still required", "Only works for deterministic workflows"],
+    "ko": ["캐시 관리 오버헤드", "큰 UI 변경에 취약", "초기 LLM 비용은 여전히 필요", "결정적 워크플로우에만 작동"]
+  },
+  "tags": ["caching", "replay", "regression-testing", "cost-reduction", "deterministic", "xpath"]
+}

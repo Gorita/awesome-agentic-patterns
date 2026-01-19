@@ -1,0 +1,32 @@
+{
+  "id": "specification-driven-agent-development",
+  "title": "Specification-Driven Agent Development",
+  "title_ko": "명세 기반 에이전트 개발",
+  "category": "Orchestration & Control",
+  "status": "proposed",
+  "original_url": "http://jorypestorious.com/blog/ai-engineer-spec/",
+  "problem": {
+    "en": "Hand-crafted prompts or loose user stories leave room for ambiguity; agents can wander or produce conflicting code.",
+    "ko": "수작업 프롬프트나 느슨한 사용자 스토리는 모호성의 여지를 남겨 에이전트가 방황하거나 충돌하는 코드를 생성할 수 있습니다."
+  },
+  "solution": {
+    "en": "Adopt a spec-first workflow where a formal specification file is the agent's primary input and source of truth.",
+    "ko": "공식 명세 파일이 에이전트의 주요 입력이자 진실의 원천인 명세 우선 워크플로우를 채택합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│    Spec     │\n│  (Markdown/ │\n│   OpenAPI)  │\n└──────┬──────┘\n       │ parse\n┌──────▼──────┐\n│ Task Graph  │\n└──────┬──────┘\n       │ scaffold\n┌──────▼──────┐\n│   Project   │\n│  Structure  │\n└──────┬──────┘\n       │ iterate\n┌──────▼──────┐\n│  Edit Spec  │\n│ (not prompt)│\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Write Spec] --> B[Agent Parses Spec]\n    B --> C[Build Task Graph]\n    C --> D[Scaffold Project]\n    D --> E[Generate Code]\n    E --> F{Need Changes?}\n    F -->|Yes| G[Edit Spec]\n    G --> B\n    F -->|No| H[Done]",
+  "code_example": "# Spec-first workflow\nif new_feature_requested:\n    spec = update_spec(feature_requirements)\n    agent.sync_with(spec)\n    # Agent builds from spec, not ad-hoc prompts\n    \n# Every artifact links back to spec clause\nassert artifact.spec_reference is not None",
+  "when_to_use": {
+    "en": ["Complex projects", "Team collaboration", "Audit-required systems"],
+    "ko": ["복잡한 프로젝트", "팀 협업", "감사 필요 시스템"]
+  },
+  "pros": {
+    "en": ["Repeatable", "Audit-friendly", "Easy diffing"],
+    "ko": ["반복 가능", "감사 친화적", "쉬운 비교"]
+  },
+  "cons": {
+    "en": ["Up-front spec writing effort", "Learning curve for spec formats"],
+    "ko": ["사전 명세 작성 노력", "명세 형식 학습 곡선"]
+  },
+  "tags": ["spec-first", "scaffolding", "contract", "requirements"]
+}

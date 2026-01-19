@@ -1,0 +1,590 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PatternCard from '../components/PatternCard.astro';
+import PatternModal from '../components/PatternModal.astro';
+import SearchBar from '../components/SearchBar.astro';
+import LanguageToggle from '../components/LanguageToggle.astro';
+
+// Import all pattern JSON files from patterns directory
+const patternFiles = import.meta.glob('../data/patterns/*.json', { eager: true });
+
+// Full pattern data for modal (keep all fields)
+const fullPatternsData = Object.values(patternFiles).map((module: any) => {
+  const p = module.default || module;
+  return {
+    id: p.id,
+    title: p.title,
+    titleKo: p.title_ko,
+    category: p.category || 'Uncategorized',
+    status: p.status,
+    problem: p.problem,
+    solution: p.solution,
+    ascii: p.ascii_diagram,
+    mermaid: p.mermaid_diagram,
+    code: p.code_example,
+    whenToUse: p.when_to_use,
+    pros: p.pros,
+    cons: p.cons,
+    tags: p.tags || [],
+    source: p.original_url
+  };
+});
+
+// Transform pattern data to match PatternCard props (summary only)
+const patternsData = fullPatternsData.map(p => ({
+  id: p.id,
+  title: p.title,
+  titleKo: p.titleKo,
+  category: p.category,
+  status: p.status,
+  description: p.problem?.en || p.solution?.en || '',
+  descriptionKo: p.problem?.ko || p.solution?.ko || '',
+  tags: p.tags
+}));
+
+// Group patterns by category
+const categories = patternsData.reduce((acc: Record<string, typeof patternsData>, pattern) => {
+  const category = pattern.category || 'Uncategorized';
+  if (!acc[category]) {
+    acc[category] = [];
+  }
+  acc[category].push(pattern);
+  return acc;
+}, {});
+
+// Category order
+const categoryOrder = [
+  'Orchestration & Control',
+  'Context & Memory',
+  'Feedback Loops',
+  'Learning & Adaptation',
+  'Reliability & Eval',
+  'Security & Safety',
+  'Tool Use & Environment',
+  'UX & Collaboration',
+  'Uncategorized'
+];
+
+// Sort categories
+const sortedCategories = Object.entries(categories).sort((a, b) => {
+  const indexA = categoryOrder.indexOf(a[0]);
+  const indexB = categoryOrder.indexOf(b[0]);
+  return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+});
+
+// Category icons
+const categoryIcons: Record<string, string> = {
+  'Orchestration & Control': '🎛️',
+  'Context & Memory': '🧠',
+  'Feedback Loops': '🔄',
+  'Learning & Adaptation': '📚',
+  'Reliability & Eval': '✅',
+  'Security & Safety': '🔒',
+  'Tool Use & Environment': '🔧',
+  'UX & Collaboration': '👥',
+  'Uncategorized': '📁'
+};
+
+// Stats
+const totalPatterns = patternsData.length;
+const totalCategories = Object.keys(categories).length;
+---
+
+<MainLayout title="Awesome Agentic Patterns | AI 에이전트 디자인 패턴">
+  <Fragment slot="header-actions">
+    <SearchBar />
+    <LanguageToggle />
+  </Fragment>
+
+  <!-- Hero Section -->
+  <section class="text-center py-8 border-b border-dark-border mb-6">
+    <h1 class="text-3xl md:text-4xl font-bold mb-3">
+      <span data-lang="ko">AI 에이전트 디자인 패턴</span>
+      <span data-lang="en" style="display:none;">AI Agent Design Patterns</span>
+    </h1>
+    <p class="text-dark-muted text-base max-w-2xl mx-auto mb-4">
+      <span data-lang="ko">효과적인 AI 에이전트 시스템 구축을 위한 검증된 패턴 모음</span>
+      <span data-lang="en" style="display:none;">A curated collection of proven patterns for building effective AI agent systems</span>
+    </p>
+    <div class="flex justify-center gap-6 text-sm text-dark-muted">
+      <div class="flex items-center gap-2">
+        <span class="text-primary-400 font-semibold text-lg">{totalPatterns}</span>
+        <span data-lang="ko">패턴</span>
+        <span data-lang="en" style="display:none;">Patterns</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-primary-400 font-semibold text-lg">{totalCategories}</span>
+        <span data-lang="ko">카테고리</span>
+        <span data-lang="en" style="display:none;">Categories</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mobile Sidebar Toggle -->
+  <button
+    id="sidebar-toggle"
+    class="lg:hidden fixed bottom-6 right-6 z-50 bg-primary-500 hover:bg-primary-600 text-white p-4 rounded-full shadow-lg transition-all"
+    aria-label="Toggle category menu"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+  </button>
+
+  <!-- Sidebar + Main Content Layout -->
+  <div class="flex gap-8">
+    <!-- Sidebar -->
+    <aside id="category-sidebar" class="sidebar-hidden lg:block w-64 flex-shrink-0">
+      <nav class="lg:sticky lg:top-20 bg-dark-card border border-dark-border rounded-lg p-4">
+        <h2 class="text-sm font-semibold text-dark-muted uppercase tracking-wider mb-4">
+          <span data-lang="ko">카테고리</span>
+          <span data-lang="en" style="display:none;">Categories</span>
+        </h2>
+        <ul class="space-y-1">
+          {sortedCategories.map(([category, patterns]) => (
+            <li>
+              <a
+                href={`#category-${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                class="category-link flex items-center gap-2 px-3 py-2 rounded-md text-sm text-dark-muted hover:bg-dark-border hover:text-dark-text transition-all"
+              >
+                <span class="text-base">{categoryIcons[category] || '📁'}</span>
+                <span class="flex-1 truncate">{category}</span>
+                <span class="text-xs bg-dark-border px-1.5 py-0.5 rounded">{patterns.length}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay hidden fixed inset-0 bg-black/60 z-40 lg:hidden"></div>
+
+    <!-- Mobile Sidebar Panel -->
+    <div id="mobile-sidebar" class="mobile-sidebar fixed top-0 left-0 h-full w-72 bg-dark-bg border-r border-dark-border z-50 transform -translate-x-full transition-transform lg:hidden overflow-y-auto">
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-lg font-semibold">
+            <span data-lang="ko">카테고리</span>
+            <span data-lang="en" style="display:none;">Categories</span>
+          </h2>
+          <button id="sidebar-close" class="text-dark-muted hover:text-white p-1">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <ul class="space-y-1">
+          {sortedCategories.map(([category, patterns]) => (
+            <li>
+              <a
+                href={`#category-${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                class="mobile-category-link flex items-center gap-3 px-3 py-3 rounded-md text-dark-muted hover:bg-dark-border hover:text-dark-text transition-all"
+              >
+                <span class="text-xl">{categoryIcons[category] || '📁'}</span>
+                <span class="flex-1">{category}</span>
+                <span class="text-xs bg-dark-border px-2 py-1 rounded">{patterns.length}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-w-0">
+      <!-- Category Sections -->
+      {sortedCategories.map(([category, patterns]) => (
+        <section
+          class="category-section mb-12 scroll-mt-20"
+          data-category={category}
+          id={`category-${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+        >
+          <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+            <span>{categoryIcons[category] || '📁'}</span>
+            <span>{category}</span>
+            <span class="text-sm font-normal text-dark-muted">({patterns.length})</span>
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {patterns.map((pattern: any) => (
+              <PatternCard
+                id={pattern.id}
+                title={pattern.title}
+                titleKo={pattern.titleKo}
+                category={pattern.category}
+                status={pattern.status}
+                description={pattern.description}
+                descriptionKo={pattern.descriptionKo}
+                tags={pattern.tags}
+              />
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <!-- Empty State -->
+      <div id="no-results" class="hidden text-center py-12">
+        <p class="text-dark-muted text-lg">
+          <span data-lang="ko">검색 결과가 없습니다</span>
+          <span data-lang="en" style="display:none;">No patterns found</span>
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Pattern Modal -->
+  <PatternModal />
+
+  <!-- Pattern data for modal -->
+  <script define:vars={{ fullPatternsData }}>
+    window.patternsData = fullPatternsData;
+  </script>
+</MainLayout>
+
+<style>
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Ensure smooth transitions */
+  .category-section {
+    transition: opacity 0.2s ease;
+  }
+
+  .pattern-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+  }
+
+  .pattern-card:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Sidebar styles */
+  .sidebar-hidden {
+    display: none;
+  }
+
+  .category-link.active {
+    background-color: rgba(14, 165, 233, 0.1);
+    color: #38bdf8;
+    border-left: 2px solid #0ea5e9;
+    margin-left: -2px;
+  }
+
+  .mobile-category-link.active {
+    background-color: rgba(14, 165, 233, 0.1);
+    color: #38bdf8;
+  }
+
+  /* Mobile sidebar animation */
+  .mobile-sidebar {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .mobile-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+  }
+
+  .sidebar-overlay.show {
+    opacity: 1;
+  }
+
+  @media (min-width: 1024px) {
+    .sidebar-hidden {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  // Modal functionality
+  const modal = document.getElementById('pattern-modal');
+  const modalClose = document.getElementById('modal-close');
+  const patternCards = document.querySelectorAll('.pattern-card');
+
+  const statusColors = {
+    'best-practice': 'bg-green-500/20 text-green-400 border-green-500/30',
+    'validated-in-production': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    'established': 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+    'emerging': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+    'proposed': 'bg-gray-500/20 text-gray-400 border-gray-500/30',
+    'experimental-but-awesome': 'bg-pink-500/20 text-pink-400 border-pink-500/30',
+    'rapidly-improving': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+  };
+
+  function getCurrentLang() {
+    return localStorage.getItem('aap-language') || 'ko';
+  }
+
+  // Track current open pattern for language updates
+  let currentOpenPatternId = null;
+
+  function openModal(patternId) {
+    const pattern = window.patternsData.find(p => p.id === patternId);
+    if (!pattern) return;
+
+    const lang = getCurrentLang();
+
+    // Title
+    document.getElementById('modal-title').textContent =
+      lang === 'ko' && pattern.titleKo ? pattern.titleKo : pattern.title;
+
+    // Status
+    const statusEl = document.getElementById('modal-status');
+    statusEl.textContent = pattern.status;
+    statusEl.className = `text-xs px-2 py-1 rounded border whitespace-nowrap ${statusColors[pattern.status] || statusColors['proposed']}`;
+
+    // Category
+    document.getElementById('modal-category').textContent = pattern.category;
+
+    // Source link
+    const sourceEl = document.getElementById('modal-source');
+    if (pattern.source) {
+      sourceEl.href = pattern.source;
+      sourceEl.classList.remove('hidden');
+    } else {
+      sourceEl.classList.add('hidden');
+    }
+
+    // Problem
+    document.getElementById('modal-problem').textContent =
+      lang === 'ko' && pattern.problem?.ko ? pattern.problem.ko : (pattern.problem?.en || '');
+
+    // Solution
+    document.getElementById('modal-solution').textContent =
+      lang === 'ko' && pattern.solution?.ko ? pattern.solution.ko : (pattern.solution?.en || '');
+
+    // Diagrams
+    const diagramsSection = document.getElementById('modal-diagrams-section');
+    const asciiTab = document.getElementById('modal-ascii-tab');
+    const mermaidTab = document.getElementById('modal-mermaid-tab');
+    const asciiContent = document.getElementById('modal-ascii');
+    const mermaidContent = document.getElementById('modal-mermaid');
+
+    if (pattern.ascii || pattern.mermaid) {
+      diagramsSection.classList.remove('hidden');
+
+      if (pattern.ascii) {
+        asciiContent.textContent = pattern.ascii;
+        asciiTab.classList.remove('hidden');
+      } else {
+        asciiTab.classList.add('hidden');
+      }
+
+      if (pattern.mermaid) {
+        mermaidContent.querySelector('.mermaid').textContent = pattern.mermaid;
+        mermaidTab.classList.remove('hidden');
+      } else {
+        mermaidTab.classList.add('hidden');
+      }
+
+      // Reset to ASCII tab
+      asciiContent.classList.remove('hidden');
+      mermaidContent.classList.add('hidden');
+      asciiTab.classList.add('active', 'bg-dark-border', 'text-dark-text');
+      asciiTab.classList.remove('bg-transparent', 'text-dark-muted');
+      mermaidTab.classList.remove('active', 'bg-dark-border', 'text-dark-text');
+      mermaidTab.classList.add('bg-transparent', 'text-dark-muted');
+    } else {
+      diagramsSection.classList.add('hidden');
+    }
+
+    // Code
+    const codeSection = document.getElementById('modal-code-section');
+    const codeContent = document.getElementById('modal-code');
+    if (pattern.code) {
+      codeContent.textContent = pattern.code;
+      codeSection.classList.remove('hidden');
+    } else {
+      codeSection.classList.add('hidden');
+    }
+
+    // When to Use
+    const whenSection = document.getElementById('modal-when-section');
+    const whenList = document.getElementById('modal-when');
+    const whenData = lang === 'ko' && pattern.whenToUse?.ko ? pattern.whenToUse.ko : (pattern.whenToUse?.en || []);
+    if (whenData.length > 0) {
+      whenList.innerHTML = whenData.map(item => `<li>${item}</li>`).join('');
+      whenSection.classList.remove('hidden');
+    } else {
+      whenSection.classList.add('hidden');
+    }
+
+    // Pros
+    const prosSection = document.getElementById('modal-pros-section');
+    const prosList = document.getElementById('modal-pros');
+    const prosData = lang === 'ko' && pattern.pros?.ko ? pattern.pros.ko : (pattern.pros?.en || []);
+    if (prosData.length > 0) {
+      prosList.innerHTML = prosData.map(item => `<li>${item}</li>`).join('');
+      prosSection.classList.remove('hidden');
+    } else {
+      prosSection.classList.add('hidden');
+    }
+
+    // Cons
+    const consSection = document.getElementById('modal-cons-section');
+    const consList = document.getElementById('modal-cons');
+    const consData = lang === 'ko' && pattern.cons?.ko ? pattern.cons.ko : (pattern.cons?.en || []);
+    if (consData.length > 0) {
+      consList.innerHTML = consData.map(item => `<li>${item}</li>`).join('');
+      consSection.classList.remove('hidden');
+    } else {
+      consSection.classList.add('hidden');
+    }
+
+    // Tags
+    const tagsContainer = document.getElementById('modal-tags');
+    if (pattern.tags && pattern.tags.length > 0) {
+      tagsContainer.innerHTML = pattern.tags.map(tag =>
+        `<span class="text-xs px-2 py-1 rounded bg-dark-border text-dark-muted">#${tag}</span>`
+      ).join('');
+    } else {
+      tagsContainer.innerHTML = '';
+    }
+
+    // Track current pattern
+    currentOpenPatternId = patternId;
+
+    // Show modal
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    // Re-render mermaid diagrams
+    if (pattern.mermaid && window.mermaid) {
+      setTimeout(() => {
+        window.mermaid.run({ querySelector: '#modal-mermaid .mermaid' });
+      }, 100);
+    }
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+    currentOpenPatternId = null;
+  }
+
+  // Listen for language changes and update modal if open
+  window.addEventListener('languageChange', (e) => {
+    if (currentOpenPatternId) {
+      openModal(currentOpenPatternId);
+    }
+  });
+
+  // Event listeners
+  patternCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      // Don't open modal if clicking on tab buttons
+      if (e.target.closest('.tab-btn')) return;
+      const patternId = card.getAttribute('data-pattern-id');
+      openModal(patternId);
+    });
+  });
+
+  modalClose?.addEventListener('click', closeModal);
+
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal || e.target.classList.contains('modal-container')) {
+      closeModal();
+    }
+  });
+
+  // ESC key to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+
+  // Modal diagram tab switching
+  document.getElementById('modal-ascii-tab')?.addEventListener('click', () => {
+    document.getElementById('modal-ascii').classList.remove('hidden');
+    document.getElementById('modal-mermaid').classList.add('hidden');
+    document.getElementById('modal-ascii-tab').classList.add('active', 'bg-dark-border', 'text-dark-text');
+    document.getElementById('modal-ascii-tab').classList.remove('bg-transparent', 'text-dark-muted');
+    document.getElementById('modal-mermaid-tab').classList.remove('active', 'bg-dark-border', 'text-dark-text');
+    document.getElementById('modal-mermaid-tab').classList.add('bg-transparent', 'text-dark-muted');
+  });
+
+  document.getElementById('modal-mermaid-tab')?.addEventListener('click', () => {
+    document.getElementById('modal-ascii').classList.add('hidden');
+    document.getElementById('modal-mermaid').classList.remove('hidden');
+    document.getElementById('modal-mermaid-tab').classList.add('active', 'bg-dark-border', 'text-dark-text');
+    document.getElementById('modal-mermaid-tab').classList.remove('bg-transparent', 'text-dark-muted');
+    document.getElementById('modal-ascii-tab').classList.remove('active', 'bg-dark-border', 'text-dark-text');
+    document.getElementById('modal-ascii-tab').classList.add('bg-transparent', 'text-dark-muted');
+
+    // Re-render mermaid
+    if (window.mermaid) {
+      window.mermaid.run({ querySelector: '#modal-mermaid .mermaid' });
+    }
+  });
+
+  // Mobile sidebar functionality
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const sidebarClose = document.getElementById('sidebar-close');
+  const mobileSidebar = document.getElementById('mobile-sidebar');
+  const sidebarOverlay = document.getElementById('sidebar-overlay');
+  const mobileCategoryLinks = document.querySelectorAll('.mobile-category-link');
+
+  function openSidebar() {
+    mobileSidebar.classList.add('open');
+    sidebarOverlay.classList.remove('hidden');
+    setTimeout(() => sidebarOverlay.classList.add('show'), 10);
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    mobileSidebar.classList.remove('open');
+    sidebarOverlay.classList.remove('show');
+    setTimeout(() => sidebarOverlay.classList.add('hidden'), 300);
+    document.body.style.overflow = '';
+  }
+
+  sidebarToggle?.addEventListener('click', openSidebar);
+  sidebarClose?.addEventListener('click', closeSidebar);
+  sidebarOverlay?.addEventListener('click', closeSidebar);
+
+  // Close sidebar when clicking a category link on mobile
+  mobileCategoryLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      closeSidebar();
+    });
+  });
+
+  // Category navigation - highlight active section on scroll
+  const categorySections = document.querySelectorAll('.category-section');
+  const categoryLinks = document.querySelectorAll('.category-link');
+  const allCategoryLinks = document.querySelectorAll('.category-link, .mobile-category-link');
+
+  function updateActiveCategory() {
+    let currentSection = '';
+    const scrollPos = window.scrollY + 150;
+
+    categorySections.forEach((section) => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+
+      if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+        currentSection = section.getAttribute('id');
+      }
+    });
+
+    allCategoryLinks.forEach((link) => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${currentSection}`) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveCategory);
+  updateActiveCategory();
+</script>

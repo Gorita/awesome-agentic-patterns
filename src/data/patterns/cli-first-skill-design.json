@@ -1,0 +1,32 @@
+{
+  "id": "cli-first-skill-design",
+  "title": "CLI-First Skill Design",
+  "title_ko": "CLI 우선 스킬 설계",
+  "category": "Tool Use & Environment",
+  "status": "proposed",
+  "original_url": "https://lethain.com/agents-cli-first-skills/",
+  "problem": {
+    "en": "Skills designed only for agent use are hard to test, debug, and iterate on quickly.",
+    "ko": "에이전트 사용만을 위해 설계된 스킬은 테스트, 디버그, 빠른 반복이 어렵습니다."
+  },
+  "solution": {
+    "en": "Design every skill as a CLI command first, making it testable and usable by both humans and agents.",
+    "ko": "모든 스킬을 먼저 CLI 명령으로 설계하여 인간과 에이전트 모두가 테스트하고 사용할 수 있게 합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│  Skill      │\n│ /analyze    │\n└──────┬──────┘\n       │\n   ┌───┴───┐\n   ▼       ▼\n[CLI]   [Agent]\n   │       │\n   ▼       ▼\nHuman   Agent\ntest    invoke\n   │       │\n   └───┬───┘\n       ▼\n Same behavior",
+  "mermaid_diagram": "flowchart TD\n    A[Define Skill: /analyze] --> B[CLI Implementation]\n    B --> C[Human Testing]\n    B --> D[Agent Invocation]\n    C --> E[Same Behavior]\n    D --> E",
+  "code_example": "# CLI-first skill design\n# 1. Works from command line\n$ ./analyze.sh --target=main.py --depth=2\n\n# 2. Agent invokes the same\nagent.invoke('analyze', target='main.py', depth=2)\n\n# 3. Testing is easy\ndef test_analyze():\n    result = subprocess.run(['./analyze.sh', '--target=test.py'])\n    assert result.returncode == 0",
+  "when_to_use": {
+    "en": ["Rapid skill development", "Team collaboration", "Debugging workflows"],
+    "ko": ["빠른 스킬 개발", "팀 협업", "디버깅 워크플로우"]
+  },
+  "pros": {
+    "en": ["Easy testing", "Human-debuggable", "Reusable across contexts"],
+    "ko": ["쉬운 테스트", "인간 디버깅 가능", "컨텍스트 간 재사용"]
+  },
+  "cons": {
+    "en": ["CLI overhead for simple operations", "Subprocess management"],
+    "ko": ["간단한 작업에 CLI 오버헤드", "서브프로세스 관리"]
+  },
+  "tags": ["cli", "skills", "testing", "debugging", "design-pattern"]
+}

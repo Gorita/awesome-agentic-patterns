@@ -1,0 +1,32 @@
+{
+  "id": "oracle-and-worker-multi-model",
+  "title": "Oracle and Worker Multi-Model Approach",
+  "title_ko": "오라클과 워커 멀티 모델 접근법",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://youtu.be/hAEmt-FMyHA",
+  "problem": {
+    "en": "Using expensive, powerful models for all tasks is cost-prohibitive and inefficient.",
+    "ko": "모든 작업에 비싸고 강력한 모델을 사용하는 것은 비용이 많이 들고 비효율적입니다."
+  },
+  "solution": {
+    "en": "Use a powerful 'oracle' model for high-level strategy and planning, with cheaper 'worker' models for routine execution.",
+    "ko": "고수준 전략과 계획에는 강력한 '오라클' 모델을, 일상적 실행에는 저렴한 '워커' 모델을 사용합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Oracle    │\n│ (Opus/o3)   │\n│  Strategy   │\n└──────┬──────┘\n       │ plan\n   ┌───┼───┐\n   ▼   ▼   ▼\n┌────┐┌────┐┌────┐\n│W1  ││W2  ││W3  │\n│Hai ││Hai ││Hai │\n│ku  ││ku  ││ku  │\n└─┬──┘└─┬──┘└─┬──┘\n  └─────┼─────┘\n        ▼\n   ┌─────────┐\n   │ Results │\n   └─────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Oracle: High-Level Strategy] --> B[Worker 1: Execute]\n    A --> C[Worker 2: Execute]\n    A --> D[Worker N: Execute]\n    B & C & D --> E[Aggregate Results]",
+  "code_example": "# Oracle creates the strategy (expensive but smart)\nstrategy = opus.plan(complex_task)\n\n# Workers execute (cheap and fast)\nresults = []\nfor subtask in strategy.subtasks:\n    result = haiku.execute(subtask)\n    results.append(result)\n\n# Oracle reviews if needed\nif needs_review:\n    opus.review(results)",
+  "when_to_use": {
+    "en": ["Cost optimization", "Large-scale processing", "Strategic planning tasks"],
+    "ko": ["비용 최적화", "대규모 처리", "전략적 계획 작업"]
+  },
+  "pros": {
+    "en": ["Cost reduction", "Strategy quality", "Scalability"],
+    "ko": ["비용 절감", "전략 품질", "확장성"]
+  },
+  "cons": {
+    "en": ["Architecture complexity", "Coordination overhead"],
+    "ko": ["아키텍처 복잡", "조정 오버헤드"]
+  },
+  "tags": ["multi-model", "cost-optimization", "strategic-reasoning", "orchestration"]
+}

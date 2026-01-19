@@ -1,0 +1,32 @@
+{
+  "id": "reflection",
+  "title": "Reflection Loop",
+  "title_ko": "반성 루프 패턴",
+  "category": "Feedback Loops",
+  "status": "established",
+  "original_url": "https://arxiv.org/abs/2303.11366",
+  "problem": {
+    "en": "LLM outputs may contain errors or suboptimal solutions without self-correction mechanisms.",
+    "ko": "LLM 출력이 자기 수정 메커니즘 없이 오류나 차선의 솔루션을 포함할 수 있습니다."
+  },
+  "solution": {
+    "en": "Agent reviews and critiques its own outputs, iteratively improving until quality thresholds are met.",
+    "ko": "에이전트가 자신의 출력을 검토하고 비판하여 품질 임계값에 도달할 때까지 반복적으로 개선합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Agent     │\n└──────┬──────┘\n       │ generate\n       ▼\n┌─────────────┐\n│   Output    │\n└──────┬──────┘\n       │ critique\n       ▼\n┌─────────────┐\n│  Self-Eval  │\n└──────┬──────┘\n       │ improve?\n   ┌───┴───┐\n   ▼       ▼\n [Yes]   [No]\n   │       │\n   └───┐   ▼\n       │ ┌───────┐\n       │ │ Final │\n       │ └───────┘\n       └────▲",
+  "mermaid_diagram": "flowchart TD\n    A[Generate Output] --> B[Self-Critique]\n    B --> C{Good Enough?}\n    C -->|No| D[Improve]\n    D --> A\n    C -->|Yes| E[Final Output]",
+  "code_example": "output = agent.generate(task)\nwhile not evaluator.is_good_enough(output):\n    critique = agent.critique(output)\n    output = agent.improve(output, critique)",
+  "when_to_use": {
+    "en": ["Code generation quality improvement", "Writing enhancement", "Complex reasoning validation"],
+    "ko": ["코드 생성 품질 향상", "글쓰기 개선", "복잡한 추론 검증"]
+  },
+  "pros": {
+    "en": ["Improved output quality", "Automatic error detection", "No additional models needed"],
+    "ko": ["출력 품질 향상", "오류 자동 감지", "추가 모델 불필요"]
+  },
+  "cons": {
+    "en": ["Increased latency", "Higher token costs", "Risk of infinite loops"],
+    "ko": ["지연 시간 증가", "토큰 비용 증가", "무한 루프 위험"]
+  },
+  "tags": ["self-feedback", "iterative-improvement", "evaluation"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "code-then-execute-pattern",
+  "title": "Code-Then-Execute Pattern",
+  "title_ko": "코드 후 실행 패턴",
+  "category": "Tool Use & Environment",
+  "status": "emerging",
+  "original_url": "https://arxiv.org/abs/2506.08837",
+  "problem": {
+    "en": "Plan lists are opaque; we want full data-flow analysis and taint tracking for security.",
+    "ko": "계획 목록은 불투명합니다; 보안을 위해 전체 데이터 흐름 분석과 오염 추적이 필요합니다."
+  },
+  "solution": {
+    "en": "Have LLM output a sandboxed DSL script. Static checker/taint engine verifies flows (e.g., no tainted var to email recipient). Interpreter runs code in locked sandbox.",
+    "ko": "LLM이 샌드박스된 DSL 스크립트를 출력하도록 합니다. 정적 검사기/오염 엔진이 흐름을 검증합니다 (예: 이메일 수신자에게 오염된 변수 없음). 인터프리터가 잠긴 샌드박스에서 코드를 실행합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│ LLM writes  │\n│  DSL Code   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│Static Check │\n│Taint Engine │\n└──────┬──────┘\n   ┌───┴───┐\n   ▼       ▼\n[Safe]  [Unsafe]\n   │       │\n   │    [Reject]\n   │\n┌──▼──────────┐\n│  Sandboxed  │\n│ Interpreter │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[LLM] --> B[Generate DSL Code]\n    B --> C[Static Checker]\n    C --> D[Taint Analysis]\n    D --> E{Safe?}\n    E -->|No| F[Reject - Security Violation]\n    E -->|Yes| G[Sandboxed Interpreter]\n    G --> H[Execute with Constraints]\n    H --> I[Results]",
+  "code_example": "# DSL script example\nx = calendar.read(today)\ny = QuarantineLLM.format(x)  # Tainted data processed\nemail.write(to='john@acme.com', body=y)\n\n# Static checker verifies:\n# - 'to' field is hardcoded (not tainted)\n# - 'body' uses quarantine-processed data\n# - No tainted var flows to recipient field",
+  "when_to_use": {
+    "en": ["Complex multi-step agents", "SQL copilots", "Security-critical workflows"],
+    "ko": ["복잡한 다단계 에이전트", "SQL 코파일럿", "보안 중요 워크플로우"]
+  },
+  "pros": {
+    "en": ["Formal verifiability", "Replay logs for debugging", "Taint tracking"],
+    "ko": ["형식적 검증 가능성", "디버깅용 재생 로그", "오염 추적"]
+  },
+  "cons": {
+    "en": ["Requires DSL design", "Static-analysis infrastructure needed"],
+    "ko": ["DSL 설계 필요", "정적 분석 인프라 필요"]
+  },
+  "tags": ["dsl", "sandbox", "program-synthesis", "auditability", "taint-tracking"]
+}

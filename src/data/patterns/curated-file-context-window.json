@@ -1,0 +1,32 @@
+{
+  "id": "curated-file-context-window",
+  "title": "Curated File Context Window",
+  "title_ko": "큐레이션된 파일 컨텍스트 윈도우",
+  "category": "Context & Memory",
+  "status": "best-practice",
+  "original_url": "https://www.nibzard.com/claude-code",
+  "problem": {
+    "en": "Dumping all files into the agent's prompt quickly exceeds token limits and introduces noise.",
+    "ko": "모든 파일을 에이전트 프롬프트에 덤프하면 토큰 한계를 빠르게 초과하고 노이즈가 발생합니다."
+  },
+  "solution": {
+    "en": "Maintain a sterile main context with only task-relevant files, using sub-agents to search and summarize secondary files.",
+    "ko": "작업 관련 파일만 포함하는 깨끗한 메인 컨텍스트를 유지하고, 서브 에이전트를 사용하여 보조 파일을 검색하고 요약합니다."
+  },
+  "ascii_diagram": "┌─────────────────────┐\n│ PRIMARY CONTEXT     │\n│ UserController.java │\n│ (full content)      │\n├─────────────────────┤\n│ CONTEXT SNIPPETS    │\n│ - UserService.java  │\n│   validateUser()    │\n│ - SignupDTO.java    │\n│   fields + annots   │\n└─────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Task: Add validation to signup] --> B[Identify Primary: UserController]\n    B --> C[Search Sub-Agent]\n    C --> D[Find Related: UserService, SignupDTO]\n    D --> E[Extract Snippets Only]\n    E --> F[Compose Curated Context]",
+  "code_example": "# Step 1: Identify primary files\nprimary = ['UserController.java']\n\n# Step 2: Search for related files\nrelated = search_agent.find('signup validation', limit=5)\n\n# Step 3: Extract only relevant snippets\nsnippets = []\nfor file in related:\n    if relevance_score(file, task) > 0.5:\n        snippets.append(extract_methods(file))\n\n# Step 4: Compose final context\ncontext = primary + snippets",
+  "when_to_use": {
+    "en": ["Large monorepo projects", "Limited context windows", "Complex multi-file tasks"],
+    "ko": ["대규모 모노레포 프로젝트", "제한된 컨텍스트 윈도우", "복잡한 멀티 파일 작업"]
+  },
+  "pros": {
+    "en": ["Minimal prompt size", "Faster response times", "Scales to large repos"],
+    "ko": ["최소 프롬프트 크기", "빠른 응답 시간", "대규모 레포로 확장"]
+  },
+  "cons": {
+    "en": ["May miss edge cases", "Index maintenance required"],
+    "ko": ["엣지 케이스 놓칠 수 있음", "인덱스 유지보수 필요"]
+  },
+  "tags": ["code-context", "file-scope", "relevance", "memory-management"]
+}

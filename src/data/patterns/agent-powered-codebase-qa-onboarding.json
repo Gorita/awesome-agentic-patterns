@@ -1,0 +1,32 @@
+{
+  "id": "agent-powered-codebase-qa-onboarding",
+  "title": "Agent-Powered Codebase Q&A / Onboarding",
+  "title_ko": "에이전트 기반 코드베이스 Q&A / 온보딩",
+  "category": "Context & Memory",
+  "status": "validated-in-production",
+  "original_url": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+  "problem": {
+    "en": "Understanding a large or unfamiliar codebase is a significant challenge, especially when onboarding or debugging complex systems. Manually searching and tracing code paths is time-consuming and error-prone.",
+    "ko": "크거나 익숙하지 않은 코드베이스를 이해하는 것은 특히 온보딩하거나 복잡한 시스템을 디버깅할 때 상당한 도전입니다. 수동으로 코드 경로를 검색하고 추적하는 것은 시간이 많이 걸리고 오류가 발생하기 쉽습니다."
+  },
+  "solution": {
+    "en": "Leverage AI agents with retrieval, search, and Q&A capabilities to assist codebase understanding. Agent indexes the codebase, responds to natural language queries about code behavior, identifies function calls and component interactions, and summarizes modules.",
+    "ko": "검색, 탐색, Q&A 기능을 갖춘 AI 에이전트를 활용하여 코드베이스 이해를 지원합니다. 에이전트는 코드베이스를 인덱싱하고, 코드 동작에 대한 자연어 쿼리에 응답하고, 함수 호출과 컴포넌트 상호작용을 식별하고, 모듈을 요약합니다."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│         Developer               │\n│  \"Where is database config?\"    │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│           AI Agent              │\n│   • Index codebase              │\n│   • Search & Analyze            │\n│   • Answer questions            │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│          Codebase               │\n│   config/database.js            │\n│   services/UserService.js       │\n│   ...                           │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│   \"It's in config/database.js   │\n│    and used by UserService\"     │\n└─────────────────────────────────┘",
+  "mermaid_diagram": "sequenceDiagram\n    Developer->>Agent: \"Where is the database connection configured?\"\n    Agent->>Codebase: Search/Analyze\n    Agent-->>Developer: \"It's configured in config/database.js and used by the UserService.\"",
+  "code_example": "# Agent-Powered Codebase Q&A Examples\n\n# Query: Understanding authentication flow\nquery = \"How does user authentication work in this module?\"\nresponse = agent.ask_codebase(query)\n# Response: \"Authentication is handled in auth/middleware.ts...\n#           It uses JWT tokens validated against the user service...\"\n\n# Query: Finding function usage\nquery = \"Where is the processPayment function called from?\"\nresponse = agent.ask_codebase(query)\n# Response: \"processPayment is called from:\n#           - checkout/PaymentController.ts:45\n#           - subscriptions/RenewalService.ts:112\"\n\n# Query: Component interaction\nquery = \"How do the Cart and Inventory components interact?\"\nresponse = agent.ask_codebase(query)\n# Response: \"Cart calls InventoryService.checkStock() before...\"\n",
+  "when_to_use": {
+    "en": ["Onboarding to new codebases", "Debugging complex systems", "Understanding legacy code", "Finding function callers and dependencies"],
+    "ko": ["새 코드베이스 온보딩", "복잡한 시스템 디버깅", "레거시 코드 이해", "함수 호출자와 의존성 찾기"]
+  },
+  "pros": {
+    "en": ["Massive step function for unfamiliar code", "Accelerates developer onboarding", "Natural language interface to code", "Finds interactions manual search would miss"],
+    "ko": ["익숙하지 않은 코드에 대한 큰 도약", "개발자 온보딩 가속화", "코드에 대한 자연어 인터페이스", "수동 검색이 놓칠 상호작용 발견"]
+  },
+  "cons": {
+    "en": ["May miss dynamic/runtime behavior", "Index quality affects answers", "Large codebases need good retrieval", "Answers need verification"],
+    "ko": ["동적/런타임 동작을 놓칠 수 있음", "인덱스 품질이 답변에 영향", "대규모 코드베이스는 좋은 검색 필요", "답변 검증 필요"]
+  },
+  "tags": ["code-understanding", "onboarding", "q-and-a", "retrieval", "search", "context-awareness", "knowledge-base"]
+}

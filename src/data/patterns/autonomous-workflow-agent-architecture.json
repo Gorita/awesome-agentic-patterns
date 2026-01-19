@@ -1,0 +1,32 @@
+{
+  "id": "autonomous-workflow-agent-architecture",
+  "title": "Autonomous Workflow Agent Architecture",
+  "title_ko": "자율 워크플로우 에이전트 아키텍처",
+  "category": "Orchestration & Control",
+  "status": "established",
+  "original_url": "https://www.together.ai/blog/ai-agents-to-automate-complex-engineering-tasks",
+  "problem": {
+    "en": "Complex, long-running engineering workflows require extensive human oversight. Manual coordination, constant monitoring for errors, and context switching between workflow stages reduce productivity.",
+    "ko": "복잡하고 장기 실행되는 엔지니어링 워크플로우는 광범위한 인간 감독이 필요합니다. 수동 조정, 지속적인 오류 모니터링, 워크플로우 단계 간 컨텍스트 전환이 생산성을 저하시킵니다."
+  },
+  "solution": {
+    "en": "Create AI agents with containerized execution environments, tmux-based session management, intelligent monitoring, and context-aware error recovery for autonomous workflow handling.",
+    "ko": "자율 워크플로우 처리를 위해 컨테이너화된 실행 환경, tmux 기반 세션 관리, 지능형 모니터링, 컨텍스트 인식 오류 복구를 갖춘 AI 에이전트를 생성합니다."
+  },
+  "ascii_diagram": "┌────────────────┐\n│Workflow Define │\n└───────┬────────┘\n        │\n┌───────▼────────┐\n│ Container Setup│\n└───────┬────────┘\n        │\n┌───────▼────────┐\n│  tmux Session  │\n│  Management    │\n└───────┬────────┘\n        │\n┌───────▼────────┐\n│   Monitoring   │\n│ + Checkpoints  │\n└───────┬────────┘\n    ┌───┴───┐\n    ▼       ▼\n[Error?] [Continue]\n    │       │\n┌───▼───┐   │\n│Recover│───┘\n└───────┘",
+  "mermaid_diagram": "graph TD\n    A[Workflow Definition] --> B[Environment Setup]\n    B --> C[Containerized Execution]\n    C --> D[Session Management]\n    D --> E[Intelligent Monitoring]\n    E --> F{Error Found?}\n    F -->|Yes| G[Adaptive Recovery]\n    F -->|No| H[Progress Checkpoint]\n    G --> D\n    H --> I{Workflow Complete?}\n    I -->|No| D\n    I -->|Yes| J[Results Aggregation]",
+  "code_example": "class WorkflowAgent:\n    def __init__(self, container_image, workflow_config):\n        self.container = self.setup_container(container_image)\n        self.sessions = {}\n        self.checkpoints = []\n    \n    def execute_workflow(self, workflow_steps):\n        for step in workflow_steps:\n            session_id = self.create_session(step.name)\n            try:\n                result = self.execute_step(step, session_id)\n                self.create_checkpoint(step.name, result)\n            except Exception as e:\n                self.handle_error(step, e, session_id)",
+  "when_to_use": {
+    "en": ["Model training pipelines", "Infrastructure provisioning", "Multi-stage deployments"],
+    "ko": ["모델 훈련 파이프라인", "인프라 프로비저닝", "다단계 배포"]
+  },
+  "pros": {
+    "en": ["1.2-1.4x speedup", "Reduced human intervention", "Consistent execution"],
+    "ko": ["1.2-1.4배 속도 향상", "인간 개입 감소", "일관된 실행"]
+  },
+  "cons": {
+    "en": ["Limited novel failure handling", "Context window constraints", "Setup complexity"],
+    "ko": ["새로운 실패 처리 제한", "컨텍스트 윈도우 제약", "설정 복잡성"]
+  },
+  "tags": ["workflow-automation", "containerization", "multi-agent", "engineering-tasks", "tmux"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "structured-output-specification",
+  "title": "Structured Output Specification",
+  "title_ko": "구조화된 출력 명세",
+  "category": "Reliability & Eval",
+  "status": "established",
+  "original_url": "https://vercel.com/blog/what-we-learned-building-agents-at-vercel",
+  "problem": {
+    "en": "Free-form agent outputs are difficult to validate, parse, and integrate with downstream systems.",
+    "ko": "자유 형식 에이전트 출력은 검증, 파싱, 다운스트림 시스템과의 통합이 어렵습니다."
+  },
+  "solution": {
+    "en": "Constrain agent outputs using deterministic schemas (Zod, Pydantic, JSON Schema) for machine-readable results.",
+    "ko": "기계가 읽을 수 있는 결과를 위해 결정론적 스키마(Zod, Pydantic, JSON Schema)를 사용하여 에이전트 출력을 제한합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│ Agent Input │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ LLM +       │\n│ Schema      │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Validated   │\n│ Structured  │\n│ Output      │\n└──────┬──────┘\n       │\n   ┌───┴───┐\n   ▼       ▼\n [DB]   [API]",
+  "mermaid_diagram": "flowchart TD\n    A[Agent Input] --> B[LLM + Schema]\n    B --> C[Validated Structured Output]\n    C --> D[Database Storage]\n    C --> E[API Integration]\n    C --> F[Next Agent Phase]",
+  "code_example": "import { generateObject } from 'ai';\nimport { z } from 'zod';\n\nconst LeadSchema = z.object({\n  qualification: z.enum(['qualified', 'unqualified', 'review']),\n  confidence: z.number().min(0).max(1),\n  nextSteps: z.array(z.string()),\n  reasoning: z.string()\n});\n\nconst result = await generateObject({\n  model: openai('gpt-4'),\n  schema: LeadSchema,\n  prompt: `Analyze: ${leadData}`\n});",
+  "when_to_use": {
+    "en": ["Multi-phase workflows", "Classification tasks", "API integrations"],
+    "ko": ["다단계 워크플로우", "분류 작업", "API 통합"]
+  },
+  "pros": {
+    "en": ["Reliability", "Type safety", "Easy validation"],
+    "ko": ["신뢰성", "타입 안전성", "쉬운 검증"]
+  },
+  "cons": {
+    "en": ["Schema rigidity", "May limit expressiveness"],
+    "ko": ["스키마 경직성", "표현력 제한 가능"]
+  },
+  "tags": ["structured-output", "schema", "validation", "reliability"]
+}

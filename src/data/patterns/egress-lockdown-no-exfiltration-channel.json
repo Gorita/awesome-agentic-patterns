@@ -1,0 +1,32 @@
+{
+  "id": "egress-lockdown-no-exfiltration-channel",
+  "title": "Egress Lockdown (No-Exfiltration Channel)",
+  "title_ko": "송신 잠금 (데이터 유출 채널 차단)",
+  "category": "Tool Use & Environment",
+  "status": "established",
+  "original_url": "https://simonwillison.net/2025/Jun/16/lethal-trifecta/",
+  "problem": {
+    "en": "Even with private-data access and untrusted inputs, attacks fail if the agent has no way to transmit stolen data. Many real-world fixes simply removed outbound channels.",
+    "ko": "개인 데이터 접근과 신뢰할 수 없는 입력이 있더라도, 에이전트가 훔친 데이터를 전송할 방법이 없으면 공격이 실패합니다. 많은 실제 수정이 단순히 아웃바운드 채널을 제거했습니다."
+  },
+  "solution": {
+    "en": "Implement egress firewall: allow only specific domains/methods, strip/hash content in outbound calls, forbid dynamic link generation, run external comms in separate worker without private data access.",
+    "ko": "송신 방화벽 구현: 특정 도메인/메서드만 허용, 아웃바운드 호출에서 콘텐츠 제거/해시, 동적 링크 생성 금지, 개인 데이터 접근 없이 별도 워커에서 외부 통신 실행."
+  },
+  "ascii_diagram": "┌─────────────────────┐\n│    Agent Process    │\n│  (private data)     │\n└──────────┬──────────┘\n           │\n┌──────────▼──────────┐\n│   Egress Firewall   │\n├─────────────────────┤\n│ ✗ attacker.com      │\n│ ✗ dynamic URLs      │\n│ ✓ api.internal      │\n│ ✓ specific domains  │\n└──────────┬──────────┘\n           │\n    [Allowed Only]\n           │\n┌──────────▼──────────┐\n│  External Network   │\n└─────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Agent with Private Data] --> B{Outbound Request}\n    B --> C[Egress Firewall]\n    C --> D{Allowed Domain?}\n    D -->|No| E[DROP + Log]\n    D -->|Yes| F{Content Check}\n    F -->|Suspicious| G[Strip/Hash Content]\n    F -->|Clean| H[Allow Request]\n    G --> H\n    H --> I[External Network]",
+  "code_example": "# Docker egress lockdown example\nRUN iptables -P OUTPUT DROP       # default-deny\nRUN iptables -A OUTPUT -d api.mycompany.internal -j ACCEPT\n\n# Audit proxy for allowed domains\nallowed_domains:\n  - api.internal.com\n  - github.com\n\n# Log any DROP events for forensics\niptables -A OUTPUT -j LOG --log-prefix 'EGRESS_DROP: '",
+  "when_to_use": {
+    "en": ["Agents processing untrusted data", "Enterprise security requirements", "High-value data environments"],
+    "ko": ["신뢰할 수 없는 데이터를 처리하는 에이전트", "엔터프라이즈 보안 요구사항", "고가치 데이터 환경"]
+  },
+  "pros": {
+    "en": ["Drastically reduces high-impact leaks", "Easy to reason about", "Defense in depth"],
+    "ko": ["고영향 누출 대폭 감소", "이해하기 쉬움", "심층 방어"]
+  },
+  "cons": {
+    "en": ["Breaks legitimate integrations", "Requires proxy stubs for essential calls"],
+    "ko": ["합법적인 통합 중단", "필수 호출을 위한 프록시 스텁 필요"]
+  },
+  "tags": ["network-sandbox", "exfiltration", "outbound-controls", "security"]
+}

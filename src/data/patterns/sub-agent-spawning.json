@@ -1,0 +1,32 @@
+{
+  "id": "sub-agent-spawning",
+  "title": "Sub-Agent Spawning",
+  "title_ko": "서브 에이전트 생성 패턴",
+  "category": "Orchestration & Control",
+  "status": "validated-in-production",
+  "original_url": "https://www.nibzard.com/ampcode",
+  "problem": {
+    "en": "Complex tasks exceed single agent context limits and require specialized handling for different subtasks.",
+    "ko": "복잡한 작업이 단일 에이전트 컨텍스트 한계를 초과하고 다른 하위 작업에 전문화된 처리가 필요합니다."
+  },
+  "solution": {
+    "en": "Main agent spawns specialized sub-agents for specific subtasks, each with focused context and capabilities.",
+    "ko": "메인 에이전트가 특정 하위 작업을 위한 전문화된 서브 에이전트를 생성하고, 각각 집중된 컨텍스트와 기능을 갖습니다."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│   Main Agent    │\n└────────┬────────┘\n    ┌────┼────┐\n    ▼    ▼    ▼\n┌─────┐┌─────┐┌─────┐\n│Sub1 ││Sub2 ││Sub3 │\n│Code ││Test ││Docs │\n└──┬──┘└──┬──┘└──┬──┘\n   └──────┼──────┘\n          ▼\n   ┌────────────┐\n   │  Combine   │\n   └────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Main Agent] --> B[Sub-Agent: Code]\n    A --> C[Sub-Agent: Test]\n    A --> D[Sub-Agent: Docs]\n    B & C & D --> E[Aggregate Results]",
+  "code_example": "main_agent = Agent(task='Refactor auth module')\n\n# Spawn specialized sub-agents\ncode_agent = main_agent.spawn('code', focus='implementation')\ntest_agent = main_agent.spawn('test', focus='test coverage')\ndocs_agent = main_agent.spawn('docs', focus='documentation')\n\n# Each works in parallel with focused context\nresults = await asyncio.gather(\n    code_agent.run(),\n    test_agent.run(),\n    docs_agent.run()\n)",
+  "when_to_use": {
+    "en": ["Large codebase operations", "Parallel processing needs", "Specialized task separation"],
+    "ko": ["대규모 코드베이스 작업", "병렬 처리 필요 시", "전문화된 작업 분리"]
+  },
+  "pros": {
+    "en": ["Context isolation", "Parallel processing", "Specialization"],
+    "ko": ["컨텍스트 분리", "병렬 처리", "전문화"]
+  },
+  "cons": {
+    "en": ["Coordination overhead", "Increased costs", "Complex result integration"],
+    "ko": ["조정 오버헤드", "비용 증가", "결과 통합 복잡"]
+  },
+  "tags": ["orchestration", "context", "scalability", "subagents", "parallelization"]
+}

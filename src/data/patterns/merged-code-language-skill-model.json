@@ -1,0 +1,32 @@
+{
+  "id": "merged-code-language-skill-model",
+  "title": "Merged Code + Language Skill Model",
+  "title_ko": "코드 + 언어 스킬 모델 병합",
+  "category": "Reliability & Eval",
+  "status": "emerging",
+  "original_url": "https://www.youtube.com/watch?v=Xkwok_XXQgw",
+  "problem": {
+    "en": "Building a unified model excelling at both natural language tasks and code generation requires massive centralized training. This is compute-intensive and susceptible to catastrophic forgetting when mixing code and NL tasks.",
+    "ko": "자연어 작업과 코드 생성 모두에 뛰어난 통합 모델을 구축하려면 대규모 중앙 집중식 훈련이 필요합니다. 이는 계산 집약적이며 코드와 NL 작업을 혼합할 때 치명적 망각에 취약합니다."
+  },
+  "solution": {
+    "en": "Adopt decentralized training + model merging: train separate Language and Code specialists independently, then use weight averaging (or Fisher-weighted averaging) to merge them. Optionally follow with short fine-tuning on mixed data.",
+    "ko": "분산 훈련 + 모델 병합 채택: 언어와 코드 전문가를 독립적으로 훈련한 다음 가중치 평균(또는 Fisher 가중 평균)을 사용하여 병합합니다. 선택적으로 혼합 데이터에서 짧은 미세조정을 수행합니다."
+  },
+  "ascii_diagram": "┌─────────────────┐  ┌─────────────────┐\n│ Language        │  │ Code            │\n│ Specialist      │  │ Specialist      │\n│ (NL tasks)      │  │ (Code gen)      │\n└────────┬────────┘  └────────┬────────┘\n         │                    │\n         └────────┬───────────┘\n                  │\n         ┌────────▼────────┐\n         │ Weight Merging  │\n         │ (avg or Fisher) │\n         └────────┬────────┘\n                  │\n         ┌────────▼────────┐\n         │ Merged Agent    │\n         │ (NL + Code)     │\n         └────────┬────────┘\n                  │\n         ┌────────▼────────┐\n         │ Short Fine-tune │\n         │ (optional)      │\n         └─────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Base LLM] --> B[Language Specialist Training]\n    A --> C[Code Specialist Training]\n    B --> D[lang-specialist-ckpt.pt]\n    C --> E[code-specialist-ckpt.pt]\n    D --> F[Weight Averaging Merge]\n    E --> F\n    F --> G[merged-agent-ckpt.pt]\n    G --> H[Optional: Short Mixed Fine-tune]\n    H --> I[Final Unified Agent]",
+  "code_example": "# Model merging using Hugging Face tools\n# Step 1: Train specialists independently\n# python train.py --data nl_corpus --output lang-specialist-ckpt.pt\n# python train.py --data code_corpus --output code-specialist-ckpt.pt\n\n# Step 2: Merge models\npython merge_models.py \\\n  --model_a lang-specialist-ckpt.pt \\\n  --model_b code-specialist-ckpt.pt \\\n  --output merged-agent-ckpt.pt \\\n  --alpha 0.5  # Equal weight averaging\n\n# Step 3: Validate on benchmark suite\npython validate.py \\\n  --model merged-agent-ckpt.pt \\\n  --benchmarks summarization,qa,code_gen,bug_fix",
+  "when_to_use": {
+    "en": ["Building multi-skill coding agents", "Combining independently trained specialists", "Resource-constrained training", "Iterative capability expansion"],
+    "ko": ["다중 스킬 코딩 에이전트 구축", "독립적으로 훈련된 전문가 결합", "리소스 제한 훈련", "반복적 능력 확장"]
+  },
+  "pros": {
+    "en": ["Teams can develop skills independently", "Reduced centralized compute needs", "Iterative skill addition possible", "Works surprisingly well"],
+    "ko": ["팀이 독립적으로 스킬 개발 가능", "중앙 집중식 컴퓨트 요구 감소", "반복적 스킬 추가 가능", "놀라울 정도로 잘 작동"]
+  },
+  "cons": {
+    "en": ["Naive averaging can dilute strengths", "All specialists must share architecture", "Same tokenizer/vocabulary required", "May need post-merge validation"],
+    "ko": ["단순 평균은 강점을 희석할 수 있음", "모든 전문가가 아키텍처 공유 필요", "동일한 토크나이저/어휘 필요", "병합 후 검증 필요할 수 있음"]
+  },
+  "tags": ["model-merging", "transfer-learning", "coding-agent", "multilingual", "decentralized-training"]
+}

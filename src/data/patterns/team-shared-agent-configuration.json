@@ -1,0 +1,32 @@
+{
+  "id": "team-shared-agent-configuration",
+  "title": "Team-Shared Agent Configuration as Code",
+  "title_ko": "팀 공유 에이전트 설정 코드화",
+  "category": "UX & Collaboration",
+  "status": "best-practice",
+  "original_url": "https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it",
+  "problem": {
+    "en": "When each engineer configures their AI agent independently: inconsistent behavior across team, permission friction for safe commands, duplicated effort solving same problems, knowledge silos, onboarding overhead, and security gaps.",
+    "ko": "각 엔지니어가 AI 에이전트를 독립적으로 구성하면: 팀 전체의 일관성 없는 동작, 안전한 명령에 대한 권한 마찰, 동일한 문제 해결의 중복 노력, 지식 사일로, 온보딩 오버헤드, 보안 격차가 발생합니다."
+  },
+  "solution": {
+    "en": "Check agent configuration into version control as part of the repository. Treat settings.json as code - reviewable, shareable, and versioned. Include pre-allowed commands, blocked paths, default subagents, slash commands, and hooks.",
+    "ko": "에이전트 구성을 저장소의 일부로 버전 관리에 체크인합니다. settings.json을 코드로 취급 - 검토 가능, 공유 가능, 버전 관리. 사전 허용 명령, 차단 경로, 기본 서브에이전트, 슬래시 명령, 훅을 포함합니다."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│     Repository                  │\n├─────────────────────────────────┤\n│ src/                            │\n│ tests/                          │\n│ .claude/settings.json  ◄────┐   │\n│   ├ pre_allowed commands    │   │\n│   ├ blocked_paths           │   │\n│   ├ subagents               │   │\n│   └ hooks                   │   │\n└─────────────────────────────────┘\n                              │\n    ┌─────────────────────────┘\n    │\n┌───▼───────┐ ┌───────────┐ ┌───────────┐\n│ Dev A     │ │ Dev B     │ │ New Hire  │\n│ git clone │ │ git clone │ │ git clone │\n│ → Config! │ │ → Config! │ │ → Config! │\n└───────────┘ └───────────┘ └───────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Create Shared Config] --> B[.claude/settings.json]\n    B --> C[git add & commit]\n    C --> D[Push to Repository]\n    D --> E[Team Members Clone]\n    E --> F[Everyone Gets Same Config]\n    F --> G[Iterate via PRs]\n    G --> H[Code Review Config Changes]\n    H --> D",
+  "code_example": "// .claude/settings.json (checked into repo)\n{\n  \"permissions\": {\n    \"pre_allowed\": [\n      \"git add\", \"git commit\", \"git push\",\n      \"npm test\", \"npm run lint\"\n    ],\n    \"blocked_paths\": [\n      \".env\", \"secrets/\", \"*.key\", \"credentials.json\"\n    ]\n  },\n  \"subagents\": {\n    \"security-review\": \"./agents/security.md\",\n    \"migration-helper\": \"./agents/migration.md\"\n  },\n  \"hooks\": {\n    \"pre_commit\": \"./hooks/run_tests.sh\"\n  }\n}\n\n// .claude/settings.local.json (gitignored for personal overrides)",
+  "when_to_use": {
+    "en": ["Enterprise agent deployments", "Team-based development", "Standardized security rules", "Quick onboarding for new members"],
+    "ko": ["엔터프라이즈 에이전트 배포", "팀 기반 개발", "표준화된 보안 규칙", "새 멤버의 빠른 온보딩"]
+  },
+  "pros": {
+    "en": ["Consistent team experience", "Faster onboarding", "Reduced permission friction", "Security standardization", "Auditable version history"],
+    "ko": ["일관된 팀 경험", "빠른 온보딩", "권한 마찰 감소", "보안 표준화", "감사 가능한 버전 기록"]
+  },
+  "cons": {
+    "en": ["Less individual flexibility", "Potential preference conflicts", "Config complexity can grow", "Must avoid secrets in config"],
+    "ko": ["개인 유연성 감소", "선호도 충돌 가능", "구성 복잡성 증가 가능", "구성에 비밀 포함 방지 필요"]
+  },
+  "tags": ["configuration", "version-control", "team-collaboration", "permissions", "consistency", "onboarding"]
+}

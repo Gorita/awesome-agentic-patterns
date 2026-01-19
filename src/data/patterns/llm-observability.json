@@ -1,0 +1,32 @@
+{
+  "id": "llm-observability",
+  "title": "LLM Observability",
+  "title_ko": "LLM 관측성",
+  "category": "Reliability & Eval",
+  "status": "proposed",
+  "original_url": "https://lethain.com/agents-logging/",
+  "problem": {
+    "en": "Agents introduce non-determinism - same input can produce different outputs. Debugging issues requires tracing complex multi-step workflows, but standard logging (CloudWatch, Lambda logs) is painful to navigate. Without easy debugging, agents won't get adopted.",
+    "ko": "에이전트는 비결정성을 도입합니다 - 동일한 입력이 다른 출력을 생성할 수 있습니다. 이슈 디버깅은 복잡한 다단계 워크플로우 추적이 필요하지만, 표준 로깅(CloudWatch, Lambda 로그)은 탐색이 어렵습니다. 쉬운 디버깅 없이는 에이전트가 채택되지 않습니다."
+  },
+  "solution": {
+    "en": "Integrate LLM observability platforms (Datadog LLM Observability, LangSmith, etc.) that provide span-level tracing of agent workflows. Get visual UI showing each LLM call, tool use, and intermediate result instead of spelunking through raw logs.",
+    "ko": "에이전트 워크플로우의 스팬 수준 추적을 제공하는 LLM 관측성 플랫폼(Datadog LLM Observability, LangSmith 등)을 통합합니다. 원시 로그를 탐색하는 대신 각 LLM 호출, 도구 사용, 중간 결과를 보여주는 시각적 UI를 얻습니다."
+  },
+  "ascii_diagram": "┌─────────────────────────┐\n│      Agent Run          │\n└───────────┬─────────────┘\n            │\n┌───────────▼─────────────┐\n│   Observability SDK     │\n└───────────┬─────────────┘\n            │\n    ┌───────┼───────┐\n    │       │       │\n┌───▼───┐ ┌─▼─┐ ┌───▼───┐\n│Span:  │ │   │ │Span:  │\n│LLM #1 │ │...│ │Tool   │\n└───┬───┘ └─┬─┘ └───┬───┘\n    │       │       │\n    └───────┼───────┘\n            │\n┌───────────▼─────────────┐\n│    Trace UI / Debug     │\n│  • Visual span view     │\n│  • Workflow linking     │\n│  • Aggregated metrics   │\n└─────────────────────────┘",
+  "mermaid_diagram": "flowchart LR\n    A[Agent Run] --> B[Observability SDK]\n    B --> C[Span: LLM Call 1]\n    B --> D[Span: Tool Use]\n    B --> E[Span: LLM Call 2]\n    C --> F[Trace UI]\n    D --> F\n    E --> F\n    F --> G[Debug View]\n    F --> H[Dashboards]\n    F --> I[Metrics]",
+  "code_example": "from ddtrace import tracer\n\n# Automatically traces LLM calls\n@tracer.wrap('agent_workflow')\ndef run_agent(query):\n    result = agent.run(query)\n    # Each LLM call, tool use becomes a span\n    return result\n\n# Best practices:\n# - Tag everything: workflow name, user ID, environment\n# - Link to dashboards from chat\n# - Share access beyond engineering\n# - Monitor aggregate metrics: success rates, latency, costs",
+  "when_to_use": {
+    "en": ["Multi-step agent workflows", "Non-deterministic behaviors", "Team debugging needs", "Production monitoring"],
+    "ko": ["다단계 에이전트 워크플로우", "비결정적 동작", "팀 디버깅 요구", "프로덕션 모니터링"]
+  },
+  "pros": {
+    "en": ["Fast debugging with visual navigation", "Accessible to non-engineers", "Aggregated metrics across runs", "Span-level detail for any step"],
+    "ko": ["시각적 탐색으로 빠른 디버깅", "비엔지니어도 접근 가능", "여러 실행에 걸친 집계 메트릭", "모든 단계의 스팬 수준 세부 정보"]
+  },
+  "cons": {
+    "en": ["Vendor dependency", "Enterprise observability can be expensive", "Adds latency overhead (usually minimal)", "Access control complexity"],
+    "ko": ["벤더 의존성", "엔터프라이즈 관측성은 비쌀 수 있음", "지연 오버헤드 추가 (보통 미미)", "접근 제어 복잡성"]
+  },
+  "tags": ["observability", "logging", "debugging", "tracing", "datadog", "langsmith", "monitoring", "llmops"]
+}

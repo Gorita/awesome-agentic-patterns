@@ -1,0 +1,119 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Awesome Agentic Patterns',
+  description = 'AI Agent Design Patterns - 에이전트 디자인 패턴 카탈로그'
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+---
+
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <title>{title}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
+  </head>
+  <body class="bg-dark-bg text-dark-text min-h-screen">
+    <header class="sticky top-0 z-50 bg-dark-bg/80 backdrop-blur-md border-b border-dark-border">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <a href={base} class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <span class="text-2xl">🤖</span>
+            <span class="font-semibold text-lg hidden sm:block">Awesome Agentic Patterns</span>
+            <span class="font-semibold text-lg sm:hidden">AAP</span>
+          </a>
+
+          <div class="flex items-center gap-4">
+            <slot name="header-actions" />
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <slot />
+    </main>
+
+    <footer class="border-t border-dark-border mt-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-dark-muted text-sm">
+          <p>
+            Based on <a href="https://github.com/nibzard/awesome-agentic-patterns" class="text-primary-400 hover:underline" target="_blank" rel="noopener">nibzard/awesome-agentic-patterns</a>
+          </p>
+          <p>
+            Korean version by <a href="https://github.com/esc5221" class="text-primary-400 hover:underline" target="_blank" rel="noopener">@esc5221</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Mermaid -->
+    <script>
+      import mermaid from 'mermaid';
+
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        themeVariables: {
+          primaryColor: '#0ea5e9',
+          primaryTextColor: '#c9d1d9',
+          primaryBorderColor: '#30363d',
+          lineColor: '#30363d',
+          secondaryColor: '#161b22',
+          tertiaryColor: '#0d1117',
+        }
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0d1117;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #484f58;
+  }
+
+  /* Selection */
+  ::selection {
+    background: #0ea5e9;
+    color: white;
+  }
+</style>

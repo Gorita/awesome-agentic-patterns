@@ -1,0 +1,32 @@
+{
+  "id": "memory-synthesis-from-execution-logs",
+  "title": "Memory Synthesis from Execution Logs",
+  "title_ko": "실행 로그에서 메모리 합성",
+  "category": "Context & Memory",
+  "status": "emerging",
+  "original_url": "https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it",
+  "problem": {
+    "en": "Individual task transcripts contain valuable learnings but are too specific, scattered across logs, and hard to abstract. Simply memorizing everything creates noise; ignoring everything loses valuable patterns.",
+    "ko": "개별 작업 트랜스크립트는 가치 있는 학습을 담고 있지만 너무 구체적이고, 로그 전체에 흩어져 있으며, 추상화하기 어렵습니다. 모든 것을 기억하면 노이즈가 생기고, 모든 것을 무시하면 가치 있는 패턴을 잃습니다."
+  },
+  "solution": {
+    "en": "Implement two-tier memory: 1) Task diaries - agent writes structured logs for each task (what tried, what failed, why), 2) Synthesis agents - periodically review multiple logs to extract reusable patterns. Feed insights back into system prompts and commands.",
+    "ko": "2단계 메모리 구현: 1) 작업 일기 - 에이전트가 각 작업에 대해 구조화된 로그 작성(시도한 것, 실패한 것, 이유), 2) 합성 에이전트 - 정기적으로 여러 로그를 검토하여 재사용 가능한 패턴 추출. 통찰력을 시스템 프롬프트와 명령에 다시 피드백합니다."
+  },
+  "ascii_diagram": "┌──────────┐ ┌──────────┐ ┌──────────┐\n│ Task 1   │ │ Task 2   │ │ Task 3   │\n│ Diary    │ │ Diary    │ │ Diary    │\n└────┬─────┘ └────┬─────┘ └────┬─────┘\n     │            │            │\n     └────────────┼────────────┘\n                  │\n     ┌────────────▼────────────┐\n     │    Synthesis Agent      │\n     │  Review Multiple Logs   │\n     │  Extract Patterns       │\n     └────────────┬────────────┘\n                  │\n     ┌────────────┼────────────┐\n     │            │            │\n┌────▼────┐ ┌─────▼─────┐ ┌────▼────┐\n│ Update  │ │ Create    │ │Generate │\n│ System  │ │ Slash     │ │ Tests   │\n│ Prompts │ │ Commands  │ │         │\n└─────────┘ └───────────┘ └─────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Task 1: Diary Entry] --> D[Synthesis Agent]\n    B[Task 2: Diary Entry] --> D\n    C[Task 3: Diary Entry] --> D\n    D --> E[Extract Patterns]\n    E --> F[Update System Prompts]\n    E --> G[Create Slash Commands]\n    E --> H[Generate Observations]",
+  "code_example": "# Task diary entry format\n'''\n## Task: Add authentication to checkout flow\n### Attempted approaches:\n1. JWT tokens in localStorage - failed due to XSS concerns\n2. HTTP-only cookies - worked but needed CORS config\n3. Session tokens with Redis - chosen solution\n\n### What worked:\n- Redis session store with 24hr expiry\n- CORS whitelist in production config\n\n### Mistakes made:\n- Forgot to handle token refresh initially\n- Missed error handling for expired sessions\n\n### Patterns discovered:\n- Auth changes always need CORS update\n- Need both client and server-side expiry checks\n'''\n\n# Synthesis agent prompt\nsynthesis_prompt = '''\nReview these 50 task diaries.\nIdentify patterns that appear in 3+ tasks.\nFor each pattern, suggest:\n- A general rule to add to CLAUDE.md\n- A potential slash command\n- A test case to prevent regression\n'''",
+  "when_to_use": {
+    "en": ["Teams doing many similar tasks", "Building institutional knowledge", "Reducing repeated mistakes", "Evolving agent capabilities over time"],
+    "ko": ["많은 유사 작업을 수행하는 팀", "기관 지식 구축", "반복적인 실수 감소", "시간이 지남에 따라 에이전트 능력 발전"]
+  },
+  "pros": {
+    "en": ["Pattern detection humans might miss", "Right abstraction level via synthesis", "Automatic knowledge extraction", "Evidence-based patterns"],
+    "ko": ["인간이 놓칠 수 있는 패턴 감지", "합성을 통한 올바른 추상화 수준", "자동 지식 추출", "증거 기반 패턴"]
+  },
+  "cons": {
+    "en": ["Storage overhead for all logs", "Synthesis requires sophisticated agents", "May identify false patterns", "Token costs for synthesis", "Privacy concerns in logs"],
+    "ko": ["모든 로그에 대한 저장 오버헤드", "합성에 정교한 에이전트 필요", "잘못된 패턴 식별 가능", "합성에 대한 토큰 비용", "로그의 프라이버시 우려"]
+  },
+  "tags": ["memory", "logs", "diary", "synthesis", "pattern-detection", "knowledge-extraction", "learning"]
+}

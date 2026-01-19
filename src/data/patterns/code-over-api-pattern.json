@@ -1,0 +1,32 @@
+{
+  "id": "code-over-api-pattern",
+  "title": "Code-Over-API Pattern",
+  "title_ko": "API 대신 코드 패턴",
+  "category": "Tool Use & Environment",
+  "status": "established",
+  "original_url": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+  "problem": {
+    "en": "When agents make direct API calls, all intermediate data flows through context window. Processing 10,000 spreadsheet rows can consume 150,000+ tokens just moving data.",
+    "ko": "에이전트가 직접 API를 호출하면 모든 중간 데이터가 컨텍스트 윈도우를 통해 흐릅니다. 10,000개의 스프레드시트 행을 처리하면 데이터 이동만으로 150,000+ 토큰을 소비할 수 있습니다."
+  },
+  "solution": {
+    "en": "Agents write and execute code that interacts with tools. Data processing happens in execution environment, with only results flowing back to model context (150K → 2K tokens).",
+    "ko": "에이전트가 도구와 상호작용하는 코드를 작성하고 실행합니다. 데이터 처리는 실행 환경에서 발생하고, 결과만 모델 컨텍스트로 반환됩니다 (150K → 2K 토큰)."
+  },
+  "ascii_diagram": "DIRECT API (High Token):\nrows = api_call('getRows')\n→ 10,000 rows in context (150K tokens)\nfiltered = [r for r in rows if...]\n→ More tokens\n\nCODE-OVER-API (Low Token):\ndef process():\n    rows = spreadsheet.getRows()\n    filtered = [r for r in rows if...]\n    print(f'Found {len(filtered)} active')\n    return filtered[:5]  # Sample only\n→ ~2K tokens",
+  "mermaid_diagram": "flowchart TD\n    A[Agent Task] --> B{Approach}\n    B -->|Direct API| C[Tool Call]\n    C --> D[Full Data in Context]\n    D --> E[High Token Cost]\n    B -->|Code-Over-API| F[Generate Code]\n    F --> G[Execute in Sandbox]\n    G --> H[Process Data Locally]\n    H --> I[Return Summary Only]\n    I --> J[Low Token Cost]",
+  "code_example": "# Agent writes code that executes in environment\ndef process_spreadsheet():\n    # Tool call happens in execution environment\n    rows = spreadsheet.getRows(sheet_id='abc123')\n    \n    # Filtering happens in code, not in context\n    filtered = [row for row in rows if row.status == 'active']\n    \n    # Only log summary for agent visibility\n    print(f'Processed {len(rows)} rows, found {len(filtered)} active')\n    print(f'First 5: {filtered[:5]}')\n    \n    return filtered\n# Only summary flows to context → ~2K tokens",
+  "when_to_use": {
+    "en": ["Data-heavy workflows", "Multi-step transformations", "Cost-sensitive applications"],
+    "ko": ["데이터 중심 워크플로우", "다단계 변환", "비용에 민감한 애플리케이션"]
+  },
+  "pros": {
+    "en": ["Dramatic token reduction (150K → 2K)", "Lower latency", "Natural fit for data processing"],
+    "ko": ["극적인 토큰 감소 (150K → 2K)", "낮은 지연", "데이터 처리에 자연스러운 적합"]
+  },
+  "cons": {
+    "en": ["Requires secure execution infrastructure", "More complex setup", "Debugging harder"],
+    "ko": ["보안 실행 인프라 필요", "더 복잡한 설정", "디버깅 어려움"]
+  },
+  "tags": ["token-optimization", "code-execution", "data-processing", "mcp"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "progressive-disclosure-large-files",
+  "title": "Progressive Disclosure for Large Files",
+  "title_ko": "대용량 파일을 위한 점진적 공개",
+  "category": "Context & Memory",
+  "status": "emerging",
+  "original_url": "https://lethain.com/agents-large-files/",
+  "problem": {
+    "en": "Large files (PDFs, DOCXs, images) overwhelm context when loaded naively, wasting tokens on irrelevant content.",
+    "ko": "대용량 파일(PDF, DOCX, 이미지)을 순진하게 로드하면 컨텍스트가 압도되어 관련 없는 콘텐츠에 토큰이 낭비됩니다."
+  },
+  "solution": {
+    "en": "Load file metadata first, then provide tools to load content on-demand (load, peek, extract).",
+    "ko": "파일 메타데이터를 먼저 로드한 다음 필요에 따라 콘텐츠를 로드하는 도구(load, peek, extract)를 제공합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│ File Meta   │\n│ id: f_a1    │\n│ size: 5MB   │\n│ preloaded:  │\n│   false     │\n└──────┬──────┘\n       │ agent decides\n   ┌───┴───┐\n   ▼       ▼\nload()  extract()\n   │       │\n   ▼       ▼\n[Full]  [Text Only]",
+  "mermaid_diagram": "flowchart TD\n    A[File Metadata in Prompt] --> B{Agent Decision}\n    B -->|Need Full| C[load_file]\n    B -->|Need Text| D[extract_file]\n    B -->|Need Section| E[peek_file]\n    C --> F[Full Content in Context]\n    D --> G[Simplified Text]\n    E --> H[Partial Content]",
+  "code_example": "# Include metadata, not content\nfiles_meta = [\n    {'id': 'f_a1', 'name': 'report.pdf', 'size': 8500000, 'preloaded': False}\n]\n\n# Tools for agent to load on-demand\ndef load_file(id): return full_content(id)\ndef peek_file(id, start, stop): return content[start:stop]\ndef extract_file(id): return pdf_to_text(id)  # 100x smaller",
+  "when_to_use": {
+    "en": ["Document comparison workflows", "File attachment processing", "Large report analysis"],
+    "ko": ["문서 비교 워크플로우", "파일 첨부 처리", "대용량 보고서 분석"]
+  },
+  "pros": {
+    "en": ["Works with files larger than context", "Agent controls loading", "Extracted content is much smaller"],
+    "ko": ["컨텍스트보다 큰 파일 작업 가능", "에이전트가 로딩 제어", "추출된 콘텐츠가 훨씬 작음"]
+  },
+  "cons": {
+    "en": ["Tool call overhead", "Extraction can be slow", "Agent may make poor loading decisions"],
+    "ko": ["도구 호출 오버헤드", "추출이 느릴 수 있음", "에이전트가 잘못된 로딩 결정을 할 수 있음"]
+  },
+  "tags": ["progressive-disclosure", "large-files", "lazy-loading", "metadata"]
+}

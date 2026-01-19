@@ -1,0 +1,32 @@
+{
+  "id": "dogfooding-with-rapid-iteration",
+  "title": "Dogfooding with Rapid Iteration",
+  "title_ko": "빠른 반복을 통한 도그푸딩",
+  "category": "Feedback Loops",
+  "status": "best-practice",
+  "original_url": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+  "problem": {
+    "en": "External feedback loops are slow and may miss real-world usage nuances that affect agent quality.",
+    "ko": "외부 피드백 루프가 느리고 에이전트 품질에 영향을 미치는 실제 사용 뉘앙스를 놓칠 수 있습니다."
+  },
+  "solution": {
+    "en": "Development team extensively uses their own AI agent for daily tasks, creating tight feedback loops.",
+    "ko": "개발 팀이 일상 작업에 자체 AI 에이전트를 광범위하게 사용하여 긴밀한 피드백 루프를 만듭니다."
+  },
+  "ascii_diagram": "┌──────────────┐\n│  Dev Team    │\n│  Uses Agent  │\n└──────┬───────┘\n       │\n┌──────▼───────┐\n│Find Problems │\n└──────┬───────┘\n       │\n┌──────▼───────┐\n│  Quick Fix   │\n└──────┬───────┘\n       │\n┌──────▼───────┐\n│  Validate    │\n└──────┬───────┘\n       └──▶ (repeat)",
+  "mermaid_diagram": "flowchart TD\n    A[Team Uses Agent] --> B[Find Issues]\n    B --> C[Fix Quickly]\n    C --> D[Validate]\n    D --> A",
+  "code_example": "# Daily workflow: use your own agent\nfor task in daily_tasks:\n    result = our_agent.execute(task)\n    if issue := find_problem(result):\n        fix = create_fix(issue)\n        deploy(fix)\n        validate(fix)",
+  "when_to_use": {
+    "en": ["Agent product development", "Rapid prototyping", "UX improvement"],
+    "ko": ["에이전트 제품 개발", "빠른 프로토타이핑", "사용자 경험 개선"]
+  },
+  "pros": {
+    "en": ["Immediate feedback", "Real problem discovery", "Fast iteration"],
+    "ko": ["즉각적 피드백", "실제 문제 발견", "빠른 반복"]
+  },
+  "cons": {
+    "en": ["Biased usage patterns", "Internal expertise required"],
+    "ko": ["편향된 사용 패턴", "내부 전문성 필요"]
+  },
+  "tags": ["dogfooding", "iterative-development", "feedback-loop"]
+}

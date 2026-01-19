@@ -1,0 +1,32 @@
+{
+  "id": "context-minimization-pattern",
+  "title": "Context-Minimization Pattern",
+  "title_ko": "컨텍스트 최소화 패턴",
+  "category": "Context & Memory",
+  "status": "emerging",
+  "original_url": "https://arxiv.org/abs/2506.08837",
+  "problem": {
+    "en": "User-supplied or tainted text lingers in context, enabling later prompt injection attacks.",
+    "ko": "사용자 제공 또는 오염된 텍스트가 컨텍스트에 남아 이후 프롬프트 인젝션 공격을 가능하게 합니다."
+  },
+  "solution": {
+    "en": "Purge or redact untrusted segments once they've served their purpose, keeping context clean.",
+    "ko": "신뢰할 수 없는 세그먼트가 목적을 달성하면 제거하거나 수정하여 컨텍스트를 깨끗하게 유지합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│User Prompt  │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│  Transform  │\n│  to SQL     │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│REMOVE tainted│\n│   tokens    │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│Safe context │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[User Input] --> B[Process/Transform]\n    B --> C[Remove Untrusted Tokens]\n    C --> D[Clean Context]\n    D --> E[Continue Safely]",
+  "code_example": "# Transform user input to safe intermediate form\nsql = LLM('Convert to SQL', user_prompt)\n\n# Remove the untrusted input from context\ncontext.remove(user_prompt)\n\n# Execute with clean context\nrows = db.query(sql)",
+  "when_to_use": {
+    "en": ["Customer service chatbots", "Medical Q&A systems", "Multi-turn flows with sensitive data"],
+    "ko": ["고객 서비스 챗봇", "의료 Q&A 시스템", "민감한 데이터가 있는 다중 턴 흐름"]
+  },
+  "pros": {
+    "en": ["Simple implementation", "No additional models needed", "Alleviates context anxiety"],
+    "ko": ["간단한 구현", "추가 모델 불필요", "컨텍스트 불안 완화"]
+  },
+  "cons": {
+    "en": ["May lose conversational nuance", "Potential UX degradation"],
+    "ko": ["대화 뉘앙스 손실", "UX 저하 가능"]
+  },
+  "tags": ["context-hygiene", "taint-removal", "prompt-injection", "security"]
+}

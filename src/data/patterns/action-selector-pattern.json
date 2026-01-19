@@ -1,0 +1,32 @@
+{
+  "id": "action-selector-pattern",
+  "title": "Action-Selector Pattern",
+  "title_ko": "액션 선택자 패턴",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://arxiv.org/abs/2506.08837",
+  "problem": {
+    "en": "Untrusted input can hijack an agent's reasoning once tool feedback re-enters the context window, leading to arbitrary, harmful actions.",
+    "ko": "도구 피드백이 컨텍스트 윈도우에 다시 들어가면 신뢰할 수 없는 입력이 에이전트의 추론을 가로채어 임의의 유해한 작업을 유발할 수 있습니다."
+  },
+  "solution": {
+    "en": "Treat the LLM as an instruction decoder only: map user requests to pre-approved actions without feeding tool outputs back to the LLM.",
+    "ko": "LLM을 명령어 디코더로만 취급합니다: 도구 출력을 LLM에 다시 제공하지 않고 사용자 요청을 사전 승인된 작업에 매핑합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│User Request │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ LLM Decode  │\n│ (allowlist) │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│Execute Action│\n└──────┬──────┘\n       │\n       ✗ (no feedback)\n       │\n┌──────▼──────┐\n│   Result    │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[User Prompt] --> B[LLM Translates to Action]\n    B --> C{Action in Allowlist?}\n    C -->|Yes| D[Execute Action]\n    C -->|No| E[Reject]\n    D --> F[Return Result]\n    F -.X.-> B",
+  "code_example": "# Action-Selector: No tool output fed back\naction = LLM.translate(prompt, allowlist)\nexecute(action)\n# Tool output NOT returned to LLM\n\n# Example allowlist\nallowlist = [\n    'send_notification',\n    'get_weather',\n    'lookup_order_status'\n]",
+  "when_to_use": {
+    "en": ["Customer service bots", "Notification routers", "Kiosk interfaces"],
+    "ko": ["고객 서비스 봇", "알림 라우터", "키오스크 인터페이스"]
+  },
+  "pros": {
+    "en": ["Near-immunity to prompt injection", "Trivial to audit"],
+    "ko": ["프롬프트 인젝션에 거의 면역", "감사하기 쉬움"]
+  },
+  "cons": {
+    "en": ["Limited flexibility", "New capabilities require code updates"],
+    "ko": ["제한된 유연성", "새로운 기능에 코드 업데이트 필요"]
+  },
+  "tags": ["prompt-injection", "control-flow", "safety", "tool-use"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "self-critique-evaluator-loop",
+  "title": "Self-Critique Evaluator Loop",
+  "title_ko": "자기 비판 평가자 루프",
+  "category": "Feedback Loops",
+  "status": "emerging",
+  "original_url": "https://arxiv.org/abs/2408.02666",
+  "problem": {
+    "en": "Human preference labels are costly and quickly become outdated as base models improve.",
+    "ko": "인간 선호도 레이블은 비용이 많이 들고 기본 모델이 개선됨에 따라 빠르게 구식이 됩니다."
+  },
+  "solution": {
+    "en": "Train a self-taught evaluator that bootstraps from synthetic data, generating its own critiques and improving iteratively.",
+    "ko": "합성 데이터에서 부트스트랩하여 자체 비판을 생성하고 반복적으로 개선하는 자기 학습 평가자를 훈련합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│  Generate   │\n│  Candidates │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│   Judge &   │\n│   Explain   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│  Fine-tune  │\n│   Judge     │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Use as Gate │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Generate Candidates] --> B[Model Judges]\n    B --> C[Explain Reasoning]\n    C --> D[Fine-tune Judge]\n    D --> E[Quality Gate]\n    E -->|Refresh| A",
+  "code_example": "candidates = model.generate_multiple(instruction)\nfor a, b in pairs(candidates):\n    judgment = judge.compare(a, b)\n    traces.append(judgment)\njudge.finetune(traces)\n# Use judge as reward model",
+  "when_to_use": {
+    "en": ["Reward model training", "Quality evaluation", "Synthetic data generation"],
+    "ko": ["보상 모델 훈련", "품질 평가", "합성 데이터 생성"]
+  },
+  "pros": {
+    "en": ["Near-human eval accuracy without labels", "Scales with compute"],
+    "ko": ["레이블 없이 인간 수준 평가 정확도", "컴퓨팅으로 확장 가능"]
+  },
+  "cons": {
+    "en": ["Risk of evaluator-model collusion", "Needs adversarial tests"],
+    "ko": ["평가자-모델 공모 위험", "적대적 테스트 필요"]
+  },
+  "tags": ["self-critique", "evaluator", "reward-model", "synthetic-data"]
+}

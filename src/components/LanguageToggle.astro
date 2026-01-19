@@ -1,0 +1,79 @@
+---
+interface Props {
+  currentLang?: 'en' | 'ko';
+}
+
+const { currentLang = 'ko' } = Astro.props;
+---
+
+<div class="language-toggle flex items-center gap-1 bg-dark-card border border-dark-border rounded-lg p-1">
+  <button
+    class="lang-btn px-3 py-1.5 rounded text-sm font-medium transition-all"
+    data-lang="en"
+    class:list={[
+      currentLang === 'en' ? 'bg-primary-500 text-white' : 'text-dark-muted hover:text-dark-text'
+    ]}
+  >
+    EN
+  </button>
+  <button
+    class="lang-btn px-3 py-1.5 rounded text-sm font-medium transition-all"
+    data-lang="ko"
+    class:list={[
+      currentLang === 'ko' ? 'bg-primary-500 text-white' : 'text-dark-muted hover:text-dark-text'
+    ]}
+  >
+    KO
+  </button>
+</div>
+
+<script>
+  const STORAGE_KEY = 'aap-language';
+
+  function setLanguage(lang: 'en' | 'ko') {
+    // Save preference
+    localStorage.setItem(STORAGE_KEY, lang);
+
+    // Update button states
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      const btnLang = btn.getAttribute('data-lang');
+      if (btnLang === lang) {
+        btn.classList.add('bg-primary-500', 'text-white');
+        btn.classList.remove('text-dark-muted', 'hover:text-dark-text');
+      } else {
+        btn.classList.remove('bg-primary-500', 'text-white');
+        btn.classList.add('text-dark-muted', 'hover:text-dark-text');
+      }
+    });
+
+    // Update content visibility based on language
+    document.querySelectorAll('[data-lang]').forEach(el => {
+      if (el.classList.contains('lang-btn')) return; // Skip toggle buttons
+
+      const elLang = el.getAttribute('data-lang');
+      if (elLang === lang) {
+        (el as HTMLElement).style.display = '';
+      } else {
+        (el as HTMLElement).style.display = 'none';
+      }
+    });
+
+    // Dispatch custom event for other components to react
+    window.dispatchEvent(new CustomEvent('languageChange', { detail: { lang } }));
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem(STORAGE_KEY) as 'en' | 'ko' | null;
+    const initialLang = savedLang || 'ko';
+    setLanguage(initialLang);
+  });
+
+  // Add click handlers
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.getAttribute('data-lang') as 'en' | 'ko';
+      setLanguage(lang);
+    });
+  });
+</script>

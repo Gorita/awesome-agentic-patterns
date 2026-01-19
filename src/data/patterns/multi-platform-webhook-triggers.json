@@ -1,0 +1,32 @@
+{
+  "id": "multi-platform-webhook-triggers",
+  "title": "Multi-Platform Webhook Triggers",
+  "title_ko": "다중 플랫폼 웹훅 트리거",
+  "category": "Tool Use & Environment",
+  "status": "emerging",
+  "original_url": "https://lethain.com/agents-triggers/",
+  "problem": {
+    "en": "An internal agent only provides value when its workflows are initiated. Building out trigger mechanisms is core to agent adoption. Without easy triggers, employees can't effectively automate workflows.",
+    "ko": "내부 에이전트는 워크플로우가 시작될 때만 가치를 제공합니다. 트리거 메커니즘 구축이 에이전트 채택의 핵심입니다. 쉬운 트리거 없이는 직원들이 워크플로우를 효과적으로 자동화할 수 없습니다."
+  },
+  "solution": {
+    "en": "Implement multi-platform webhook triggers: Notion webhooks for document changes, Slack messages/reacji, Jira issue events, and scheduled events via cron or GitHub Actions.",
+    "ko": "다중 플랫폼 웹훅 트리거 구현: 문서 변경용 Notion 웹훅, Slack 메시지/이모지 반응, Jira 이슈 이벤트, cron 또는 GitHub Actions를 통한 예약 이벤트."
+  },
+  "ascii_diagram": "┌───────────────────────────────────┐\n│        Platform Events           │\n├───────────────────────────────────┤\n│ Notion: page_updated             │\n│ Slack: message, reacji           │\n│ Jira: issue_created              │\n│ Cron: scheduled                  │\n└─────────────┬─────────────────────┘\n              │\n┌─────────────▼─────────────────────┐\n│         Webhook Handler           │\n└─────────────┬─────────────────────┘\n              │\n┌─────────────▼─────────────────────┐\n│         Agent Trigger             │\n└─────────────┬─────────────────────┘\n              │\n┌─────────────▼─────────────────────┐\n│       Workflow Execution          │\n└───────────────────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Notion Webhook] --> E[Agent Trigger]\n    B[Slack Message/Reacji] --> E\n    C[Jira Issue Event] --> E\n    D[Scheduled Cron] --> E\n    E --> F[Workflow Execution]\n    F --> G[Results/Actions]",
+  "code_example": "# Trigger configuration\nnotion_triggers:\n  - database: 'RFC Database'\n    event: 'page_updated'\n    filter: 'status.draft → status.ready_for_review'\n    workflow: 'assign_reviewers'\n\nslack_reacji:\n  - emoji: ':jira:'\n    scope: 'any_channel'\n    workflow: 'thread_to_ticket'\n\nscheduled_triggers:\n  - cron: '0 9 * * MON'\n    workflow: 'weekly_standup_prep'\n    via: 'github_actions'",
+  "when_to_use": {
+    "en": ["Internal agent platforms", "Document-heavy workflows (RFCs, reviews)", "Automated routing and triage"],
+    "ko": ["내부 에이전트 플랫폼", "문서 중심 워크플로우 (RFC, 리뷰)", "자동화된 라우팅 및 분류"]
+  },
+  "pros": {
+    "en": ["Low friction workflow initiation", "Platform-native UX", "Reactive to events"],
+    "ko": ["저마찰 워크플로우 시작", "플랫폼 네이티브 UX", "이벤트에 반응"]
+  },
+  "cons": {
+    "en": ["Maintenance overhead per platform", "Security complexity", "Platform lock-in"],
+    "ko": ["플랫폼당 유지보수 오버헤드", "보안 복잡성", "플랫폼 종속"]
+  },
+  "tags": ["webhooks", "triggers", "integrations", "slack", "notion", "jira", "event-driven"]
+}

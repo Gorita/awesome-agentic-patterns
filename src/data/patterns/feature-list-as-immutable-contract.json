@@ -1,0 +1,32 @@
+{
+  "id": "feature-list-as-immutable-contract",
+  "title": "Feature List as Immutable Contract",
+  "title_ko": "불변 계약으로서의 기능 목록",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents",
+  "problem": {
+    "en": "Long-running agents exhibit failure modes: premature victory declaration, scope creep via test deletion, hallucinated completeness, and progress amnesia across sessions.",
+    "ko": "장기 실행 에이전트는 실패 모드를 보입니다: 조기 완료 선언, 테스트 삭제를 통한 범위 확장, 환각적 완료, 세션 간 진행 상황 망각."
+  },
+  "solution": {
+    "en": "Define all features upfront in a structured JSON format that agents can read but cannot modify. Agent may only set passes:true after verification, never delete or modify features.",
+    "ko": "에이전트가 읽을 수 있지만 수정할 수 없는 구조화된 JSON 형식으로 모든 기능을 사전에 정의합니다. 에이전트는 검증 후에만 passes:true로 설정할 수 있으며, 기능을 삭제하거나 수정할 수 없습니다."
+  },
+  "ascii_diagram": "┌─────────────────────┐\n│feature-list.json    │\n│(100-200+ features)  │\n│all passes: false    │\n└──────────┬──────────┘\n           │\n┌──────────▼──────────┐\n│Select Next Feature  │\n└──────────┬──────────┘\n           │\n┌──────────▼──────────┐\n│    Implement        │\n└──────────┬──────────┘\n           │\n┌──────────▼──────────┐\n│    Test Feature     │\n└──────────┬──────────┘\n      ┌────┴────┐\n      ▼         ▼\n  [Pass]    [Fail]\n      │         │\n┌─────▼─────┐   │\n│passes:true│   │\n└─────┬─────┘   │\n      └────┬────┘\n           │\n      More Features?",
+  "mermaid_diagram": "graph TD\n    A[Feature List Created] --> B[All Features: passes=false]\n    B --> C{Select Next Feature}\n    C --> D[Implement Feature]\n    D --> E[Test Feature]\n    E --> F{All Steps Pass?}\n    F -->|No| D\n    F -->|Yes| G[Set passes=true]\n    G --> H{More Features?}\n    H -->|Yes| C\n    H -->|No| I[Project Complete]",
+  "code_example": "// feature-list.json (immutable contract)\n{\n  \"features\": [\n    {\n      \"id\": \"auth-001\",\n      \"category\": \"functional\",\n      \"description\": \"New chat creates fresh conversation\",\n      \"steps\": [\n        \"Click 'New Chat' button\",\n        \"Verify URL changes to new conversation ID\",\n        \"Verify message input is empty\"\n      ],\n      \"passes\": false  // Agent can ONLY change this to true\n    }\n  ]\n}\n\n// CRITICAL RULES:\n// 1. MAY NOT delete features\n// 2. MAY NOT modify steps/description\n// 3. MAY ONLY change passes: false -> true",
+  "when_to_use": {
+    "en": ["Multi-session projects", "Complex applications with known requirements", "Agent accountability needed"],
+    "ko": ["다중 세션 프로젝트", "알려진 요구사항이 있는 복잡한 애플리케이션", "에이전트 책임이 필요한 경우"]
+  },
+  "pros": {
+    "en": ["Prevents premature victory declaration", "Measurable progress (X of Y)", "Eliminates pass-by-deletion"],
+    "ko": ["조기 완료 선언 방지", "측정 가능한 진행 (X/Y)", "삭제로 통과 방지"]
+  },
+  "cons": {
+    "en": ["Requires upfront specification investment", "Not for exploratory work", "Rigid format"],
+    "ko": ["사전 명세 투자 필요", "탐색적 작업에 부적합", "경직된 형식"]
+  },
+  "tags": ["scope-control", "acceptance-criteria", "anti-scope-creep", "long-running-agents"]
+}

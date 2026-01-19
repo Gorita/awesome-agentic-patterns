@@ -1,0 +1,143 @@
+---
+// Modal component for pattern details
+---
+
+<div id="pattern-modal" class="modal-overlay hidden fixed inset-0 bg-black/80 z-50 overflow-y-auto">
+  <div class="modal-container min-h-screen px-4 py-8 flex items-start justify-center">
+    <div class="modal-content bg-dark-card border border-dark-border rounded-lg w-full max-w-4xl relative">
+      <!-- Close button -->
+      <button id="modal-close" class="absolute top-4 right-4 text-dark-muted hover:text-white transition-colors z-10">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-dark-border">
+        <div class="flex items-start gap-3 pr-8">
+          <h2 id="modal-title" class="text-2xl font-bold"></h2>
+          <span id="modal-status" class="text-xs px-2 py-1 rounded border whitespace-nowrap"></span>
+        </div>
+        <div class="flex items-center gap-3 mt-2 text-sm text-dark-muted">
+          <span id="modal-category"></span>
+          <a id="modal-source" href="#" target="_blank" class="text-primary-400 hover:underline hidden">
+            <span data-lang="ko">원본 소스</span>
+            <span data-lang="en" style="display:none;">Original Source</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 space-y-6">
+        <!-- Problem -->
+        <section>
+          <h3 class="text-lg font-semibold mb-2 text-primary-400">
+            <span data-lang="ko">문제</span>
+            <span data-lang="en" style="display:none;">Problem</span>
+          </h3>
+          <p id="modal-problem" class="text-dark-muted"></p>
+        </section>
+
+        <!-- Solution -->
+        <section>
+          <h3 class="text-lg font-semibold mb-2 text-primary-400">
+            <span data-lang="ko">해결책</span>
+            <span data-lang="en" style="display:none;">Solution</span>
+          </h3>
+          <p id="modal-solution" class="text-dark-muted"></p>
+        </section>
+
+        <!-- Diagrams -->
+        <section id="modal-diagrams-section" class="hidden">
+          <h3 class="text-lg font-semibold mb-2 text-primary-400">
+            <span data-lang="ko">다이어그램</span>
+            <span data-lang="en" style="display:none;">Diagram</span>
+          </h3>
+          <div class="flex gap-2 mb-3">
+            <button id="modal-ascii-tab" class="tab-btn active text-sm px-4 py-2 rounded bg-dark-border text-dark-text hover:bg-primary-500/20 transition-colors">
+              ASCII
+            </button>
+            <button id="modal-mermaid-tab" class="tab-btn text-sm px-4 py-2 rounded bg-transparent text-dark-muted hover:bg-primary-500/20 transition-colors">
+              Mermaid
+            </button>
+          </div>
+          <div class="bg-dark-bg rounded-lg p-4 overflow-x-auto">
+            <pre id="modal-ascii" class="font-mono text-sm text-dark-text whitespace-pre"></pre>
+            <div id="modal-mermaid" class="hidden">
+              <pre class="mermaid"></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Code Example -->
+        <section id="modal-code-section" class="hidden">
+          <h3 class="text-lg font-semibold mb-2 text-primary-400">
+            <span data-lang="ko">코드 예제</span>
+            <span data-lang="en" style="display:none;">Code Example</span>
+          </h3>
+          <div class="bg-dark-bg rounded-lg p-4 overflow-x-auto">
+            <pre id="modal-code" class="font-mono text-sm text-dark-text whitespace-pre"></pre>
+          </div>
+        </section>
+
+        <!-- When to Use -->
+        <section id="modal-when-section" class="hidden">
+          <h3 class="text-lg font-semibold mb-2 text-primary-400">
+            <span data-lang="ko">사용 시기</span>
+            <span data-lang="en" style="display:none;">When to Use</span>
+          </h3>
+          <ul id="modal-when" class="list-disc list-inside text-dark-muted space-y-1"></ul>
+        </section>
+
+        <!-- Pros & Cons -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <section id="modal-pros-section" class="hidden">
+            <h3 class="text-lg font-semibold mb-2 text-green-400">
+              <span data-lang="ko">장점</span>
+              <span data-lang="en" style="display:none;">Pros</span>
+            </h3>
+            <ul id="modal-pros" class="list-disc list-inside text-dark-muted space-y-1"></ul>
+          </section>
+
+          <section id="modal-cons-section" class="hidden">
+            <h3 class="text-lg font-semibold mb-2 text-red-400">
+              <span data-lang="ko">단점</span>
+              <span data-lang="en" style="display:none;">Cons</span>
+            </h3>
+            <ul id="modal-cons" class="list-disc list-inside text-dark-muted space-y-1"></ul>
+          </section>
+        </div>
+
+        <!-- Tags -->
+        <section id="modal-tags-section">
+          <div id="modal-tags" class="flex flex-wrap gap-2"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .modal-overlay {
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.hidden {
+    display: none;
+  }
+
+  .modal-content {
+    animation: modalSlideIn 0.2s ease-out;
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

@@ -1,0 +1,32 @@
+{
+  "id": "inversion-of-control",
+  "title": "Inversion of Control",
+  "title_ko": "제어의 역전",
+  "category": "Orchestration & Control",
+  "status": "validated-in-production",
+  "original_url": "https://www.nibzard.com/ampcode",
+  "problem": {
+    "en": "User-driven interaction limits agent autonomy and throughput, requiring constant human prompting.",
+    "ko": "사용자 주도 상호작용이 에이전트 자율성과 처리량을 제한하여 지속적인 인간 프롬프팅이 필요합니다."
+  },
+  "solution": {
+    "en": "Let the agent drive the interaction loop, requesting human input only when genuinely needed for decisions or clarifications.",
+    "ko": "에이전트가 상호작용 루프를 주도하고, 결정이나 명확화가 진정으로 필요할 때만 인간 입력을 요청하게 합니다."
+  },
+  "ascii_diagram": "┌─────────────────────┐\n│ Traditional:        │\n│ Human → Agent →     │\n│ Human → Agent → ... │\n└─────────────────────┘\n         vs\n┌─────────────────────┐\n│ IoC:                │\n│ Agent → Agent →     │\n│ Agent → (ask human) │\n│ → Agent → ...       │\n└─────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Agent Starts] --> B{Need Human Input?}\n    B -->|No| C[Continue Autonomously]\n    B -->|Yes| D[Ask Human]\n    D --> E[Human Response]\n    E --> C\n    C --> F{Task Complete?}\n    F -->|No| A\n    F -->|Yes| G[Done]",
+  "code_example": "while not task.complete:\n    next_action = agent.decide_next_action()\n    \n    if next_action.needs_human_input:\n        response = await ask_human(next_action.question)\n        agent.incorporate(response)\n    else:\n        agent.execute(next_action)",
+  "when_to_use": {
+    "en": ["Autonomous operations", "Batch processing", "Background agents"],
+    "ko": ["자율 작업", "배치 처리", "백그라운드 에이전트"]
+  },
+  "pros": {
+    "en": ["Higher throughput", "Efficient human time", "Autonomous execution"],
+    "ko": ["높은 처리량", "효율적 인간 시간", "자율 실행"]
+  },
+  "cons": {
+    "en": ["Reduced control", "Risk of unexpected behavior"],
+    "ko": ["제어 감소", "예상치 못한 행동 위험"]
+  },
+  "tags": ["orchestration", "autonomy", "control", "agent-driven"]
+}

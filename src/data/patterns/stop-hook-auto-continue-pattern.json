@@ -1,0 +1,32 @@
+{
+  "id": "stop-hook-auto-continue-pattern",
+  "title": "Stop Hook Auto-Continue Pattern",
+  "title_ko": "정지 훅 자동 계속 패턴",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it",
+  "problem": {
+    "en": "Agents may stop prematurely before completing all requirements, claiming they're done when they're not.",
+    "ko": "에이전트가 모든 요구사항을 완료하기 전에 조기에 중지하고, 완료되지 않았는데 완료됐다고 주장할 수 있습니다."
+  },
+  "solution": {
+    "en": "Use stop hooks to verify success criteria (tests pass, lint clean) before allowing agent termination.",
+    "ko": "에이전트 종료를 허용하기 전에 성공 기준(테스트 통과, 린트 클린)을 확인하는 정지 훅을 사용합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Agent     │\n│  \"Done\"     │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│  Stop Hook  │\n│  Check:     │\n│  - Tests?   │\n│  - Lint?    │\n└──────┬──────┘\n   ┌───┴───┐\n   ▼       ▼\n [Pass]  [Fail]\n   │       │\n   ▼  ┌────▼────┐\n Done │Continue │\n      │ Working │\n      └─────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Agent: I'm Done] --> B{Stop Hook Check}\n    B -->|Tests Pass & Lint Clean| C[Really Done]\n    B -->|Failures Found| D[Continue Working]\n    D --> A",
+  "code_example": "# Claude Code stop hook example\n# .claude/hooks/stop.sh\n#!/bin/bash\nnpm test || exit 1  # Fails = agent continues\nnpm run lint || exit 1\necho 'All checks passed'",
+  "when_to_use": {
+    "en": ["Test-driven development", "Quality gates", "Autonomous agents"],
+    "ko": ["테스트 주도 개발", "품질 게이트", "자율 에이전트"]
+  },
+  "pros": {
+    "en": ["Completion guarantee", "Quality maintenance", "Automation"],
+    "ko": ["완료 보장", "품질 유지", "자동화"]
+  },
+  "cons": {
+    "en": ["Risk of infinite loops", "Hook design required"],
+    "ko": ["무한 루프 위험", "훅 설계 필요"]
+  },
+  "tags": ["hooks", "automation", "testing", "success-criteria", "quality-gates"]
+}

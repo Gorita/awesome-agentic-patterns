@@ -1,0 +1,32 @@
+{
+  "id": "dual-use-tool-design",
+  "title": "Dual-Use Tool Design",
+  "title_ko": "이중 사용 도구 설계",
+  "category": "Tool Use & Environment",
+  "status": "best-practice",
+  "original_url": "https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it",
+  "problem": {
+    "en": "Maintaining separate tools for humans and agents creates overhead and inconsistent behavior.",
+    "ko": "인간과 에이전트를 위한 별도 도구를 유지하면 오버헤드와 일관되지 않은 동작이 발생합니다."
+  },
+  "solution": {
+    "en": "Design all tools to be equally accessible and usable by both humans and AI agents.",
+    "ko": "모든 도구를 인간과 AI 에이전트 모두가 동등하게 접근하고 사용할 수 있도록 설계합니다."
+  },
+  "ascii_diagram": "┌──────────────────────┐\n│   Dual-Use Tool      │\n│   /commit            │\n├──────────────────────┤\n│ Human: types /commit │\n│ Agent: calls /commit │\n│                      │\n│ Same logic, same     │\n│ behavior             │\n└──────────────────────┘",
+  "mermaid_diagram": "flowchart LR\n    A[Tool: /commit] --> B[Human Use]\n    A --> C[Agent Use]\n    B -->|Same| D[Identical Behavior]\n    C -->|Same| D",
+  "code_example": "# Tool works the same for human and agent\ndef commit_tool(message: str, files: list = None):\n    \"\"\"Commit changes - callable by human CLI or agent\"\"\"\n    if files:\n        git.add(files)\n    else:\n        git.add('.')\n    git.commit(message)\n    return {'status': 'committed', 'message': message}\n\n# Human: /commit \"Fix bug\"\n# Agent: tool_call('commit', {message: 'Fix bug'})",
+  "when_to_use": {
+    "en": ["CLI tool development", "Slash command design", "Automation pipelines"],
+    "ko": ["CLI 도구 개발", "슬래시 명령 설계", "자동화 파이프라인"]
+  },
+  "pros": {
+    "en": ["Reduced maintenance", "Consistent behavior", "Shared improvements"],
+    "ko": ["유지보수 감소", "일관된 동작", "공유 개선"]
+  },
+  "cons": {
+    "en": ["Design constraints", "Optimization trade-offs"],
+    "ko": ["설계 제약", "최적화 타협"]
+  },
+  "tags": ["tools", "ux", "slash-commands", "human-ai-collaboration"]
+}

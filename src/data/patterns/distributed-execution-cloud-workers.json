@@ -1,0 +1,32 @@
+{
+  "id": "distributed-execution-cloud-workers",
+  "title": "Distributed Execution with Cloud Workers",
+  "title_ko": "클라우드 워커를 활용한 분산 실행",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://claude.com/blog/building-companies-with-claude-code",
+  "problem": {
+    "en": "Single-session agent execution cannot scale for team-wide AI code generation workloads.",
+    "ko": "단일 세션 에이전트 실행은 팀 전체 AI 코드 생성 워크로드를 확장할 수 없습니다."
+  },
+  "solution": {
+    "en": "Run multiple Claude sessions in parallel using git worktrees and cloud workers, coordinating via a central orchestrator.",
+    "ko": "git worktree와 클라우드 워커를 사용하여 여러 Claude 세션을 병렬로 실행하고, 중앙 오케스트레이터를 통해 조정합니다."
+  },
+  "ascii_diagram": "┌────────────────────┐\n│   Coordinator      │\n└─────────┬──────────┘\n    ┌─────┼─────┐\n    ▼     ▼     ▼\n┌─────┐┌─────┐┌─────┐\n│W1   ││W2   ││W3   │\n│+tree││+tree││+tree│\n└──┬──┘└──┬──┘└──┬──┘\n   │      │      │\n   └──────┼──────┘\n          ▼\n     ┌─────────┐\n     │  Merge  │\n     └─────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Coordinator] --> B[Worker 1 + worktree]\n    A --> C[Worker 2 + worktree]\n    A --> D[Worker N + worktree]\n    B --> E[Branch 1]\n    C --> F[Branch 2]\n    D --> G[Branch N]\n    E & F & G --> H[Merge to Main]",
+  "code_example": "# Create isolated worktrees for each worker\nfor i in range(num_workers):\n    worktree_path = f'/tmp/worktree-{i}'\n    git.worktree.add(worktree_path, f'worker-branch-{i}')\n    \n    # Spawn cloud worker with isolated environment\n    worker = cloud.spawn(\n        image='claude-agent',\n        mount=worktree_path\n    )\n    workers.append(worker)",
+  "when_to_use": {
+    "en": ["Team-scale migrations", "Parallel feature development", "Large-scale refactoring"],
+    "ko": ["팀 규모 마이그레이션", "병렬 기능 개발", "대규모 리팩토링"]
+  },
+  "pros": {
+    "en": ["Massive parallelization", "Team scalability", "Centralized management"],
+    "ko": ["대규모 병렬화", "팀 확장성", "중앙 집중 관리"]
+  },
+  "cons": {
+    "en": ["Infrastructure complexity", "Merge conflicts", "Higher costs"],
+    "ko": ["인프라 복잡성", "병합 충돌", "비용 증가"]
+  },
+  "tags": ["distributed-systems", "parallelization", "cloud", "worktrees", "git"]
+}

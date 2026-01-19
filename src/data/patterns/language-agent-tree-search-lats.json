@@ -1,0 +1,32 @@
+{
+  "id": "language-agent-tree-search-lats",
+  "title": "Language Agent Tree Search (LATS)",
+  "title_ko": "언어 에이전트 트리 검색 (LATS)",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://arxiv.org/abs/2310.04406",
+  "problem": {
+    "en": "Current language agents often struggle with complex reasoning tasks that require exploration of multiple solution paths.",
+    "ko": "현재 언어 에이전트는 여러 솔루션 경로 탐색이 필요한 복잡한 추론 작업에서 어려움을 겪습니다."
+  },
+  "solution": {
+    "en": "Combine Monte Carlo Tree Search (MCTS) with LLM reflection and evaluation, exploring promising branches while avoiding dead ends.",
+    "ko": "몬테카를로 트리 검색(MCTS)을 LLM 반성 및 평가와 결합하여 막다른 길을 피하면서 유망한 분기를 탐색합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Problem   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│  Selection  │\n│  (UCB)      │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│  Expansion  │\n│ (generate)  │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Evaluation  │\n│ (LLM judge) │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│Backpropagate│\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Root Problem] --> B[Select Node via UCB]\n    B --> C[Expand: Generate Actions]\n    C --> D[Evaluate: LLM Self-Reflection]\n    D --> E[Backpropagate Values]\n    E --> F{Iterations Done?}\n    F -->|No| B\n    F -->|Yes| G[Return Best Path]",
+  "code_example": "class LATS:\n    def search(self, problem, max_iterations=50):\n        root = Node(problem)\n        for _ in range(max_iterations):\n            node = self.select(root)  # UCB\n            actions = self.expand(node)  # LLM generates\n            value = self.evaluate(node)  # LLM judges\n            self.backpropagate(node, value)\n        return self.best_path(root)",
+  "when_to_use": {
+    "en": ["Complex reasoning tasks", "Multi-step problem solving", "Strategic planning"],
+    "ko": ["복잡한 추론 작업", "다단계 문제 해결", "전략적 계획"]
+  },
+  "pros": {
+    "en": ["Better performance on complex reasoning", "Systematic exploration", "Interpretable traces"],
+    "ko": ["복잡한 추론에서 더 나은 성능", "체계적 탐색", "해석 가능한 추적"]
+  },
+  "cons": {
+    "en": ["Higher computational cost", "More LLM calls", "Parameter tuning needed"],
+    "ko": ["높은 계산 비용", "더 많은 LLM 호출", "파라미터 튜닝 필요"]
+  },
+  "tags": ["search", "monte-carlo", "tree-search", "reasoning", "planning", "reflection"]
+}

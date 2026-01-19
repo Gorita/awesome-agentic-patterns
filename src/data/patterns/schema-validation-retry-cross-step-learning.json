@@ -1,0 +1,32 @@
+{
+  "id": "schema-validation-retry-cross-step-learning",
+  "title": "Schema Validation Retry with Cross-Step Learning",
+  "title_ko": "크로스 스텝 학습을 통한 스키마 검증 재시도",
+  "category": "Reliability & Eval",
+  "status": "emerging",
+  "original_url": "https://github.com/hyperbrowserai/HyperAgent",
+  "problem": {
+    "en": "LLMs don't always produce valid structured output. Single-attempt validation leads to task failures even when retry would succeed.",
+    "ko": "LLM이 항상 유효한 구조화된 출력을 생성하지 않습니다. 단일 시도 검증은 재시도가 성공할 수 있는 경우에도 작업 실패로 이어집니다."
+  },
+  "solution": {
+    "en": "Implement multi-attempt retry with detailed Zod error feedback and cross-step error accumulation for learning.",
+    "ko": "상세한 Zod 오류 피드백과 학습을 위한 크로스 스텝 오류 누적으로 다중 시도 재시도를 구현합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│ LLM Output  │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Zod Validate│\n└──────┬──────┘\n   ┌───┴───┐\n   ▼       ▼\n[Pass]  [Fail]\n   │       │\n   │  ┌────▼────┐\n   │  │ Append  │\n   │  │ Error   │\n   │  │Feedback │\n   │  └────┬────┘\n   │       │\n   │  ┌────▼────┐\n   │  │ Retry   │\n   │  │(max 3)  │\n   │  └────┬────┘\n   └───┬───┘\n       ▼\n   [Result]",
+  "mermaid_diagram": "sequenceDiagram\n    participant LLM\n    participant Validator\n    participant ErrorHistory\n\n    LLM->>Validator: Generate output\n    alt Valid\n        Validator-->>LLM: Success\n    else Invalid - Attempt 1\n        Validator-->>ErrorHistory: Store error\n        ErrorHistory->>LLM: Feedback + retry\n    end",
+  "code_example": "const maxAttempts = 3;\nlet msgs = [initialPrompt];\n\nfor (let attempt = 0; attempt < maxAttempts; attempt++) {\n  const result = await llm.invoke(schema, msgs);\n  \n  if (result.parsed) return result.parsed;\n  \n  // Store for cross-step learning\n  ctx.schemaErrors.push({\n    stepIndex: currStep,\n    error: getZodError(result.rawText)\n  });\n  \n  // Append error feedback for retry\n  msgs.push({\n    role: 'user',\n    content: `Validation errors:\\n${error}\\nPlease fix.`\n  });\n}",
+  "when_to_use": {
+    "en": ["Structured output generation", "Multi-step workflows", "Reliability-critical agents"],
+    "ko": ["구조화된 출력 생성", "다단계 워크플로우", "신뢰성 중요 에이전트"]
+  },
+  "pros": {
+    "en": ["Higher success rate", "Cross-step learning", "Better debugging"],
+    "ko": ["높은 성공률", "크로스 스텝 학습", "더 나은 디버깅"]
+  },
+  "cons": {
+    "en": ["Increased latency on failures", "Higher token costs", "Not guaranteed fix"],
+    "ko": ["실패 시 지연 증가", "높은 토큰 비용", "수정 보장 안됨"]
+  },
+  "tags": ["retry", "validation", "cross-step-learning", "structured-output", "zod"]
+}

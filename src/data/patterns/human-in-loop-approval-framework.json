@@ -1,0 +1,32 @@
+{
+  "id": "human-in-loop-approval-framework",
+  "title": "Human-in-the-Loop Approval Framework",
+  "title_ko": "휴먼 인 더 루프 승인 프레임워크",
+  "category": "UX & Collaboration",
+  "status": "validated-in-production",
+  "original_url": "https://claude.com/blog/building-companies-with-claude-code",
+  "problem": {
+    "en": "Fully autonomous agents may take risky actions without human oversight, leading to costly mistakes.",
+    "ko": "완전 자율 에이전트가 인간의 감독 없이 위험한 행동을 취하여 비용이 많이 드는 실수를 초래할 수 있습니다."
+  },
+  "solution": {
+    "en": "Route high-risk operations through human approval gates via Slack, email, or other channels before execution.",
+    "ko": "고위험 작업을 실행 전에 Slack, 이메일 또는 기타 채널을 통해 인간 승인 게이트로 라우팅합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Agent     │\n└──────┬──────┘\n       │ action\n┌──────▼──────┐\n│ Risk Check  │\n└──────┬──────┘\n   ┌───┴───┐\n   ▼       ▼\n[Low]    [High]\n   │       │\n   │  ┌────▼────┐\n   │  │  Human  │\n   │  │ Approve │\n   │  └────┬────┘\n   │       │\n   └───┬───┘\n┌──────▼──────┐\n│   Execute   │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Agent Action] --> B{Risk Level}\n    B -->|Low| C[Auto Execute]\n    B -->|High| D[Human Approval]\n    D -->|Approve| C\n    D -->|Reject| E[Cancel Action]",
+  "code_example": "async def execute_with_approval(action):\n    risk = assess_risk(action)\n    \n    if risk == 'high':\n        approved = await slack.request_approval(\n            channel='#agent-approvals',\n            message=f'Approve: {action.description}?'\n        )\n        if not approved:\n            return {'status': 'rejected'}\n    \n    return await action.execute()",
+  "when_to_use": {
+    "en": ["Production deployments", "Financial transactions", "Delete/modify operations"],
+    "ko": ["프로덕션 배포", "금융 거래", "삭제/수정 작업"]
+  },
+  "pros": {
+    "en": ["Improved safety", "Audit trail", "Trust building"],
+    "ko": ["안전성 향상", "감사 추적", "신뢰 구축"]
+  },
+  "cons": {
+    "en": ["Latency", "Human bottleneck", "24/7 coverage needed"],
+    "ko": ["지연 시간", "인간 병목", "24/7 커버리지 필요"]
+  },
+  "tags": ["human-oversight", "safety", "approvals", "risk-management"]
+}

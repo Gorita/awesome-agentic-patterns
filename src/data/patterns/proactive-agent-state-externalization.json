@@ -1,0 +1,32 @@
+{
+  "id": "proactive-agent-state-externalization",
+  "title": "Proactive Agent State Externalization",
+  "title_ko": "능동적 에이전트 상태 외부화",
+  "category": "Context & Memory",
+  "status": "emerging",
+  "original_url": "https://cognition.ai/blog/devin-sonnet-4-5-lessons-and-challenges",
+  "problem": {
+    "en": "Models like Sonnet 4.5 proactively write notes to files, but self-generated notes are often incomplete or miss crucial context.",
+    "ko": "Sonnet 4.5 같은 모델이 능동적으로 파일에 노트를 작성하지만, 자체 생성된 노트는 종종 불완전하거나 중요한 맥락을 놓칩니다."
+  },
+  "solution": {
+    "en": "Implement structured approaches to guide and validate the model's natural tendency toward state externalization.",
+    "ko": "모델의 상태 외부화에 대한 자연스러운 경향을 안내하고 검증하는 구조화된 접근 방식을 구현합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Agent     │\n│  Working    │\n└──────┬──────┘\n       │ writes\n┌──────▼──────┐\n│  NOTES.md   │\n│ (template)  │\n├─────────────┤\n│ ## Objective│\n│ ## Progress │\n│ ## Gaps     │\n└──────┬──────┘\n       │ validate\n┌──────▼──────┐\n│ Completeness│\n│   Check     │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Agent Working] --> B[Guided Note Template]\n    B --> C[Write Progress Notes]\n    C --> D{Notes Complete?}\n    D -->|No| E[Prompt for Missing Info]\n    E --> C\n    D -->|Yes| F[Continue Work]",
+  "code_example": "# Provide template for agent notes\nnote_template = '''\n## Current Objective\n{objective}\n\n## Progress Summary\n- Completed: ...\n- In Progress: ...\n- Next: ...\n\n## Knowledge Gaps\n- Unknown: ...\n- Need Clarification: ...\n'''\n\n# Validate completeness\ndef validate_notes(notes):\n    required = ['Objective', 'Progress', 'Gaps']\n    return all(section in notes for section in required)",
+  "when_to_use": {
+    "en": ["Long-running development sessions", "Research and analysis", "Subagent coordination"],
+    "ko": ["장기 개발 세션", "연구 및 분석", "서브에이전트 조정"]
+  },
+  "pros": {
+    "en": ["Leverages natural model behavior", "Better session continuity", "Creates audit trails"],
+    "ko": ["자연스러운 모델 동작 활용", "더 나은 세션 연속성", "감사 추적 생성"]
+  },
+  "cons": {
+    "en": ["May consume tokens on documentation", "Requires validation overhead"],
+    "ko": ["문서화에 토큰 소비 가능", "검증 오버헤드 필요"]
+  },
+  "tags": ["state-externalization", "memory-management", "self-documentation", "note-taking"]
+}

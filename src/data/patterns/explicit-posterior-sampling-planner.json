@@ -1,0 +1,32 @@
+{
+  "id": "explicit-posterior-sampling-planner",
+  "title": "Explicit Posterior-Sampling Planner",
+  "title_ko": "명시적 사후 샘플링 플래너",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://arxiv.org/abs/2504.20997",
+  "problem": {
+    "en": "Agents relying on ad-hoc heuristics explore poorly, wasting tokens and API calls on dead ends.",
+    "ko": "임시 휴리스틱에 의존하는 에이전트는 탐색을 제대로 수행하지 못해 막다른 길에서 토큰과 API 호출을 낭비합니다."
+  },
+  "solution": {
+    "en": "Embed PSRL (Posterior Sampling for RL) inside the LLM's reasoning: maintain Bayesian posterior over task models, sample, compute optimal plan, execute, observe reward, update posterior.",
+    "ko": "LLM의 추론 내부에 PSRL(강화 학습을 위한 사후 샘플링)을 내장합니다: 작업 모델에 대한 베이지안 사후 분포 유지, 샘플링, 최적 계획 계산, 실행, 보상 관찰, 사후 분포 업데이트."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│ Bayesian Prior  │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Sample Model    │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Compute Optimal │\n│     Plan        │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│    Execute      │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Observe Reward  │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│Update Posterior │\n└────────┬────────┘\n         │\n         └──→ (repeat)",
+  "mermaid_diagram": "flowchart TD\n    A[Maintain Bayesian Posterior] --> B[Sample Task Model]\n    B --> C[Compute Optimal Plan]\n    C --> D[Execute with Tool Calls]\n    D --> E[Observe Reward]\n    E --> F[Update Posterior]\n    F --> A",
+  "code_example": "# PSRL-style exploration in prompt\nprompt = '''\nMaintain a posterior over task models.\n\n1. Sample a model from current posterior\n2. Compute optimal plan for sampled model\n3. Execute plan step using tool calls\n4. Observe reward/outcome\n5. Update posterior with observation\n6. Repeat until task complete\n\nCurrent posterior: {posterior}\nTask: {task}\n'''",
+  "when_to_use": {
+    "en": ["Exploration-heavy tasks", "Unknown environments", "Multi-step decision making"],
+    "ko": ["탐색 중심 작업", "미지의 환경", "다단계 의사 결정"]
+  },
+  "pros": {
+    "en": ["Principled exploration", "Theoretically grounded", "Efficient token usage"],
+    "ko": ["원칙적인 탐색", "이론적 기반", "효율적인 토큰 사용"]
+  },
+  "cons": {
+    "en": ["Complex to implement", "Requires RL understanding", "May be overkill for simple tasks"],
+    "ko": ["구현 복잡", "RL 이해 필요", "단순 작업에는 과도할 수 있음"]
+  },
+  "tags": ["RL", "PSRL", "exploration", "planning", "decision-making"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "self-rewriting-meta-prompt-loop",
+  "title": "Self-Rewriting Meta-Prompt Loop",
+  "title_ko": "자기 재작성 메타 프롬프트 루프",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://noahgoodman.substack.com/p/meta-prompt-a-simple-self-improving",
+  "problem": {
+    "en": "Static system prompts become stale or overly brittle as an agent encounters new tasks and edge cases.",
+    "ko": "정적 시스템 프롬프트가 에이전트가 새로운 작업과 엣지 케이스를 만날 때 오래되거나 취약해집니다."
+  },
+  "solution": {
+    "en": "Let the agent rewrite its own system prompt after each interaction, validating changes before applying them.",
+    "ko": "에이전트가 각 상호작용 후 자체 시스템 프롬프트를 재작성하고, 적용 전에 변경 사항을 검증하게 합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│  Dialogue   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│   Reflect   │\n│ on Episode  │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Draft Edits │\n│ to Prompt   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│  Validate   │\n│ (Guardrails)│\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│   Apply &   │\n│    Save     │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Run Episode] --> B[Reflect on Dialogue]\n    B --> C[Draft Prompt Improvements]\n    C --> D{Passes Guardrails?}\n    D -->|Yes| E[Update System Prompt]\n    D -->|No| F[Reject Changes]\n    E --> G[Save to Version Control]\n    G --> H[Next Episode]",
+  "code_example": "dialogue = run_episode()\ndelta = LLM('Reflect on dialogue and propose prompt edits', dialogue)\nif passes_guardrails(delta):\n    system_prompt += delta\n    save_version(system_prompt)",
+  "when_to_use": {
+    "en": ["Long-running agents", "Adaptive systems", "Continuous improvement"],
+    "ko": ["장기 실행 에이전트", "적응형 시스템", "지속적 개선"]
+  },
+  "pros": {
+    "en": ["Rapid adaptation", "No human in loop for minor tweaks"],
+    "ko": ["빠른 적응", "사소한 조정에 인간 개입 불필요"]
+  },
+  "cons": {
+    "en": ["Risk of drift or jailbreak", "Needs strong guardrails"],
+    "ko": ["드리프트나 탈옥 위험", "강력한 가드레일 필요"]
+  },
+  "tags": ["meta-prompting", "self-improvement", "system-prompt", "reflection"]
+}

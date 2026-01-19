@@ -1,0 +1,32 @@
+{
+  "id": "skill-library-evolution",
+  "title": "Skill Library Evolution",
+  "title_ko": "스킬 라이브러리 진화",
+  "category": "Learning & Adaptation",
+  "status": "established",
+  "original_url": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+  "problem": {
+    "en": "Agents frequently solve similar problems but must rediscover solutions each time, wasting tokens and time. Organizations want agents to build up capability over time.",
+    "ko": "에이전트가 자주 유사한 문제를 해결하지만 매번 솔루션을 다시 발견해야 하여 토큰과 시간을 낭비합니다. 조직은 에이전트가 시간이 지남에 따라 역량을 구축하기를 원합니다."
+  },
+  "solution": {
+    "en": "Persist working code implementations as reusable functions in a skills/ directory. Over time, these evolve into documented, tested skills that become higher-level agent capabilities.",
+    "ko": "작동하는 코드 구현을 skills/ 디렉토리에 재사용 가능한 함수로 저장합니다. 시간이 지나면 이는 문서화되고 테스트된 스킬로 발전하여 고수준 에이전트 역량이 됩니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│ Ad-hoc Code │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Save Working│\n│  Solution   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│  Reusable   │\n│  Function   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Documented  │\n│   Skill     │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│   Agent     │\n│ Capability  │\n└─────────────┘",
+  "mermaid_diagram": "graph LR\n    A[Ad-hoc Code] --> B[Save Working Solution]\n    B --> C[Reusable Function]\n    C --> D[Documented Skill]\n    D --> E[Agent Capability]",
+  "code_example": "# Session 1: Save working solution\ndef analyze_sentiment(text):\n    response = llm.complete(f\"Analyze sentiment: {text}\")\n    return parse_sentiment(response)\n\nwith open(\"skills/analyze_sentiment.py\", \"w\") as f:\n    f.write(inspect.getsource(analyze_sentiment))\n\n# Later session: Discover and use existing skill\nskills = os.listdir(\"skills/\")\n# ['analyze_sentiment.py', 'extract_entities.py', ...]\n\nfrom skills.analyze_sentiment import analyze_sentiment\nresult = analyze_sentiment(\"Customer feedback here...\")",
+  "when_to_use": {
+    "en": ["Recurring problem patterns", "Building organizational knowledge base", "Long-running agent projects"],
+    "ko": ["반복되는 문제 패턴", "조직 지식 기반 구축", "장기 에이전트 프로젝트"]
+  },
+  "pros": {
+    "en": ["Builds capability over time", "Reduces redundant work", "Skills can be tested and versioned"],
+    "ko": ["시간이 지남에 따라 역량 구축", "중복 작업 감소", "스킬 테스트 및 버전 관리 가능"]
+  },
+  "cons": {
+    "en": ["Requires discipline to save/organize", "Skills can become stale", "Quality varies"],
+    "ko": ["저장/정리 규율 필요", "스킬이 오래될 수 있음", "품질 편차"]
+  },
+  "tags": ["code-reuse", "skills", "learning", "capabilities", "evolution", "mcp"]
+}

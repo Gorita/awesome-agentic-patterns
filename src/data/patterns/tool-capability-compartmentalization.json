@@ -1,0 +1,32 @@
+{
+  "id": "tool-capability-compartmentalization",
+  "title": "Tool Capability Compartmentalization",
+  "title_ko": "도구 기능 구획화",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://simonwillison.net/2025/Jun/16/lethal-trifecta/",
+  "problem": {
+    "en": "MCP encourages mix-and-match tools, often combining private-data readers, web fetchers, and writers in a single callable unit. This amplifies the lethality of prompt-injection chains.",
+    "ko": "MCP는 혼합 도구를 권장하며, 종종 개인 데이터 리더, 웹 페처, 라이터를 단일 호출 가능 단위로 결합합니다. 이는 프롬프트 인젝션 체인의 치명성을 증폭시킵니다."
+  },
+  "solution": {
+    "en": "Split monolithic tools into reader, processor, and writer micro-tools. Require explicit per-call user consent when composing tools across capability classes. Run each class in isolated subprocess with scoped permissions.",
+    "ko": "모놀리식 도구를 리더, 프로세서, 라이터 마이크로 도구로 분할합니다. 기능 클래스 간 도구를 구성할 때 명시적인 호출별 사용자 동의를 요구합니다. 각 클래스를 범위가 지정된 권한으로 격리된 서브프로세스에서 실행합니다."
+  },
+  "ascii_diagram": "┌─────────────────────────────────────┐\n│      MONOLITHIC TOOL (Bad)          │\n│  [read_email + fetch_web + write]   │\n│         → Security Risk!            │\n└─────────────────────────────────────┘\n                  ↓\n┌─────────────────────────────────────┐\n│   COMPARTMENTALIZED (Good)          │\n├─────────────────────────────────────┤\n│ email_reader:                       │\n│   capabilities: [private_data]      │\n│   permissions: fs:read-only, net:no │\n├─────────────────────────────────────┤\n│ issue_creator:                      │\n│   capabilities: [external_comm]     │\n│   permissions: net:github.com only  │\n└─────────────────────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Tool Request] --> B{Check Manifest}\n    B --> C[Reader Tool]\n    B --> D[Processor Tool]\n    B --> E[Writer Tool]\n    C --> F{Crosses Capability Class?}\n    D --> F\n    E --> F\n    F -->|Yes| G[Request User Consent]\n    F -->|No| H[Execute in Sandbox]\n    G --> H",
+  "code_example": "# tool-manifest.yml\nemail_reader:\n  capabilities: [private_data, untrusted_input]\n  permissions:\n    fs: read-only:/mail\n    net: none\n\nissue_creator:\n  capabilities: [external_comm]\n  permissions:\n    net: allowlist:github.com\n\n# Agent runner checks manifest before action plans\n# Flags any attempt to chain tools that recreate\n# the lethal trifecta",
+  "when_to_use": {
+    "en": ["MCP tool design", "Security-sensitive agent systems", "Multi-tenant environments"],
+    "ko": ["MCP 도구 설계", "보안에 민감한 에이전트 시스템", "다중 테넌트 환경"]
+  },
+  "pros": {
+    "en": ["Fine-grained security", "Plays well with modular architectures", "Clear audit trail"],
+    "ko": ["세분화된 보안", "모듈식 아키텍처와 잘 호환", "명확한 감사 추적"]
+  },
+  "cons": {
+    "en": ["More tooling overhead", "Risk of permission creep over time", "Complexity in tool composition"],
+    "ko": ["더 많은 도구 오버헤드", "시간이 지남에 따라 권한 확대 위험", "도구 구성의 복잡성"]
+  },
+  "tags": ["capability-segregation", "least-privilege", "tool-permissions", "security"]
+}

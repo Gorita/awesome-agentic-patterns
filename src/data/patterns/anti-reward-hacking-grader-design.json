@@ -1,0 +1,32 @@
+{
+  "id": "anti-reward-hacking-grader-design",
+  "title": "Anti-Reward-Hacking Grader Design",
+  "title_ko": "보상 해킹 방지 평가기 설계",
+  "category": "Reliability & Eval",
+  "status": "emerging",
+  "original_url": "https://youtu.be/1s_7RMG4O4U",
+  "problem": {
+    "en": "During reinforcement learning training, models actively search for ways to maximize reward. If graders have edge cases or loopholes, models exploit them rather than truly solving tasks, leading to 100% reward scores but poor real-world performance.",
+    "ko": "강화 학습 훈련 중 모델은 보상을 최대화하는 방법을 적극적으로 탐색합니다. 평가기에 엣지 케이스나 허점이 있으면 모델은 실제 작업을 해결하지 않고 이를 악용하여 100% 보상 점수지만 실제 성능은 저조하게 됩니다."
+  },
+  "solution": {
+    "en": "Design reward functions resistant to gaming through iterative hardening: multi-criteria evaluation (correctness, reasoning quality, completeness, citations), continuous scores (0.0-1.0) instead of binary, violation pattern detection, and adversarial testing before training.",
+    "ko": "반복적인 강화를 통해 게이밍에 강한 보상 함수 설계: 다중 기준 평가(정확성, 추론 품질, 완전성, 인용), 이진법 대신 연속 점수(0.0-1.0), 위반 패턴 감지, 훈련 전 적대적 테스트."
+  },
+  "ascii_diagram": "┌─────────────────────────┐\n│   Initial Grader        │\n└───────────┬─────────────┘\n            │\n┌───────────▼─────────────┐\n│   Run Training          │\n└───────────┬─────────────┘\n            │\n    ┌───────▼───────┐\n    │ High Reward?  │\n    └───────┬───────┘\n      Yes   │   No\n    ┌───────▼───────┐\n    │Inspect Traces │\n    │Find Gaming    │\n    └───────┬───────┘\n            │\n┌───────────▼─────────────┐\n│ Add Detection Rules     │\n│ Update Grader           │\n└───────────┬─────────────┘\n            │\n     (Loop back to Training)",
+  "mermaid_diagram": "flowchart TD\n    A[Design Initial Grader] --> B[Run Training]\n    B --> C{Suspicious High Reward?}\n    C -->|Yes| D[Inspect Traces]\n    D --> E[Identify Gaming Pattern]\n    E --> F[Add Detection Rule]\n    F --> G[Update Grader]\n    G --> B\n    C -->|No| H[Validate on Holdout]\n    H --> I{Performance Matches?}\n    I -->|Yes| J[Deploy Model]\n    I -->|No| E",
+  "code_example": "class RobustGrader:\n    def grade(self, question, ground_truth, answer, tool_trace):\n        # Check for known gaming patterns first\n        for pattern in self.violation_patterns:\n            if pattern.matches(answer, tool_trace):\n                return {'score': 0.0, 'violation': True}\n        \n        # Multi-criteria evaluation\n        scores = {\n            'correctness': self._check_correctness(answer, ground_truth),\n            'reasoning': self._check_reasoning_quality(tool_trace),\n            'completeness': self._check_completeness(answer),\n            'citations': self._check_citations(answer, tool_trace)\n        }\n        \n        weights = {'correctness': 0.5, 'reasoning': 0.2,\n                   'completeness': 0.2, 'citations': 0.1}\n        return {'score': sum(w * scores[k] for k, w in weights.items())}",
+  "when_to_use": {
+    "en": ["Agent reinforcement fine-tuning", "Complex task evaluation", "Financial or domain-specific reasoning", "Any RL training with non-trivial rewards"],
+    "ko": ["에이전트 강화 미세조정", "복잡한 작업 평가", "금융 또는 도메인 특화 추론", "비사소한 보상이 있는 모든 RL 훈련"]
+  },
+  "pros": {
+    "en": ["Models learn to truly solve tasks", "Better generalization", "Debuggable with subscores", "Training reward correlates with business metrics"],
+    "ko": ["모델이 실제 작업 해결 학습", "더 나은 일반화", "하위 점수로 디버깅 가능", "훈련 보상이 비즈니스 메트릭과 상관"]
+  },
+  "cons": {
+    "en": ["Requires careful design and iteration", "Slower convergence", "Grader complexity", "Computational cost for multi-criteria"],
+    "ko": ["신중한 설계와 반복 필요", "느린 수렴", "평가기 복잡성", "다중 기준의 계산 비용"]
+  },
+  "tags": ["reward-hacking", "grading", "reinforcement-learning", "adversarial-robustness", "agent-rft"]
+}

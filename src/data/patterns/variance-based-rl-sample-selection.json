@@ -1,0 +1,32 @@
+{
+  "id": "variance-based-rl-sample-selection",
+  "title": "Variance-Based RL Sample Selection",
+  "title_ko": "분산 기반 RL 샘플 선택",
+  "category": "Learning & Adaptation",
+  "status": "emerging",
+  "original_url": "https://youtu.be/1s_7RMG4O4U",
+  "problem": {
+    "en": "Not all training samples are equally valuable for RL. Zero-variance samples (always correct or always wrong) provide no learning signal, wasting expensive compute.",
+    "ko": "모든 훈련 샘플이 RL에 동등하게 가치 있는 것은 아닙니다. 분산이 0인 샘플(항상 맞거나 항상 틀림)은 학습 신호를 제공하지 않아 비싼 컴퓨팅을 낭비합니다."
+  },
+  "solution": {
+    "en": "Run multiple baseline evaluations per sample to identify variance, then prioritize high-variance samples (sometimes correct) for training.",
+    "ko": "샘플당 여러 기준선 평가를 실행하여 분산을 식별한 다음, 훈련을 위해 높은 분산 샘플(가끔 맞는 것)을 우선순위화합니다."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│Run 3-5 Evals    │\n│  Per Sample     │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│Categorize:      │\n├─────────────────┤\n│• Always correct │\n│  (no learning)  │\n│• Always wrong   │\n│  (no learning)  │\n│• Sometimes right│\n│  (LEARN HERE!)  │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│Focus Training   │\n│on High-Variance │\n└─────────────────┘",
+  "mermaid_diagram": "graph TD\n    A[Dataset] --> B[Run 3-5 Evals Per Sample]\n    B --> C[Calculate Variance]\n    C --> D{Variance > 0?}\n    D -->|Yes| E[Include in Training]\n    D -->|No| F[Skip - No Learning Signal]\n    E --> G[Train with RL]",
+  "code_example": "class VarianceAnalyzer:\n    def __init__(self, agent, dataset, n_runs=3):\n        self.results = defaultdict(list)\n        \n    def run_baseline_evals(self):\n        for sample_idx, sample in enumerate(self.dataset):\n            for run in range(self.n_runs):\n                score = self.agent.evaluate(sample)\n                self.results[sample_idx].append(score)\n    \n    def identify_high_variance_samples(self, metrics, threshold=0.01):\n        return [\n            m for m in metrics\n            if m['variance'] > threshold\n            and 0 < m['mean_score'] < 1.0\n        ]\n\n# Usage: Focus RL training on high-variance samples\ntraining_data = [dataset[m['sample_idx']] for m in high_var_samples]",
+  "when_to_use": {
+    "en": ["Before expensive RL training", "Limited training budget", "Predicting training potential"],
+    "ko": ["비싼 RL 훈련 전", "제한된 훈련 예산", "훈련 잠재력 예측"]
+  },
+  "pros": {
+    "en": ["Data efficiency", "Predictive of improvement potential", "Guides hyperparameters"],
+    "ko": ["데이터 효율성", "개선 잠재력 예측", "하이퍼파라미터 가이드"]
+  },
+  "cons": {
+    "en": ["Upfront evaluation cost (3-5x)", "Noisy with small samples", "Variance changes during training"],
+    "ko": ["초기 평가 비용 (3-5배)", "작은 샘플로 노이즈", "훈련 중 분산 변화"]
+  },
+  "tags": ["reinforcement-learning", "sample-efficiency", "variance", "data-quality", "agent-rft"]
+}

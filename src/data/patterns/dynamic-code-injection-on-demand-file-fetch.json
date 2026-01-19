@@ -1,0 +1,32 @@
+{
+  "id": "dynamic-code-injection-on-demand-file-fetch",
+  "title": "Dynamic Code Injection (On-Demand File Fetch)",
+  "title_ko": "동적 코드 주입 (온디맨드 파일 가져오기)",
+  "category": "Context & Memory",
+  "status": "established",
+  "original_url": "https://www.nibzard.com/claude-code",
+  "problem": {
+    "en": "Manually copying/pasting files into prompts is tedious, wastes tokens, and interrupts workflow momentum.",
+    "ko": "프롬프트에 파일을 수동으로 복사/붙여넣기하는 것은 지루하고 토큰을 낭비하며 워크플로우 모멘텀을 방해합니다."
+  },
+  "solution": {
+    "en": "Allow on-demand file injection via special syntax (@filename, /load) that automatically fetches and summarizes files.",
+    "ko": "파일을 자동으로 가져오고 요약하는 특수 구문(@filename, /load)을 통해 온디맨드 파일 주입을 허용합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│User types:  │\n│@src/user.py │\n└──────┬──────┘\n       │ intercept\n┌──────▼──────┐\n│  Read File  │\n│  (or range) │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Inject into │\n│   Context   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Agent uses  │\n│  the code   │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[User: @src/user.py] --> B[Intercept Command]\n    B --> C[Read File from Disk]\n    C --> D{File Too Large?}\n    D -->|No| E[Inject Full Content]\n    D -->|Yes| F[Run Summarizer]\n    F --> E\n    E --> G[Agent Continues with Context]",
+  "code_example": "# Command syntax examples:\n# @path/to/file.ext → loads full file if < 2000 tokens\n# /load path:10-50 → loads lines 10-50\n# /summarize test_spec.py → extracts docstrings + test names\n\ndef handle_at_mention(path):\n    content = read_file(path)\n    if token_count(content) > 2000:\n        content = summarize(content)\n    return f'/// BEGIN {path}\\n{content}\\n/// END {path}'",
+  "when_to_use": {
+    "en": ["Interactive coding sessions", "Code exploration", "Multi-file context needs"],
+    "ko": ["대화형 코딩 세션", "코드 탐색", "멀티 파일 컨텍스트 필요"]
+  },
+  "pros": {
+    "en": ["Interactive exploration", "Reduced human overhead", "Improved agent accuracy"],
+    "ko": ["대화형 탐색", "인간 오버헤드 감소", "향상된 에이전트 정확도"]
+  },
+  "cons": {
+    "en": ["Requires file system access", "Security risk if unsandboxed", "Summarization may omit context"],
+    "ko": ["파일 시스템 접근 필요", "샌드박스 없으면 보안 위험", "요약이 맥락 생략 가능"]
+  },
+  "tags": ["file-injection", "at-mention", "slash-commands", "IDE-integration"]
+}

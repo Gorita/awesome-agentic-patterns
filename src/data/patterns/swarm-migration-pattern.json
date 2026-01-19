@@ -1,0 +1,32 @@
+{
+  "id": "swarm-migration-pattern",
+  "title": "Swarm Migration Pattern",
+  "title_ko": "스웜 마이그레이션 패턴",
+  "category": "Orchestration & Control",
+  "status": "validated-in-production",
+  "original_url": "https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it",
+  "problem": {
+    "en": "Large-scale migrations require changes across hundreds of files, exceeding single agent capacity.",
+    "ko": "대규모 마이그레이션이 수백 개 파일에 걸친 변경을 필요로 하여 단일 에이전트 용량을 초과합니다."
+  },
+  "solution": {
+    "en": "Spawn multiple sub-agents in parallel (like a swarm), each handling a subset of files, then merge results.",
+    "ko": "여러 서브 에이전트를 (스웜처럼) 병렬로 생성하여 각각 파일 하위 집합을 처리한 다음 결과를 병합합니다."
+  },
+  "ascii_diagram": "┌───────────────┐\n│  Migration    │\n│  1000 files   │\n└───────┬───────┘\n   ┌────┼────┐\n   ▼    ▼    ▼\n┌────┐┌────┐┌────┐\n│S1  ││S2  ││... │\n│100 ││100 ││    │\n│file││file││    │\n└─┬──┘└─┬──┘└─┬──┘\n  └─────┼─────┘\n        ▼\n   ┌─────────┐\n   │ Combine │\n   └─────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Migration Task] --> B[Split Files]\n    B --> C[Sub-Agent 1: 100 files]\n    B --> D[Sub-Agent 2: 100 files]\n    B --> E[Sub-Agent N: 100 files]\n    C & D & E --> F[Merge Results]",
+  "code_example": "files = get_all_migration_files()  # 1000 files\nchunks = split_into_chunks(files, chunk_size=100)\n\n# Spawn sub-agents in parallel\ntasks = [\n    spawn_agent(f'Migrate chunk {i}', chunk)\n    for i, chunk in enumerate(chunks)\n]\nresults = await asyncio.gather(*tasks)\n\n# Merge all changes\nmerge_results(results)",
+  "when_to_use": {
+    "en": ["Framework upgrades", "API migrations", "Large-scale refactoring"],
+    "ko": ["프레임워크 업그레이드", "API 마이그레이션", "대규모 리팩토링"]
+  },
+  "pros": {
+    "en": ["Massive parallelization", "Fast completion", "Failure isolation"],
+    "ko": ["대규모 병렬화", "빠른 완료", "실패 격리"]
+  },
+  "cons": {
+    "en": ["Coordination complexity", "Merge conflicts", "Higher costs"],
+    "ko": ["조정 복잡", "병합 충돌", "비용 증가"]
+  },
+  "tags": ["swarm", "map-reduce", "migration", "parallelization"]
+}

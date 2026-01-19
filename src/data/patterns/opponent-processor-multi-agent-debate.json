@@ -1,0 +1,32 @@
+{
+  "id": "opponent-processor-multi-agent-debate",
+  "title": "Opponent Processor / Multi-Agent Debate Pattern",
+  "title_ko": "반대자 프로세서 / 다중 에이전트 토론 패턴",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it",
+  "problem": {
+    "en": "Single-agent decision making suffers from confirmation bias, limited perspectives, insufficient scrutiny, and unexamined assumptions.",
+    "ko": "단일 에이전트 의사 결정은 확증 편향, 제한된 관점, 불충분한 검토, 검토되지 않은 가정으로 어려움을 겪습니다."
+  },
+  "solution": {
+    "en": "Spawn opposing agents with different goals or perspectives to debate each other's positions. The conflict surfaces blind spots, biases, and unconsidered alternatives.",
+    "ko": "서로 다른 목표나 관점을 가진 반대 에이전트를 생성하여 서로의 입장을 토론하게 합니다. 충돌이 사각지대, 편향, 고려하지 않은 대안을 표면화합니다."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│    Main Task    │\n└────────┬────────┘\n    ┌────┴────┐\n    ▼         ▼\n┌──────┐  ┌──────┐\n│Agent1│  │Agent2│\n│Advoc │  │Critic│\n└──┬───┘  └───┬──┘\n   │          │\n   ▼          ▼\n┌──────┐  ┌──────┐\n│Propose│  │Challenge│\n│Soln  │  │Solution│\n└──┬───┘  └───┬──┘\n   └────┬─────┘\n        ▼\n┌─────────────────┐\n│  Debate/Iterate │\n└────────┬────────┘\n         ▼\n┌─────────────────┐\n│Synthesized Decn │\n└─────────────────┘",
+  "mermaid_diagram": "graph TD\n    A[Main Task] --> B[Agent 1: Advocate]\n    A --> C[Agent 2: Critic/Auditor]\n    B --> D[Proposes Solution]\n    C --> E[Challenges Solution]\n    D --> F[Debate / Iteration]\n    E --> F\n    F --> G[Synthesized Decision]",
+  "code_example": "# Example: Expense filing with opposing agents\n# \"I have two subagents, one that represents me and one \n#  that represents the company. They do battle to figure \n#  out what's the proper actual set of expenses.\"\n\nclass DebateOrchestrator:\n    def debate(self, task):\n        advocate = Agent(role='pro_user')\n        auditor = Agent(role='pro_company')\n        \n        proposal = advocate.propose(task)\n        critique = auditor.challenge(proposal)\n        \n        for _ in range(max_rounds):\n            response = advocate.defend(critique)\n            critique = auditor.challenge(response)\n            if consensus_reached(response, critique):\n                break\n        \n        return synthesize(proposal, critiques)",
+  "when_to_use": {
+    "en": ["Bias-prone decisions", "Trade-off heavy scenarios", "Code review with security focus"],
+    "ko": ["편향되기 쉬운 결정", "트레이드오프가 많은 시나리오", "보안 중심 코드 리뷰"]
+  },
+  "pros": {
+    "en": ["Reduces bias", "Better decisions through scrutiny", "Explicit trade-offs"],
+    "ko": ["편향 감소", "검토를 통한 더 나은 결정", "명시적 트레이드오프"]
+  },
+  "cons": {
+    "en": ["2x+ token cost", "Slower execution", "May produce deadlocks"],
+    "ko": ["2배 이상 토큰 비용", "느린 실행", "교착 상태 발생 가능"]
+  },
+  "tags": ["multi-agent", "debate", "adversarial", "bias-reduction", "validation"]
+}

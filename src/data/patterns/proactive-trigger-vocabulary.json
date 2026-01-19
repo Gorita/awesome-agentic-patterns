@@ -1,0 +1,32 @@
+{
+  "id": "proactive-trigger-vocabulary",
+  "title": "Proactive Trigger Vocabulary",
+  "title_ko": "능동적 트리거 어휘",
+  "category": "UX & Collaboration",
+  "status": "emerging",
+  "original_url": "https://github.com/anthropics/claude-code",
+  "problem": {
+    "en": "Agents with many skills face routing problems; users don't know what phrases activate which capabilities.",
+    "ko": "많은 스킬을 가진 에이전트가 라우팅 문제에 직면합니다. 사용자는 어떤 문구가 어떤 기능을 활성화하는지 모릅니다."
+  },
+  "solution": {
+    "en": "Define explicit trigger vocabularies for each skill and document them visibly so users can learn the activation patterns.",
+    "ko": "각 스킬에 대한 명시적 트리거 어휘를 정의하고 사용자가 활성화 패턴을 배울 수 있도록 가시적으로 문서화합니다."
+  },
+  "ascii_diagram": "┌─────────────────────┐\n│   User Input        │\n└──────────┬──────────┘\n           │\n┌──────────▼──────────┐\n│  Match Triggers?    │\n├─────────────────────┤\n│ \"sup\" → priority    │\n│ \"hn\"  → hn-search   │\n│ \"mail\"→ email-triage│\n└──────────┬──────────┘\n           │\n┌──────────▼──────────┐\n│ Route to Skill      │\n└─────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[User Input] --> B{Match Triggers?}\n    B -->|sup| C[priority-report skill]\n    B -->|search hn| D[hn-search skill]\n    B -->|check mail| E[email-triage skill]\n    B -->|No match| F[General response]",
+  "code_example": "# Skill definition with explicit triggers\nskill_config = {\n    'name': 'priority-report',\n    'triggers': {\n        'exact': ['sup', 'priority report', 'standup prep'],\n        'contains': ['what should I work on', 'my tasks'],\n        'patterns': ['what.*on my plate']\n    },\n    'proactive': True  # Activate without explicit request\n}",
+  "when_to_use": {
+    "en": ["Multi-skill agents", "User-facing assistants", "Predictable routing needs"],
+    "ko": ["멀티 스킬 에이전트", "사용자 대상 어시스턴트", "예측 가능한 라우팅 필요"]
+  },
+  "pros": {
+    "en": ["Transparent", "Predictable", "Fast matching", "Documentable"],
+    "ko": ["투명함", "예측 가능", "빠른 매칭", "문서화 가능"]
+  },
+  "cons": {
+    "en": ["Rigid (misses paraphrases)", "Maintenance overhead", "Cultural/language bias"],
+    "ko": ["경직됨 (의역 놓침)", "유지보수 오버헤드", "문화/언어 편향"]
+  },
+  "tags": ["ux", "triggers", "intent-detection", "skill-routing"]
+}

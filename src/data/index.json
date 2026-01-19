@@ -1,0 +1,1617 @@
+{
+  "patterns": [
+    {
+      "id": "agent-powered-codebase-qa-onboarding",
+      "title": "Agent-Powered Codebase Q&A / Onboarding",
+      "title_ko": "에이전트 기반 코드베이스 Q&A / 온보딩",
+      "category": "Context & Memory",
+      "status": "validated-in-production",
+      "tags": [
+        "code-understanding",
+        "onboarding",
+        "q-and-a",
+        "retrieval",
+        "search",
+        "context-awareness",
+        "knowledge-base"
+      ]
+    },
+    {
+      "id": "context-window-anxiety-management",
+      "title": "Context Window Anxiety Management",
+      "title_ko": "컨텍스트 윈도우 불안 관리",
+      "category": "Context & Memory",
+      "status": "emerging",
+      "tags": [
+        "context-anxiety",
+        "token-management",
+        "premature-completion",
+        "model-behavior"
+      ]
+    },
+    {
+      "id": "context-minimization-pattern",
+      "title": "Context-Minimization Pattern",
+      "title_ko": "컨텍스트 최소화 패턴",
+      "category": "Context & Memory",
+      "status": "emerging",
+      "tags": [
+        "context-hygiene",
+        "taint-removal",
+        "prompt-injection",
+        "security"
+      ]
+    },
+    {
+      "id": "curated-code-context-window",
+      "title": "Curated Code Context Window",
+      "title_ko": "큐레이션된 코드 컨텍스트 윈도우",
+      "category": "Context & Memory",
+      "status": "validated-in-production",
+      "tags": [
+        "context-management",
+        "code-agent",
+        "file-selection",
+        "search"
+      ]
+    },
+    {
+      "id": "curated-file-context-window",
+      "title": "Curated File Context Window",
+      "title_ko": "큐레이션된 파일 컨텍스트 윈도우",
+      "category": "Context & Memory",
+      "status": "best-practice",
+      "tags": [
+        "code-context",
+        "file-scope",
+        "relevance",
+        "memory-management"
+      ]
+    },
+    {
+      "id": "dynamic-code-injection-on-demand-file-fetch",
+      "title": "Dynamic Code Injection (On-Demand File Fetch)",
+      "title_ko": "동적 코드 주입 (온디맨드 파일 가져오기)",
+      "category": "Context & Memory",
+      "status": "established",
+      "tags": [
+        "file-injection",
+        "at-mention",
+        "slash-commands",
+        "IDE-integration"
+      ]
+    },
+    {
+      "id": "dynamic-context-injection",
+      "title": "Dynamic Context Injection",
+      "title_ko": "동적 컨텍스트 주입",
+      "category": "Context & Memory",
+      "status": "established",
+      "tags": [
+        "context-management",
+        "dynamic-context",
+        "lazy-loading",
+        "slash-commands",
+        "at-mention",
+        "interactive-context"
+      ]
+    },
+    {
+      "id": "episodic-memory-retrieval-injection",
+      "title": "Episodic Memory Retrieval & Injection",
+      "title_ko": "일화적 메모리 검색 및 주입",
+      "category": "Context & Memory",
+      "status": "validated-in-production",
+      "tags": [
+        "episodic-memory",
+        "vector-db",
+        "retrieval-augmented",
+        "persistence"
+      ]
+    },
+    {
+      "id": "filesystem-based-agent-state",
+      "title": "Filesystem-Based Agent State",
+      "title_ko": "파일시스템 기반 에이전트 상태",
+      "category": "Context & Memory",
+      "status": "established",
+      "tags": [
+        "state-management",
+        "persistence",
+        "resumption",
+        "checkpointing"
+      ]
+    },
+    {
+      "id": "layered-configuration-context",
+      "title": "Layered Configuration Context",
+      "title_ko": "계층화된 구성 컨텍스트",
+      "category": "Context & Memory",
+      "status": "proposed",
+      "tags": [
+        "configuration",
+        "layered-config",
+        "context-management",
+        "hierarchy"
+      ]
+    },
+    {
+      "id": "memory-synthesis-from-execution-logs",
+      "title": "Memory Synthesis from Execution Logs",
+      "title_ko": "실행 로그에서 메모리 합성",
+      "category": "Context & Memory",
+      "status": "emerging",
+      "tags": [
+        "memory",
+        "logs",
+        "diary",
+        "synthesis",
+        "pattern-detection",
+        "knowledge-extraction",
+        "learning"
+      ]
+    },
+    {
+      "id": "proactive-agent-state-externalization",
+      "title": "Proactive Agent State Externalization",
+      "title_ko": "능동적 에이전트 상태 외부화",
+      "category": "Context & Memory",
+      "status": "emerging",
+      "tags": [
+        "state-externalization",
+        "memory-management",
+        "self-documentation",
+        "note-taking"
+      ]
+    },
+    {
+      "id": "progressive-disclosure-large-files",
+      "title": "Progressive Disclosure for Large Files",
+      "title_ko": "대용량 파일을 위한 점진적 공개",
+      "category": "Context & Memory",
+      "status": "emerging",
+      "tags": [
+        "progressive-disclosure",
+        "large-files",
+        "lazy-loading",
+        "metadata"
+      ]
+    },
+    {
+      "id": "semantic-context-filtering",
+      "title": "Semantic Context Filtering Pattern",
+      "title_ko": "의미론적 컨텍스트 필터링 패턴",
+      "category": "Context & Memory",
+      "status": "emerging",
+      "tags": [
+        "context-filtering",
+        "token-optimization",
+        "semantic-extraction",
+        "noise-reduction"
+      ]
+    },
+    {
+      "id": "ai-assisted-code-review-verification",
+      "title": "AI-Assisted Code Review / Verification",
+      "title_ko": "AI 지원 코드 리뷰 / 검증",
+      "category": "Feedback Loops",
+      "status": "emerging",
+      "tags": [
+        "code-review",
+        "verification",
+        "quality-assurance",
+        "human-ai-collaboration",
+        "trust",
+        "explainability"
+      ]
+    },
+    {
+      "id": "background-agent-ci",
+      "title": "Background Agent with CI Feedback",
+      "title_ko": "CI 피드백을 포함한 백그라운드 에이전트",
+      "category": "Feedback Loops",
+      "status": "validated-in-production",
+      "tags": [
+        "asynchronous",
+        "ci",
+        "feedback",
+        "background-agent",
+        "automation"
+      ]
+    },
+    {
+      "id": "coding-agent-ci-feedback-loop",
+      "title": "Coding Agent CI Feedback Loop",
+      "title_ko": "코딩 에이전트 CI 피드백 루프",
+      "category": "Feedback Loops",
+      "status": "best-practice",
+      "tags": [
+        "CI",
+        "coding-agent",
+        "asynchronous",
+        "test-driven"
+      ]
+    },
+    {
+      "id": "dogfooding-with-rapid-iteration",
+      "title": "Dogfooding with Rapid Iteration",
+      "title_ko": "빠른 반복을 통한 도그푸딩",
+      "category": "Feedback Loops",
+      "status": "best-practice",
+      "tags": [
+        "dogfooding",
+        "iterative-development",
+        "feedback-loop"
+      ]
+    },
+    {
+      "id": "dogfooding-with-rapid-iteration-for-agent-improvement",
+      "title": "Dogfooding with Rapid Iteration for Agent Improvement",
+      "title_ko": "에이전트 개선을 위한 빠른 반복 도그푸딩",
+      "category": "Feedback Loops",
+      "status": "best-practice",
+      "tags": [
+        "dogfooding",
+        "iterative-development",
+        "feedback-loop",
+        "agent-improvement",
+        "internal-testing",
+        "product-development"
+      ]
+    },
+    {
+      "id": "graph-of-thoughts",
+      "title": "Graph of Thoughts (GoT)",
+      "title_ko": "생각의 그래프 (GoT)",
+      "category": "Feedback Loops",
+      "status": "emerging",
+      "tags": [
+        "reasoning",
+        "graph-based",
+        "problem-solving",
+        "aggregation"
+      ]
+    },
+    {
+      "id": "inference-healed-code-review-reward",
+      "title": "Inference-Healed Code Review Reward",
+      "title_ko": "추론 치유 코드 리뷰 보상",
+      "category": "Feedback Loops",
+      "status": "proposed",
+      "tags": [
+        "reward-modeling",
+        "code-review",
+        "inference-healing",
+        "quality-assessment",
+        "rl-training"
+      ]
+    },
+    {
+      "id": "iterative-prompt-skill-refinement",
+      "title": "Iterative Prompt & Skill Refinement",
+      "title_ko": "반복적 프롬프트 및 스킬 개선",
+      "category": "Feedback Loops",
+      "status": "proposed",
+      "tags": [
+        "refinement",
+        "iteration",
+        "prompts",
+        "skills",
+        "feedback",
+        "dashboards"
+      ]
+    },
+    {
+      "id": "reflection",
+      "title": "Reflection Loop",
+      "title_ko": "반성 루프 패턴",
+      "category": "Feedback Loops",
+      "status": "established",
+      "tags": [
+        "self-feedback",
+        "iterative-improvement",
+        "evaluation"
+      ]
+    },
+    {
+      "id": "rich-feedback-loops",
+      "title": "Rich Feedback Loops > Perfect Prompts",
+      "title_ko": "완벽한 프롬프트보다 풍부한 피드백 루프",
+      "category": "Feedback Loops",
+      "status": "validated-in-production",
+      "tags": [
+        "feedback",
+        "testing",
+        "reliability"
+      ]
+    },
+    {
+      "id": "self-critique-evaluator-loop",
+      "title": "Self-Critique Evaluator Loop",
+      "title_ko": "자기 비판 평가자 루프",
+      "category": "Feedback Loops",
+      "status": "emerging",
+      "tags": [
+        "self-critique",
+        "evaluator",
+        "reward-model",
+        "synthetic-data"
+      ]
+    },
+    {
+      "id": "self-discover-reasoning-structures",
+      "title": "Self-Discover: LLM Self-Composed Reasoning Structures",
+      "title_ko": "자기 발견: LLM 자체 구성 추론 구조",
+      "category": "Feedback Loops",
+      "status": "emerging",
+      "tags": [
+        "reasoning",
+        "self-improvement",
+        "meta-learning",
+        "problem-solving"
+      ]
+    },
+    {
+      "id": "spec-as-test-feedback-loop",
+      "title": "Spec-As-Test Feedback Loop",
+      "title_ko": "스펙을 테스트로 사용하는 피드백 루프",
+      "category": "Feedback Loops",
+      "status": "proposed",
+      "tags": [
+        "validation",
+        "drift-detection",
+        "continuous-testing"
+      ]
+    },
+    {
+      "id": "tool-use-incentivization-via-reward-shaping",
+      "title": "Tool Use Incentivization via Reward Shaping",
+      "title_ko": "보상 설계를 통한 도구 사용 인센티브",
+      "category": "Feedback Loops",
+      "status": "emerging",
+      "tags": [
+        "tool-use",
+        "reward-shaping",
+        "coding-agent",
+        "RL"
+      ]
+    },
+    {
+      "id": "agent-reinforcement-fine-tuning",
+      "title": "Agent Reinforcement Fine-Tuning (Agent RFT)",
+      "title_ko": "에이전트 강화 미세조정 (Agent RFT)",
+      "category": "Learning & Adaptation",
+      "status": "emerging",
+      "tags": [
+        "reinforcement-learning",
+        "fine-tuning",
+        "tool-use",
+        "multi-step-rl",
+        "agent-training"
+      ]
+    },
+    {
+      "id": "compounding-engineering-pattern",
+      "title": "Compounding Engineering Pattern",
+      "title_ko": "복합 엔지니어링 패턴",
+      "category": "Learning & Adaptation",
+      "status": "emerging",
+      "tags": [
+        "learning",
+        "feedback-loops",
+        "codification",
+        "prompts",
+        "slash-commands"
+      ]
+    },
+    {
+      "id": "memory-reinforcement-learning-memrl",
+      "title": "Memory Reinforcement Learning (MemRL)",
+      "title_ko": "메모리 강화 학습 (MemRL)",
+      "category": "Learning & Adaptation",
+      "status": "proposed",
+      "tags": [
+        "reinforcement-learning",
+        "episodic-memory",
+        "self-evolution",
+        "value-aware-retrieval",
+        "runtime-learning"
+      ]
+    },
+    {
+      "id": "skill-library-evolution",
+      "title": "Skill Library Evolution",
+      "title_ko": "스킬 라이브러리 진화",
+      "category": "Learning & Adaptation",
+      "status": "established",
+      "tags": [
+        "code-reuse",
+        "skills",
+        "learning",
+        "capabilities",
+        "evolution",
+        "mcp"
+      ]
+    },
+    {
+      "id": "variance-based-rl-sample-selection",
+      "title": "Variance-Based RL Sample Selection",
+      "title_ko": "분산 기반 RL 샘플 선택",
+      "category": "Learning & Adaptation",
+      "status": "emerging",
+      "tags": [
+        "reinforcement-learning",
+        "sample-efficiency",
+        "variance",
+        "data-quality",
+        "agent-rft"
+      ]
+    },
+    {
+      "id": "action-selector-pattern",
+      "title": "Action-Selector Pattern",
+      "title_ko": "액션 선택자 패턴",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "prompt-injection",
+        "control-flow",
+        "safety",
+        "tool-use"
+      ]
+    },
+    {
+      "id": "agent-driven-research",
+      "title": "Agent-Driven Research",
+      "title_ko": "에이전트 주도 리서치",
+      "category": "Orchestration & Control",
+      "status": "established",
+      "tags": [
+        "research",
+        "information-retrieval",
+        "tool-use",
+        "iterative-process",
+        "autonomous-search"
+      ]
+    },
+    {
+      "id": "autonomous-workflow-agent-architecture",
+      "title": "Autonomous Workflow Agent Architecture",
+      "title_ko": "자율 워크플로우 에이전트 아키텍처",
+      "category": "Orchestration & Control",
+      "status": "established",
+      "tags": [
+        "workflow-automation",
+        "containerization",
+        "multi-agent",
+        "engineering-tasks",
+        "tmux"
+      ]
+    },
+    {
+      "id": "parallel-tool-execution",
+      "title": "Conditional Parallel Tool Execution",
+      "title_ko": "조건부 병렬 도구 실행",
+      "category": "Orchestration & Control",
+      "status": "validated-in-production",
+      "tags": [
+        "parallel-execution",
+        "tool-orchestration",
+        "concurrency",
+        "safety"
+      ]
+    },
+    {
+      "id": "continuous-autonomous-task-loop-pattern",
+      "title": "Continuous Autonomous Task Loop Pattern",
+      "title_ko": "연속 자율 작업 루프 패턴",
+      "category": "Orchestration & Control",
+      "status": "established",
+      "tags": [
+        "autonomous-execution",
+        "task-loop",
+        "rate-limiting",
+        "git-automation",
+        "cli-driven"
+      ]
+    },
+    {
+      "id": "discrete-phase-separation",
+      "title": "Discrete Phase Separation",
+      "title_ko": "분리된 단계 분리",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "orchestration",
+        "planning",
+        "research",
+        "context-management",
+        "multi-model"
+      ]
+    },
+    {
+      "id": "disposable-scaffolding-over-durable-features",
+      "title": "Disposable Scaffolding Over Durable Features",
+      "title_ko": "내구성 기능보다 일회용 스캐폴딩",
+      "category": "Orchestration & Control",
+      "status": "best-practice",
+      "tags": [
+        "bitter-lesson",
+        "temporary-tooling",
+        "adaptability",
+        "model-evolution"
+      ]
+    },
+    {
+      "id": "distributed-execution-cloud-workers",
+      "title": "Distributed Execution with Cloud Workers",
+      "title_ko": "클라우드 워커를 활용한 분산 실행",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "distributed-systems",
+        "parallelization",
+        "cloud",
+        "worktrees",
+        "git"
+      ]
+    },
+    {
+      "id": "dual-llm-pattern",
+      "title": "Dual LLM Pattern",
+      "title_ko": "이중 LLM 패턴",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "privilege-separation",
+        "quarantined-llm",
+        "security"
+      ]
+    },
+    {
+      "id": "explicit-posterior-sampling-planner",
+      "title": "Explicit Posterior-Sampling Planner",
+      "title_ko": "명시적 사후 샘플링 플래너",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "RL",
+        "PSRL",
+        "exploration",
+        "planning",
+        "decision-making"
+      ]
+    },
+    {
+      "id": "feature-list-as-immutable-contract",
+      "title": "Feature List as Immutable Contract",
+      "title_ko": "불변 계약으로서의 기능 목록",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "scope-control",
+        "acceptance-criteria",
+        "anti-scope-creep",
+        "long-running-agents"
+      ]
+    },
+    {
+      "id": "hybrid-llm-code-workflow-coordinator",
+      "title": "Hybrid LLM/Code Workflow Coordinator",
+      "title_ko": "하이브리드 LLM/코드 워크플로우 코디네이터",
+      "category": "Orchestration & Control",
+      "status": "proposed",
+      "tags": [
+        "hybrid",
+        "llm-driven",
+        "code-driven",
+        "coordinator",
+        "determinism",
+        "workflow-orchestration"
+      ]
+    },
+    {
+      "id": "inference-time-scaling",
+      "title": "Inference-Time Scaling",
+      "title_ko": "추론 시간 스케일링",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "scaling",
+        "inference",
+        "compute",
+        "reasoning",
+        "performance",
+        "test-time-compute"
+      ]
+    },
+    {
+      "id": "initializer-maintainer-dual-agent",
+      "title": "Initializer-Maintainer Dual Agent Architecture",
+      "title_ko": "초기화-유지관리 이중 에이전트 아키텍처",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "long-running-agents",
+        "session-handoff",
+        "lifecycle-specialization",
+        "project-bootstrap"
+      ]
+    },
+    {
+      "id": "inversion-of-control",
+      "title": "Inversion of Control",
+      "title_ko": "제어의 역전",
+      "category": "Orchestration & Control",
+      "status": "validated-in-production",
+      "tags": [
+        "orchestration",
+        "autonomy",
+        "control",
+        "agent-driven"
+      ]
+    },
+    {
+      "id": "iterative-multi-agent-brainstorming",
+      "title": "Iterative Multi-Agent Brainstorming",
+      "title_ko": "반복적 다중 에이전트 브레인스토밍",
+      "category": "Orchestration & Control",
+      "status": "experimental-but-awesome",
+      "tags": [
+        "multi-agent",
+        "brainstorming",
+        "parallel-processing",
+        "idea-generation",
+        "collaborative-ideation"
+      ]
+    },
+    {
+      "id": "llm-map-reduce-pattern",
+      "title": "LLM Map-Reduce Pattern",
+      "title_ko": "LLM 맵-리듀스 패턴",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "map-reduce",
+        "sub-agents",
+        "isolation",
+        "untrusted-data",
+        "security"
+      ]
+    },
+    {
+      "id": "language-agent-tree-search-lats",
+      "title": "Language Agent Tree Search (LATS)",
+      "title_ko": "언어 에이전트 트리 검색 (LATS)",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "search",
+        "monte-carlo",
+        "tree-search",
+        "reasoning",
+        "planning",
+        "reflection"
+      ]
+    },
+    {
+      "id": "multi-model-orchestration-for-complex-edits",
+      "title": "Multi-Model Orchestration for Complex Edits",
+      "title_ko": "복잡한 편집을 위한 다중 모델 오케스트레이션",
+      "category": "Orchestration & Control",
+      "status": "validated-in-production",
+      "tags": [
+        "multi-model",
+        "code-generation",
+        "code-editing",
+        "retrieval",
+        "pipeline"
+      ]
+    },
+    {
+      "id": "opponent-processor-multi-agent-debate",
+      "title": "Opponent Processor / Multi-Agent Debate Pattern",
+      "title_ko": "반대자 프로세서 / 다중 에이전트 토론 패턴",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "multi-agent",
+        "debate",
+        "adversarial",
+        "bias-reduction",
+        "validation"
+      ]
+    },
+    {
+      "id": "oracle-and-worker-multi-model",
+      "title": "Oracle and Worker Multi-Model Approach",
+      "title_ko": "오라클과 워커 멀티 모델 접근법",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "multi-model",
+        "cost-optimization",
+        "strategic-reasoning",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "parallel-tool-call-learning",
+      "title": "Parallel Tool Call Learning",
+      "title_ko": "병렬 도구 호출 학습",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "parallelization",
+        "latency-optimization",
+        "tool-use",
+        "reinforcement-learning",
+        "performance"
+      ]
+    },
+    {
+      "id": "plan-then-execute-pattern",
+      "title": "Plan-Then-Execute Pattern",
+      "title_ko": "계획 후 실행 패턴",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "planning",
+        "control-flow-integrity",
+        "prompt-injection",
+        "security"
+      ]
+    },
+    {
+      "id": "progressive-autonomy-with-model-evolution",
+      "title": "Progressive Autonomy with Model Evolution",
+      "title_ko": "모델 진화에 따른 점진적 자율성",
+      "category": "Orchestration & Control",
+      "status": "best-practice",
+      "tags": [
+        "model-evolution",
+        "scaffolding",
+        "autonomy",
+        "prompt-optimization"
+      ]
+    },
+    {
+      "id": "progressive-complexity-escalation",
+      "title": "Progressive Complexity Escalation",
+      "title_ko": "점진적 복잡성 확대",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "capabilities",
+        "gradual-rollout",
+        "risk-management",
+        "trust-building"
+      ]
+    },
+    {
+      "id": "self-rewriting-meta-prompt-loop",
+      "title": "Self-Rewriting Meta-Prompt Loop",
+      "title_ko": "자기 재작성 메타 프롬프트 루프",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "meta-prompting",
+        "self-improvement",
+        "system-prompt",
+        "reflection"
+      ]
+    },
+    {
+      "id": "specification-driven-agent-development",
+      "title": "Specification-Driven Agent Development",
+      "title_ko": "명세 기반 에이전트 개발",
+      "category": "Orchestration & Control",
+      "status": "proposed",
+      "tags": [
+        "spec-first",
+        "scaffolding",
+        "contract",
+        "requirements"
+      ]
+    },
+    {
+      "id": "stop-hook-auto-continue-pattern",
+      "title": "Stop Hook Auto-Continue Pattern",
+      "title_ko": "정지 훅 자동 계속 패턴",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "hooks",
+        "automation",
+        "testing",
+        "success-criteria",
+        "quality-gates"
+      ]
+    },
+    {
+      "id": "sub-agent-spawning",
+      "title": "Sub-Agent Spawning",
+      "title_ko": "서브 에이전트 생성 패턴",
+      "category": "Orchestration & Control",
+      "status": "validated-in-production",
+      "tags": [
+        "orchestration",
+        "context",
+        "scalability",
+        "subagents",
+        "parallelization"
+      ]
+    },
+    {
+      "id": "swarm-migration-pattern",
+      "title": "Swarm Migration Pattern",
+      "title_ko": "스웜 마이그레이션 패턴",
+      "category": "Orchestration & Control",
+      "status": "validated-in-production",
+      "tags": [
+        "swarm",
+        "map-reduce",
+        "migration",
+        "parallelization"
+      ]
+    },
+    {
+      "id": "three-stage-perception-architecture",
+      "title": "Three-Stage Perception Architecture",
+      "title_ko": "3단계 인식 아키텍처",
+      "category": "Orchestration & Control",
+      "status": "proposed",
+      "tags": [
+        "architecture",
+        "perception",
+        "processing",
+        "action",
+        "pipeline",
+        "modular-design"
+      ]
+    },
+    {
+      "id": "tool-capability-compartmentalization",
+      "title": "Tool Capability Compartmentalization",
+      "title_ko": "도구 기능 구획화",
+      "category": "Orchestration & Control",
+      "status": "emerging",
+      "tags": [
+        "capability-segregation",
+        "least-privilege",
+        "tool-permissions",
+        "security"
+      ]
+    },
+    {
+      "id": "tree-of-thought-reasoning",
+      "title": "Tree-of-Thought Reasoning",
+      "title_ko": "생각의 나무 추론",
+      "category": "Orchestration & Control",
+      "status": "established",
+      "tags": [
+        "branching",
+        "deliberate-reasoning",
+        "search",
+        "exploration"
+      ]
+    },
+    {
+      "id": "action-caching-replay",
+      "title": "Action Caching & Replay Pattern",
+      "title_ko": "액션 캐싱 및 리플레이 패턴",
+      "category": "Reliability & Eval",
+      "status": "emerging",
+      "tags": [
+        "caching",
+        "replay",
+        "regression-testing",
+        "cost-reduction",
+        "deterministic",
+        "xpath"
+      ]
+    },
+    {
+      "id": "anti-reward-hacking-grader-design",
+      "title": "Anti-Reward-Hacking Grader Design",
+      "title_ko": "보상 해킹 방지 평가기 설계",
+      "category": "Reliability & Eval",
+      "status": "emerging",
+      "tags": [
+        "reward-hacking",
+        "grading",
+        "reinforcement-learning",
+        "adversarial-robustness",
+        "agent-rft"
+      ]
+    },
+    {
+      "id": "asynchronous-coding-agent-pipeline",
+      "title": "Asynchronous Coding Agent Pipeline",
+      "title_ko": "비동기 코딩 에이전트 파이프라인",
+      "category": "Reliability & Eval",
+      "status": "proposed",
+      "tags": [
+        "asynchronous",
+        "pipeline",
+        "code-agent",
+        "parallelism",
+        "rl-training"
+      ]
+    },
+    {
+      "id": "criticgpt-style-evaluation",
+      "title": "CriticGPT-Style Code Review",
+      "title_ko": "CriticGPT 스타일 코드 리뷰",
+      "category": "Reliability & Eval",
+      "status": "validated-in-production",
+      "tags": [
+        "evaluation",
+        "code-review",
+        "critique",
+        "bug-detection"
+      ]
+    },
+    {
+      "id": "extended-coherence-work-sessions",
+      "title": "Extended Coherence Work Sessions",
+      "title_ko": "장시간 일관성 유지 작업 세션",
+      "category": "Reliability & Eval",
+      "status": "rapidly-improving",
+      "tags": [
+        "coherence",
+        "long-running-tasks",
+        "agent-capability",
+        "complex-projects",
+        "context-window"
+      ]
+    },
+    {
+      "id": "llm-observability",
+      "title": "LLM Observability",
+      "title_ko": "LLM 관측성",
+      "category": "Reliability & Eval",
+      "status": "proposed",
+      "tags": [
+        "observability",
+        "logging",
+        "debugging",
+        "tracing",
+        "datadog",
+        "langsmith",
+        "monitoring",
+        "llmops"
+      ]
+    },
+    {
+      "id": "lethal-trifecta-threat-model",
+      "title": "Lethal Trifecta Threat Model",
+      "title_ko": "치명적 삼중 위협 모델",
+      "category": "Reliability & Eval",
+      "status": "best-practice",
+      "tags": [
+        "security",
+        "prompt-injection",
+        "threat-model",
+        "data-exfiltration"
+      ]
+    },
+    {
+      "id": "merged-code-language-skill-model",
+      "title": "Merged Code + Language Skill Model",
+      "title_ko": "코드 + 언어 스킬 모델 병합",
+      "category": "Reliability & Eval",
+      "status": "emerging",
+      "tags": [
+        "model-merging",
+        "transfer-learning",
+        "coding-agent",
+        "multilingual",
+        "decentralized-training"
+      ]
+    },
+    {
+      "id": "no-token-limit-magic",
+      "title": "No-Token-Limit Magic",
+      "title_ko": "토큰 제한 없는 마법",
+      "category": "Reliability & Eval",
+      "status": "experimental-but-awesome",
+      "tags": [
+        "performance",
+        "cost",
+        "experimentation",
+        "prototyping",
+        "token-optimization"
+      ]
+    },
+    {
+      "id": "rlaif-reinforcement-learning-from-ai-feedback",
+      "title": "RLAIF (Reinforcement Learning from AI Feedback)",
+      "title_ko": "RLAIF (AI 피드백으로부터의 강화 학습)",
+      "category": "Reliability & Eval",
+      "status": "emerging",
+      "tags": [
+        "rlhf",
+        "rlaif",
+        "constitutional-ai",
+        "synthetic-data",
+        "alignment"
+      ]
+    },
+    {
+      "id": "schema-validation-retry-cross-step-learning",
+      "title": "Schema Validation Retry with Cross-Step Learning",
+      "title_ko": "크로스 스텝 학습을 통한 스키마 검증 재시도",
+      "category": "Reliability & Eval",
+      "status": "emerging",
+      "tags": [
+        "retry",
+        "validation",
+        "cross-step-learning",
+        "structured-output",
+        "zod"
+      ]
+    },
+    {
+      "id": "structured-output-specification",
+      "title": "Structured Output Specification",
+      "title_ko": "구조화된 출력 명세",
+      "category": "Reliability & Eval",
+      "status": "established",
+      "tags": [
+        "structured-output",
+        "schema",
+        "validation",
+        "reliability"
+      ]
+    },
+    {
+      "id": "versioned-constitution-governance",
+      "title": "Versioned Constitution Governance",
+      "title_ko": "버전 관리 헌법 거버넌스",
+      "category": "Reliability & Eval",
+      "status": "emerging",
+      "tags": [
+        "constitution",
+        "alignment",
+        "governance",
+        "signed-commits",
+        "policy",
+        "safety"
+      ]
+    },
+    {
+      "id": "workflow-evals-with-mocked-tools",
+      "title": "Workflow Evals with Mocked Tools",
+      "title_ko": "모의 도구를 사용한 워크플로우 평가",
+      "category": "Reliability & Eval",
+      "status": "emerging",
+      "tags": [
+        "evals",
+        "testing",
+        "ci-cd",
+        "mocked-tools",
+        "simulations",
+        "workflow-validation"
+      ]
+    },
+    {
+      "id": "deterministic-security-scanning-build-loop",
+      "title": "Deterministic Security Scanning Build Loop",
+      "title_ko": "결정론적 보안 스캔 빌드 루프",
+      "category": "Security & Safety",
+      "status": "proposed",
+      "tags": [
+        "security",
+        "deterministic",
+        "build-loop",
+        "backpressure",
+        "static-analysis"
+      ]
+    },
+    {
+      "id": "isolated-vm-per-rl-rollout",
+      "title": "Isolated VM per RL Rollout",
+      "title_ko": "RL 롤아웃당 격리된 VM",
+      "category": "Security & Safety",
+      "status": "emerging",
+      "tags": [
+        "isolation",
+        "security",
+        "reinforcement-learning",
+        "infrastructure",
+        "agent-rft"
+      ]
+    },
+    {
+      "id": "pii-tokenization",
+      "title": "PII Tokenization",
+      "title_ko": "PII 토큰화",
+      "category": "Security & Safety",
+      "status": "established",
+      "tags": [
+        "privacy",
+        "pii",
+        "security",
+        "mcp",
+        "data-protection"
+      ]
+    },
+    {
+      "id": "ai-web-search-agent-loop",
+      "title": "AI Web Search Agent Loop",
+      "title_ko": "AI 웹 검색 에이전트 루프",
+      "category": "Tool Use & Environment",
+      "status": "emerging",
+      "tags": [
+        "web-search",
+        "serp-api",
+        "citations",
+        "parallel-agents",
+        "query-translation",
+        "grounding"
+      ]
+    },
+    {
+      "id": "agent-sdk-for-programmatic-control",
+      "title": "Agent SDK for Programmatic Control",
+      "title_ko": "프로그래밍 방식 제어를 위한 에이전트 SDK",
+      "category": "Tool Use & Environment",
+      "status": "emerging",
+      "tags": [
+        "sdk",
+        "automation",
+        "ci/cd",
+        "programmatic-access",
+        "scripting",
+        "headless-agent"
+      ]
+    },
+    {
+      "id": "agent-first-tooling-and-logging",
+      "title": "Agent-First Tooling and Logging",
+      "title_ko": "에이전트 우선 도구 및 로깅",
+      "category": "Tool Use & Environment",
+      "status": "emerging",
+      "tags": [
+        "tool-design",
+        "logging",
+        "machine-readable",
+        "observability",
+        "agent-environment"
+      ]
+    },
+    {
+      "id": "agentic-search-over-vector-embeddings",
+      "title": "Agentic Search Over Vector Embeddings",
+      "title_ko": "벡터 임베딩 대신 에이전틱 검색",
+      "category": "Tool Use & Environment",
+      "status": "best-practice",
+      "tags": [
+        "search",
+        "vector-embeddings",
+        "bash",
+        "grep",
+        "RAG",
+        "agentic-RAG"
+      ]
+    },
+    {
+      "id": "cli-first-skill-design",
+      "title": "CLI-First Skill Design",
+      "title_ko": "CLI 우선 스킬 설계",
+      "category": "Tool Use & Environment",
+      "status": "proposed",
+      "tags": [
+        "cli",
+        "skills",
+        "testing",
+        "debugging",
+        "design-pattern"
+      ]
+    },
+    {
+      "id": "cli-native-agent-orchestration",
+      "title": "CLI-Native Agent Orchestration",
+      "title_ko": "CLI 네이티브 에이전트 오케스트레이션",
+      "category": "Tool Use & Environment",
+      "status": "proposed",
+      "tags": [
+        "cli",
+        "automation",
+        "local-dev",
+        "headless"
+      ]
+    },
+    {
+      "id": "code-first-tool-interface-pattern",
+      "title": "Code Mode MCP Tool Interface Pattern",
+      "title_ko": "코드 모드 MCP 도구 인터페이스 패턴",
+      "category": "Tool Use & Environment",
+      "status": "established",
+      "tags": [
+        "tool-interface",
+        "code-generation",
+        "sandboxing",
+        "mcp",
+        "typescript",
+        "v8-isolates",
+        "token-optimization"
+      ]
+    },
+    {
+      "id": "code-over-api-pattern",
+      "title": "Code-Over-API Pattern",
+      "title_ko": "API 대신 코드 패턴",
+      "category": "Tool Use & Environment",
+      "status": "established",
+      "tags": [
+        "token-optimization",
+        "code-execution",
+        "data-processing",
+        "mcp"
+      ]
+    },
+    {
+      "id": "code-then-execute-pattern",
+      "title": "Code-Then-Execute Pattern",
+      "title_ko": "코드 후 실행 패턴",
+      "category": "Tool Use & Environment",
+      "status": "emerging",
+      "tags": [
+        "dsl",
+        "sandbox",
+        "program-synthesis",
+        "auditability",
+        "taint-tracking"
+      ]
+    },
+    {
+      "id": "dual-use-tool-design",
+      "title": "Dual-Use Tool Design",
+      "title_ko": "이중 사용 도구 설계",
+      "category": "Tool Use & Environment",
+      "status": "best-practice",
+      "tags": [
+        "tools",
+        "ux",
+        "slash-commands",
+        "human-ai-collaboration"
+      ]
+    },
+    {
+      "id": "egress-lockdown-no-exfiltration-channel",
+      "title": "Egress Lockdown (No-Exfiltration Channel)",
+      "title_ko": "송신 잠금 (데이터 유출 채널 차단)",
+      "category": "Tool Use & Environment",
+      "status": "established",
+      "tags": [
+        "network-sandbox",
+        "exfiltration",
+        "outbound-controls",
+        "security"
+      ]
+    },
+    {
+      "id": "llm-friendly-api-design",
+      "title": "LLM-Friendly API Design",
+      "title_ko": "LLM 친화적 API 설계",
+      "category": "Tool Use & Environment",
+      "status": "emerging",
+      "tags": [
+        "api-design",
+        "llm-interaction",
+        "tool-use",
+        "system-design",
+        "agent-compatibility"
+      ]
+    },
+    {
+      "id": "multi-platform-communication-aggregation",
+      "title": "Multi-Platform Communication Aggregation",
+      "title_ko": "다중 플랫폼 커뮤니케이션 집계",
+      "category": "Tool Use & Environment",
+      "status": "emerging",
+      "tags": [
+        "search",
+        "aggregation",
+        "parallel",
+        "communication",
+        "unified-interface"
+      ]
+    },
+    {
+      "id": "multi-platform-webhook-triggers",
+      "title": "Multi-Platform Webhook Triggers",
+      "title_ko": "다중 플랫폼 웹훅 트리거",
+      "category": "Tool Use & Environment",
+      "status": "emerging",
+      "tags": [
+        "webhooks",
+        "triggers",
+        "integrations",
+        "slack",
+        "notion",
+        "jira",
+        "event-driven"
+      ]
+    },
+    {
+      "id": "patch-steering-via-prompted-tool-selection",
+      "title": "Patch Steering via Prompted Tool Selection",
+      "title_ko": "프롬프트 도구 선택을 통한 패치 조정",
+      "category": "Tool Use & Environment",
+      "status": "best-practice",
+      "tags": [
+        "patching",
+        "prompt-steering",
+        "tool-selection",
+        "coding-agent"
+      ]
+    },
+    {
+      "id": "progressive-tool-discovery",
+      "title": "Progressive Tool Discovery",
+      "title_ko": "점진적 도구 발견",
+      "category": "Tool Use & Environment",
+      "status": "established",
+      "tags": [
+        "mcp",
+        "tool-discovery",
+        "context-optimization",
+        "lazy-loading"
+      ]
+    },
+    {
+      "id": "shell-command-contextualization",
+      "title": "Shell Command Contextualization",
+      "title_ko": "셸 명령 컨텍스트화",
+      "category": "Tool Use & Environment",
+      "status": "established",
+      "tags": [
+        "shell-integration",
+        "context-management",
+        "local-execution",
+        "cli"
+      ]
+    },
+    {
+      "id": "subagent-compilation-checker",
+      "title": "Subagent Compilation Checker",
+      "title_ko": "서브에이전트 컴파일 검사기",
+      "category": "Tool Use & Environment",
+      "status": "emerging",
+      "tags": [
+        "subagent",
+        "compilation",
+        "modularity",
+        "error-isolation"
+      ]
+    },
+    {
+      "id": "tool-use-steering-via-prompting",
+      "title": "Tool Use Steering via Prompting",
+      "title_ko": "프롬프팅을 통한 도구 사용 조종",
+      "category": "Tool Use & Environment",
+      "status": "best-practice",
+      "tags": [
+        "tool-use",
+        "prompting",
+        "agent-guidance",
+        "custom-tools",
+        "natural-language-control"
+      ]
+    },
+    {
+      "id": "virtual-machine-operator-agent",
+      "title": "Virtual Machine Operator Agent",
+      "title_ko": "가상 머신 운영자 에이전트",
+      "category": "Tool Use & Environment",
+      "status": "established",
+      "tags": [
+        "computer-operation",
+        "virtual-machine",
+        "execution-environment",
+        "agent-capability"
+      ]
+    },
+    {
+      "id": "visual-ai-multimodal-integration",
+      "title": "Visual AI Multimodal Integration",
+      "title_ko": "비주얼 AI 멀티모달 통합",
+      "category": "Tool Use & Environment",
+      "status": "emerging",
+      "tags": [
+        "multimodal",
+        "vision",
+        "video",
+        "image-processing",
+        "visual-understanding"
+      ]
+    },
+    {
+      "id": "ai-accelerated-learning-and-skill-development",
+      "title": "AI-Accelerated Learning and Skill Development",
+      "title_ko": "AI 가속 학습 및 스킬 개발",
+      "category": "UX & Collaboration",
+      "status": "validated-in-production",
+      "tags": [
+        "developer-productivity",
+        "learning",
+        "skill-acquisition",
+        "iteration",
+        "feedback",
+        "education",
+        "junior-developer"
+      ]
+    },
+    {
+      "id": "abstracted-code-representation-for-review",
+      "title": "Abstracted Code Representation for Review",
+      "title_ko": "코드 리뷰를 위한 추상화된 표현",
+      "category": "UX & Collaboration",
+      "status": "proposed",
+      "tags": [
+        "code-review",
+        "verification",
+        "abstraction",
+        "pseudocode",
+        "intent-based-review",
+        "explainability"
+      ]
+    },
+    {
+      "id": "agent-assisted-scaffolding",
+      "title": "Agent-Assisted Scaffolding",
+      "title_ko": "에이전트 지원 스캐폴딩",
+      "category": "UX & Collaboration",
+      "status": "validated-in-production",
+      "tags": [
+        "code-generation",
+        "bootstrapping",
+        "scaffolding",
+        "feature-development",
+        "ide",
+        "initial-setup"
+      ]
+    },
+    {
+      "id": "agent-friendly-workflow-design",
+      "title": "Agent-Friendly Workflow Design",
+      "title_ko": "에이전트 친화적 워크플로우 설계",
+      "category": "UX & Collaboration",
+      "status": "best-practice",
+      "tags": [
+        "human-agent-collaboration",
+        "workflow-design",
+        "agent-autonomy",
+        "task-decomposition",
+        "hci"
+      ]
+    },
+    {
+      "id": "chain-of-thought-monitoring-interruption",
+      "title": "Chain-of-Thought Monitoring & Interruption",
+      "title_ko": "사고 사슬 모니터링 및 중단",
+      "category": "UX & Collaboration",
+      "status": "emerging",
+      "tags": [
+        "monitoring",
+        "intervention",
+        "debugging",
+        "reasoning",
+        "ux",
+        "human-in-loop"
+      ]
+    },
+    {
+      "id": "democratization-of-tooling-via-agents",
+      "title": "Democratization of Tooling via Agents",
+      "title_ko": "에이전트를 통한 도구화 민주화",
+      "category": "UX & Collaboration",
+      "status": "emerging",
+      "tags": [
+        "no-code",
+        "low-code",
+        "citizen-developer",
+        "tool-creation",
+        "business-users",
+        "automation"
+      ]
+    },
+    {
+      "id": "human-in-loop-approval-framework",
+      "title": "Human-in-the-Loop Approval Framework",
+      "title_ko": "휴먼 인 더 루프 승인 프레임워크",
+      "category": "UX & Collaboration",
+      "status": "validated-in-production",
+      "tags": [
+        "human-oversight",
+        "safety",
+        "approvals",
+        "risk-management"
+      ]
+    },
+    {
+      "id": "latent-demand-product-discovery",
+      "title": "Latent Demand Product Discovery",
+      "title_ko": "잠재 수요 제품 발견",
+      "category": "UX & Collaboration",
+      "status": "best-practice",
+      "tags": [
+        "product-discovery",
+        "extensibility",
+        "hackable-products",
+        "power-users",
+        "latent-demand"
+      ]
+    },
+    {
+      "id": "proactive-trigger-vocabulary",
+      "title": "Proactive Trigger Vocabulary",
+      "title_ko": "능동적 트리거 어휘",
+      "category": "UX & Collaboration",
+      "status": "emerging",
+      "tags": [
+        "ux",
+        "triggers",
+        "intent-detection",
+        "skill-routing"
+      ]
+    },
+    {
+      "id": "seamless-background-to-foreground-handoff",
+      "title": "Seamless Background-to-Foreground Handoff",
+      "title_ko": "원활한 백그라운드-포그라운드 핸드오프",
+      "category": "UX & Collaboration",
+      "status": "emerging",
+      "tags": [
+        "background-agent",
+        "human-in-the-loop",
+        "task-handoff",
+        "workflow"
+      ]
+    },
+    {
+      "id": "spectrum-of-control-blended-initiative",
+      "title": "Spectrum of Control / Blended Initiative",
+      "title_ko": "제어 스펙트럼 / 혼합 주도권",
+      "category": "UX & Collaboration",
+      "status": "validated-in-production",
+      "tags": [
+        "human-agent-collaboration",
+        "autonomy-spectrum",
+        "interactive-control"
+      ]
+    },
+    {
+      "id": "team-shared-agent-configuration",
+      "title": "Team-Shared Agent Configuration as Code",
+      "title_ko": "팀 공유 에이전트 설정 코드화",
+      "category": "UX & Collaboration",
+      "status": "best-practice",
+      "tags": [
+        "configuration",
+        "version-control",
+        "team-collaboration",
+        "permissions",
+        "consistency",
+        "onboarding"
+      ]
+    },
+    {
+      "id": "verbose-reasoning-transparency",
+      "title": "Verbose Reasoning Transparency",
+      "title_ko": "상세 추론 투명성",
+      "category": "UX & Collaboration",
+      "status": "best-practice",
+      "tags": [
+        "explainability",
+        "debugging",
+        "transparency",
+        "verbose-mode"
+      ]
+    }
+  ],
+  "total": 117
+}

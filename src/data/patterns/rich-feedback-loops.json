@@ -1,0 +1,32 @@
+{
+  "id": "rich-feedback-loops",
+  "title": "Rich Feedback Loops > Perfect Prompts",
+  "title_ko": "완벽한 프롬프트보다 풍부한 피드백 루프",
+  "category": "Feedback Loops",
+  "status": "validated-in-production",
+  "original_url": "https://www.nibzard.com/ampcode",
+  "problem": {
+    "en": "Crafting perfect prompts is fragile and time-consuming; agents need real-world feedback to improve reliably.",
+    "ko": "완벽한 프롬프트를 만드는 것은 취약하고 시간이 많이 걸립니다. 에이전트는 신뢰할 수 있는 개선을 위해 실제 피드백이 필요합니다."
+  },
+  "solution": {
+    "en": "Invest in rich feedback mechanisms like tests, linters, and CI systems rather than over-engineering prompts.",
+    "ko": "프롬프트를 과도하게 엔지니어링하기보다 테스트, 린터, CI 시스템과 같은 풍부한 피드백 메커니즘에 투자합니다."
+  },
+  "ascii_diagram": "┌──────────────────────┐\n│ Instead of:          │\n│ Perfect Prompt ────? │\n│                      │\n│ Do this:             │\n│ Agent ──▶ Tests      │\n│       ──▶ Linter     │\n│       ──▶ CI         │\n│       ──▶ Improve    │\n└──────────────────────┘",
+  "mermaid_diagram": "flowchart LR\n    A[Agent Output] --> B[Tests]\n    A --> C[Linter]\n    A --> D[CI]\n    B & C & D --> E[Feedback]\n    E --> F[Improve]",
+  "code_example": "# Don't: spend hours on perfect prompt\n# Do: build feedback systems\nresult = agent.execute(task)\nfeedback = [\n    tests.run(result),\n    linter.check(result),\n    ci.validate(result)\n]\nagent.improve_from(feedback)",
+  "when_to_use": {
+    "en": ["Coding agents", "Quality-critical tasks", "Iterative development"],
+    "ko": ["코딩 에이전트", "품질 중요 작업", "반복 개발"]
+  },
+  "pros": {
+    "en": ["Robustness", "Continuous improvement", "Real-world validation"],
+    "ko": ["견고함", "지속적 개선", "실제 검증"]
+  },
+  "cons": {
+    "en": ["Infrastructure required", "Initial setup costs"],
+    "ko": ["인프라 필요", "초기 설정 비용"]
+  },
+  "tags": ["feedback", "testing", "reliability"]
+}

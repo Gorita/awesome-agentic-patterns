@@ -1,0 +1,32 @@
+{
+  "id": "lethal-trifecta-threat-model",
+  "title": "Lethal Trifecta Threat Model",
+  "title_ko": "치명적 삼중 위협 모델",
+  "category": "Reliability & Eval",
+  "status": "best-practice",
+  "original_url": "https://simonwillison.net/2025/Jun/16/lethal-trifecta/",
+  "problem": {
+    "en": "Agents with access to untrusted data, tools, and egress channels are vulnerable to prompt injection attacks.",
+    "ko": "신뢰할 수 없는 데이터, 도구, 송신 채널에 접근하는 에이전트가 프롬프트 인젝션 공격에 취약합니다."
+  },
+  "solution": {
+    "en": "Identify and break the lethal trifecta by removing at least one of: untrusted data access, tool access, or exfiltration channels.",
+    "ko": "신뢰할 수 없는 데이터 접근, 도구 접근, 또는 송신 채널 중 최소 하나를 제거하여 치명적 삼중을 식별하고 차단합니다."
+  },
+  "ascii_diagram": "┌─────────────────────────┐\n│   LETHAL TRIFECTA       │\n├─────────────────────────┤\n│ 1. Untrusted Data       │\n│    (emails, web, etc.)  │\n│            +            │\n│ 2. Tool Access          │\n│    (file, API, etc.)    │\n│            +            │\n│ 3. Exfiltration         │\n│    (network, etc.)      │\n│            =            │\n│    SECURITY RISK!       │\n│                         │\n│ Break ANY ONE → Safer   │\n└─────────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Untrusted Data] --> D{All Three Present?}\n    B[Tool Access] --> D\n    C[Exfiltration Channel] --> D\n    D -->|Yes| E[DANGER: Full Attack Surface]\n    D -->|Missing One| F[Safer: Attack Limited]",
+  "code_example": "def assess_trifecta(agent):\n    has_untrusted = agent.processes_external_data\n    has_tools = agent.can_execute_actions\n    has_egress = agent.can_send_outbound\n    \n    if all([has_untrusted, has_tools, has_egress]):\n        return 'CRITICAL: Lethal trifecta present'\n    else:\n        return 'Safer: Trifecta broken'\n\n# Break one: no egress for untrusted data handlers\nif agent.processes_untrusted:\n    agent.disable_egress()",
+  "when_to_use": {
+    "en": ["Agent security design", "Threat analysis", "Architecture review"],
+    "ko": ["에이전트 보안 설계", "위협 분석", "아키텍처 리뷰"]
+  },
+  "pros": {
+    "en": ["Clear threat model", "Defense prioritization", "Design guidance"],
+    "ko": ["명확한 위협 모델", "방어 우선순위", "설계 가이드"]
+  },
+  "cons": {
+    "en": ["May limit functionality", "Doesn't cover all threats"],
+    "ko": ["기능 제한 가능", "모든 위협 커버 불가"]
+  },
+  "tags": ["security", "prompt-injection", "threat-model", "data-exfiltration"]
+}

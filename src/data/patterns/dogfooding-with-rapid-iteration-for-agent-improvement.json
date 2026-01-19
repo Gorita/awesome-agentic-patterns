@@ -1,0 +1,32 @@
+{
+  "id": "dogfooding-with-rapid-iteration-for-agent-improvement",
+  "title": "Dogfooding with Rapid Iteration for Agent Improvement",
+  "title_ko": "에이전트 개선을 위한 빠른 반복 도그푸딩",
+  "category": "Feedback Loops",
+  "status": "best-practice",
+  "original_url": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+  "problem": {
+    "en": "Developing effective AI agents requires understanding real-world usage and quickly identifying improvements. External feedback loops are slow, and simulated environments may not capture all nuances of actual use.",
+    "ko": "효과적인 AI 에이전트를 개발하려면 실제 사용을 이해하고 개선 사항을 빠르게 식별해야 합니다. 외부 피드백 루프는 느리고, 시뮬레이션 환경은 실제 사용의 모든 뉘앙스를 포착하지 못할 수 있습니다."
+  },
+  "solution": {
+    "en": "Development team extensively uses their own agent product (dogfooding) for daily tasks. Provides direct feedback, real-world testing, internal experimentation, rapid iteration, and honest assessment of feature utility.",
+    "ko": "개발팀이 일상 작업에 자체 에이전트 제품을 광범위하게 사용합니다(도그푸딩). 직접적인 피드백, 실제 테스트, 내부 실험, 빠른 반복, 기능 유용성에 대한 솔직한 평가를 제공합니다."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│   Agent Development Team        │\n│   Uses Agent for Daily Work     │\n└───────────────┬─────────────────┘\n                │\n    ┌───────────┼───────────┐\n    │           │           │\n┌───▼───┐ ┌─────▼─────┐ ┌───▼───────┐\n│Direct │ │Real-World │ │ Honest    │\n│Feedback│ │Testing    │ │Assessment │\n└───┬───┘ └─────┬─────┘ └───┬───────┘\n    │           │           │\n    └───────────┼───────────┘\n                │\n┌───────────────▼─────────────────┐\n│   Rapid Iteration Loop          │\n│   • Identify pain points        │\n│   • Prototype solutions         │\n│   • Validate internally         │\n│   • Ship or discard quickly     │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│   Improved Agent Product        │\n└─────────────────────────────────┘\n\n   Anthropic: 70-80% daily usage\n   Feedback post every 5 minutes",
+  "mermaid_diagram": "flowchart TD\n    A[Dev Team Uses Agent Daily] --> B[Encounter Strengths/Weaknesses]\n    B --> C[Report via Feedback Channel]\n    C --> D[Identify Patterns]\n    D --> E{Useful Feature?}\n    E -->|Yes| F[Ship to External Users]\n    E -->|No| G[Discard Quickly]\n    F --> A\n    G --> A",
+  "code_example": "# Dogfooding workflow at Anthropic/Cursor\n\n# 1. Internal adoption\n# 70-80% of technical employees use the agent daily\n\n# 2. Feedback channel\n# Posts every 5 minutes with:\n# - Pain points encountered\n# - Feature suggestions\n# - Bug reports\n# - Success stories\n\n# 3. Rapid iteration\nclass DogfoodingLoop:\n    def process_feedback(self, feedback):\n        # Quick signal on whether people like it\n        if feedback.is_bug:\n            self.prioritize_fix(feedback)\n        elif feedback.is_pain_point:\n            self.prototype_solution(feedback)\n        elif feedback.is_feature_request:\n            self.evaluate_for_internal_testing(feedback)\n    \n    def ship_feature(self, feature):\n        # Push to internal users first\n        self.deploy_internal(feature)\n        \n        # Get rapid validation\n        if self.internal_feedback_positive(feature):\n            self.deploy_external(feature)\n        else:\n            self.iterate_or_discard(feature)\n\n# Example: To-do lists, sub-agents, hooks all originated\n# from internal team members solving their own problems",
+  "when_to_use": {
+    "en": ["Agent product development", "Creating tight feedback loops", "Validating features before release", "Building features developers actually want"],
+    "ko": ["에이전트 제품 개발", "긴밀한 피드백 루프 생성", "출시 전 기능 검증", "개발자가 실제로 원하는 기능 구축"]
+  },
+  "pros": {
+    "en": ["Direct, immediate feedback", "Real-world problem testing", "Brutally honest assessment", "Rapid iteration speed", "Features validated before release"],
+    "ko": ["직접적이고 즉각적인 피드백", "실제 문제 테스트", "철저히 솔직한 평가", "빠른 반복 속도", "출시 전 기능 검증"]
+  },
+  "cons": {
+    "en": ["Team may not represent all users", "Can create echo chamber", "Requires discipline to use own product", "Pain points may differ from external users"],
+    "ko": ["팀이 모든 사용자를 대표하지 않을 수 있음", "에코 챔버 생성 가능", "자체 제품 사용 규율 필요", "고통점이 외부 사용자와 다를 수 있음"]
+  },
+  "tags": ["dogfooding", "iterative-development", "feedback-loop", "agent-improvement", "internal-testing", "product-development"]
+}

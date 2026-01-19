@@ -1,0 +1,32 @@
+{
+  "id": "iterative-prompt-skill-refinement",
+  "title": "Iterative Prompt & Skill Refinement",
+  "title_ko": "반복적 프롬프트 및 스킬 개선",
+  "category": "Feedback Loops",
+  "status": "proposed",
+  "original_url": "https://lethain.com/agents-iterative-refinement/",
+  "problem": {
+    "en": "Agent usage reveals gaps in prompts, skills, and tools, but there's no systematic way to improve them.",
+    "ko": "에이전트 사용 시 프롬프트, 스킬, 도구의 격차가 드러나지만 체계적으로 개선할 방법이 없습니다."
+  },
+  "solution": {
+    "en": "Implement multiple complementary refinement mechanisms: responsive feedback, owner-led editing, AI-enhanced refinement, and dashboard tracking.",
+    "ko": "반응형 피드백, 소유자 주도 편집, AI 향상 개선, 대시보드 추적 등 여러 상호 보완적 개선 메커니즘을 구현합니다."
+  },
+  "ascii_diagram": "┌────────────────────┐\n│  Workflow Runs     │\n└─────────┬──────────┘\n    ┌─────┼─────┐\n    ▼     ▼     ▼\n┌─────┐┌─────┐┌─────┐\n│Feed ││Owner││Dash │\n│back ││Edit ││board│\n└──┬──┘└──┬──┘└──┬──┘\n   └──────┼──────┘\n          ▼\n   ┌────────────┐\n   │Update Skill│\n   └────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Workflow Runs] --> B[Feedback Channel]\n    A --> C[Owner Edits Prompts]\n    A --> D[Dashboard Metrics]\n    B & C & D --> E[Identify Issues]\n    E --> F[Update Prompts/Skills]\n    F --> A",
+  "code_example": "# After each workflow run\nworkflow_result = {\n    'output': '...',\n    'prompt_link': 'https://notion.so/prompt-abc123'\n}\n# Discovery strategy: daily skim, weekly review, quarterly audit",
+  "when_to_use": {
+    "en": ["Internal agent platforms", "Team-wide prompt management", "Continuous improvement processes"],
+    "ko": ["내부 에이전트 플랫폼", "팀 전체 프롬프트 관리", "지속적 개선 프로세스"]
+  },
+  "pros": {
+    "en": ["Multi-layered catches different issues", "Continuous improvement", "Accessible to anyone"],
+    "ko": ["다층 구조로 다양한 문제 포착", "지속적 개선", "누구나 접근 가능"]
+  },
+  "cons": {
+    "en": ["No silver bullet", "Maintenance overhead", "Permission complexity"],
+    "ko": ["만능 해결책 아님", "유지보수 오버헤드", "권한 복잡성"]
+  },
+  "tags": ["refinement", "iteration", "prompts", "skills", "feedback", "dashboards"]
+}

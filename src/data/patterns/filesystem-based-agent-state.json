@@ -1,0 +1,32 @@
+{
+  "id": "filesystem-based-agent-state",
+  "title": "Filesystem-Based Agent State",
+  "title_ko": "파일시스템 기반 에이전트 상태",
+  "category": "Context & Memory",
+  "status": "established",
+  "original_url": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+  "problem": {
+    "en": "Agent state is lost on crashes or long-running task interruptions, requiring restart from scratch.",
+    "ko": "에이전트 상태가 충돌이나 장시간 작업 중단 시 손실되어 처음부터 다시 시작해야 합니다."
+  },
+  "solution": {
+    "en": "Persist agent state to the filesystem at checkpoints, enabling recovery and resumption after failures.",
+    "ko": "체크포인트에서 에이전트 상태를 파일시스템에 유지하여 실패 후 복구 및 재개를 가능하게 합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Agent     │\n│  Running    │\n└──────┬──────┘\n       │ checkpoint\n┌──────▼──────┐\n│  Save to    │\n│  File       │\n└──────┬──────┘\n       │\n    [crash]\n       │\n┌──────▼──────┐\n│   Restart   │\n│  from File  │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Agent Running] -->|Checkpoint| B[(Filesystem)]\n    B -->|Crash| C[Interrupted]\n    C -->|Restore| D[Resume Agent]\n    D --> A",
+  "code_example": "class CheckpointedAgent:\n    def checkpoint(self):\n        state = {\n            'task': self.current_task,\n            'progress': self.progress,\n            'context': self.context\n        }\n        with open('.agent_state.json', 'w') as f:\n            json.dump(state, f)\n    \n    @classmethod\n    def restore(cls):\n        with open('.agent_state.json') as f:\n            state = json.load(f)\n        return cls.from_state(state)",
+  "when_to_use": {
+    "en": ["Long-running tasks", "Unstable environments", "Critical operations"],
+    "ko": ["장시간 작업", "불안정한 환경", "중요한 작업"]
+  },
+  "pros": {
+    "en": ["Recovery capability", "State persistence", "Easier debugging"],
+    "ko": ["복구 가능", "상태 지속", "디버깅 용이"]
+  },
+  "cons": {
+    "en": ["I/O overhead", "State consistency challenges", "Storage requirements"],
+    "ko": ["I/O 오버헤드", "상태 일관성 문제", "저장 공간 필요"]
+  },
+  "tags": ["state-management", "persistence", "resumption", "checkpointing"]
+}

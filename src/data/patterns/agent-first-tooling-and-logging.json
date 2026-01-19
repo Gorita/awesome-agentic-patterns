@@ -1,0 +1,32 @@
+{
+  "id": "agent-first-tooling-and-logging",
+  "title": "Agent-First Tooling and Logging",
+  "title_ko": "에이전트 우선 도구 및 로깅",
+  "category": "Tool Use & Environment",
+  "status": "emerging",
+  "original_url": "https://www.sourcegraph.com",
+  "problem": {
+    "en": "Most developer tools, CLIs, and logs are designed for human consumption with color-coded, multi-line outputs that are difficult for AI agents to parse reliably.",
+    "ko": "대부분의 개발자 도구, CLI, 로그는 인간 소비를 위해 설계되어 AI 에이전트가 안정적으로 파싱하기 어려운 컬러 코딩, 다중 라인 출력을 사용합니다."
+  },
+  "solution": {
+    "en": "Design tooling and logging to be 'agent-first': unified logging to single source, verbose JSON-structured output, and agent-aware CLI flags (--for-agent).",
+    "ko": "'에이전트 우선'으로 도구 및 로깅 설계: 단일 소스로 통합 로깅, 상세한 JSON 구조 출력, 에이전트 인식 CLI 플래그(--for-agent)."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│  Agent Request  │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ CLI --for-agent │\n│     --json      │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ System Services │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Unified Logger  │\n│ (JSON Lines)    │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│  Agent Parses   │\n│  Structured     │\n└─────────────────┘",
+  "mermaid_diagram": "sequenceDiagram\n    participant Agent\n    participant CLI as CLI Tool\n    participant Logger as Unified Logger\n    participant System as System Services\n\n    Agent->>CLI: command --for-agent --json\n    CLI->>System: Execute operation\n    System->>Logger: Write structured log entry\n    Logger->>Agent: JSON log stream\n    Note over Agent: Parses structured data easily",
+  "code_example": "# Agent-friendly CLI invocation\ncli_output = subprocess.run(\n    ['myapp', '--for-agent', '--json', 'status'],\n    capture_output=True, text=True\n)\n\n# Parse structured JSON output\nresult = json.loads(cli_output.stdout)\n# {\"status\": \"healthy\", \"errors\": [], \"metrics\": {...}}\n\n# Unified logging - single source of truth\n# Instead of: client.log, server.log, db.log\n# Use: unified.jsonl with all events",
+  "when_to_use": {
+    "en": ["Building agent-operated systems", "CLI tools for automation", "Log aggregation for AI analysis"],
+    "ko": ["에이전트 운영 시스템 구축", "자동화용 CLI 도구", "AI 분석을 위한 로그 집계"]
+  },
+  "pros": {
+    "en": ["Improves agent parsing accuracy", "Reduces token waste", "Single source of truth"],
+    "ko": ["에이전트 파싱 정확도 향상", "토큰 낭비 감소", "단일 진실 소스"]
+  },
+  "cons": {
+    "en": ["May sacrifice human readability", "Requires tooling modifications", "Dual interface maintenance"],
+    "ko": ["인간 가독성 희생 가능", "도구 수정 필요", "이중 인터페이스 유지"]
+  },
+  "tags": ["tool-design", "logging", "machine-readable", "observability", "agent-environment"]
+}

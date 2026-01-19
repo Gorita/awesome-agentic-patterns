@@ -1,0 +1,32 @@
+{
+  "id": "tool-use-steering-via-prompting",
+  "title": "Tool Use Steering via Prompting",
+  "title_ko": "프롬프팅을 통한 도구 사용 조종",
+  "category": "Tool Use & Environment",
+  "status": "best-practice",
+  "original_url": "https://www.nibzard.com/claude-code",
+  "problem": {
+    "en": "Agents with multiple tools need clear guidance on when, why, and how to use them. Simply having tools available doesn't guarantee appropriate use, especially for custom or team-specific tools.",
+    "ko": "여러 도구를 가진 에이전트는 언제, 왜, 어떻게 사용해야 하는지에 대한 명확한 지침이 필요합니다. 도구가 있다고 해서 특히 사용자 정의 또는 팀 특화 도구에 대해 적절한 사용이 보장되지 않습니다."
+  },
+  "solution": {
+    "en": "Guide tool selection through explicit natural language instructions: direct tool invocation, teaching tool usage with -h flags, implicit tool suggestions via shorthands, and 'think hard' prompts for careful consideration.",
+    "ko": "명시적 자연어 지시를 통해 도구 선택 안내: 직접 도구 호출, -h 플래그로 도구 사용법 교육, 축약어를 통한 암시적 도구 제안, 신중한 고려를 위한 'think hard' 프롬프트."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│   User Task     │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Explicit        │\n│ Guidance        │\n├─────────────────┤\n│• Direct invoke  │\n│• Teach usage    │\n│• Shorthands     │\n│• 'Think hard'   │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Available Tools │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Agent Selection │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Tool Execution  │\n└─────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[User Task] --> B[Available Tools]\n    A --> C[Explicit Guidance]\n    C --> D[Direct Tool Invocation]\n    C --> E[Teaching Tool Usage]\n    C --> F[Implicit Suggestion]\n    C --> G[Deeper Reasoning Prompts]\n    B --> H[Agent Tool Selection]\n    D --> H\n    E --> H\n    F --> H\n    G --> H\n    H --> I[Tool Execution]",
+  "code_example": "# Direct tool invocation\n\"Use the file search tool to find all Python files\"\n\n# Teaching tool usage\n\"Use our `barley` CLI to check logs. Use -h to see options.\"\n\n# Implicit tool suggestion (learned shorthand)\n\"commit, push, pr\"  # Agent knows this means git workflow\n\n# Deeper reasoning\n\"*think hard* about which search strategy to use\"",
+  "when_to_use": {
+    "en": ["Custom/team-specific tools", "Complex tool selection scenarios", "Teaching agents new tools"],
+    "ko": ["사용자 정의/팀 특화 도구", "복잡한 도구 선택 시나리오", "에이전트에게 새 도구 교육"]
+  },
+  "pros": {
+    "en": ["Improves tool usage accuracy", "Works with custom tools", "Natural language control"],
+    "ko": ["도구 사용 정확도 향상", "사용자 정의 도구와 호환", "자연어 제어"]
+  },
+  "cons": {
+    "en": ["Requires user knowledge of tools", "May add prompt overhead"],
+    "ko": ["사용자의 도구 지식 필요", "프롬프트 오버헤드 추가 가능"]
+  },
+  "tags": ["tool-use", "prompting", "agent-guidance", "custom-tools", "natural-language-control"]
+}

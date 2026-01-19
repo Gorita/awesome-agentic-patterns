@@ -1,0 +1,32 @@
+{
+  "id": "progressive-complexity-escalation",
+  "title": "Progressive Complexity Escalation",
+  "title_ko": "점진적 복잡성 확대",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://vercel.com/blog/what-we-learned-building-agents-at-vercel",
+  "problem": {
+    "en": "Organizations deploy AI agents with overly ambitious capabilities from day one, leading to unreliable outputs.",
+    "ko": "조직이 첫날부터 지나치게 야심찬 기능으로 AI 에이전트를 배포하여 신뢰할 수 없는 출력을 초래합니다."
+  },
+  "solution": {
+    "en": "Start with low-complexity, high-reliability tasks and progressively unlock more complex capabilities as trust is established.",
+    "ko": "낮은 복잡성, 높은 신뢰성 작업으로 시작하고 신뢰가 구축됨에 따라 더 복잡한 기능을 점진적으로 잠금 해제합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│  Tier 1     │ Data entry, research\n│  Low Risk   │\n└──────┬──────┘\n       │ proven reliable\n┌──────▼──────┐\n│  Tier 2     │ Multi-step workflows\n│  Med Risk   │\n└──────┬──────┘\n       │ proven reliable\n┌──────▼──────┐\n│  Tier 3     │ Autonomous decisions\n│  High Risk  │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    subgraph Tier1[Tier 1: Deploy Immediately]\n        A[Data Entry]\n        B[Research]\n        C[Categorization]\n    end\n    subgraph Tier2[Tier 2: Unlock with Validation]\n        D[Multi-step Workflows]\n        E[Tool Integration]\n    end\n    subgraph Tier3[Tier 3: Future Unlock]\n        F[Autonomous Decisions]\n        G[Creative Problem-Solving]\n    end\n    Tier1 -->|Metrics Pass| Tier2\n    Tier2 -->|Metrics Pass| Tier3",
+  "code_example": "class AgentCapabilities:\n    def __init__(self, tier: int):\n        self.tier = tier\n    \n    async def process(self, task):\n        research = await self.research(task)  # Tier 1\n        \n        if self.tier >= 2:\n            qualified = await self.qualify(research)\n            email = await self.draft_email(qualified)\n            \n            if self.tier >= 3 and qualified.confidence > 0.8:\n                return await self.auto_send(email)\n            return await self.request_approval(email)\n        \n        return self.present_findings(research)",
+  "when_to_use": {
+    "en": ["Production deployments", "High-stakes domains", "New agent capabilities"],
+    "ko": ["프로덕션 배포", "고위험 도메인", "새 에이전트 기능"]
+  },
+  "pros": {
+    "en": ["Risk mitigation", "Stakeholder confidence building", "Focused engineering"],
+    "ko": ["위험 완화", "이해관계자 신뢰 구축", "집중된 엔지니어링"]
+  },
+  "cons": {
+    "en": ["Delayed full value", "Tier management complexity"],
+    "ko": ["전체 가치 지연", "계층 관리 복잡성"]
+  },
+  "tags": ["capabilities", "gradual-rollout", "risk-management", "trust-building"]
+}

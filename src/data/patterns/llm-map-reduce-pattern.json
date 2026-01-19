@@ -1,0 +1,32 @@
+{
+  "id": "llm-map-reduce-pattern",
+  "title": "LLM Map-Reduce Pattern",
+  "title_ko": "LLM 맵-리듀스 패턴",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://arxiv.org/abs/2506.08837",
+  "problem": {
+    "en": "Processing multiple untrusted items in one context risks cross-contamination and prompt injection propagation.",
+    "ko": "하나의 컨텍스트에서 여러 신뢰할 수 없는 항목을 처리하면 교차 오염과 프롬프트 인젝션 전파 위험이 있습니다."
+  },
+  "solution": {
+    "en": "Process each item in an isolated sub-agent (map), then aggregate results in a trusted context (reduce).",
+    "ko": "각 항목을 격리된 서브 에이전트에서 처리(맵)한 다음, 신뢰할 수 있는 컨텍스트에서 결과를 집계(리듀스)합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│  Items[]    │\n└──────┬──────┘\n       │ map\n   ┌───┼───┐\n   ▼   ▼   ▼\n┌───┐┌───┐┌───┐\n│S1 ││S2 ││S3 │ (isolated)\n└─┬─┘└─┬─┘└─┬─┘\n  │    │    │\n  └────┼────┘\n       │ reduce\n┌──────▼──────┐\n│   Trusted   │\n│   Context   │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Items Array] -->|Map| B[Sub-Agent 1]\n    A -->|Map| C[Sub-Agent 2]\n    A -->|Map| D[Sub-Agent N]\n    B & C & D -->|Reduce| E[Trusted Aggregator]",
+  "code_example": "# Map: process each item in isolation\nresults = []\nfor item in untrusted_items:\n    isolated_agent = spawn_quarantined_agent()\n    result = isolated_agent.process(item)\n    results.append(result)\n\n# Reduce: aggregate in trusted context\nfinal = trusted_agent.aggregate(results)",
+  "when_to_use": {
+    "en": ["Email processing", "Document analysis", "Web scraping"],
+    "ko": ["이메일 처리", "문서 분석", "웹 스크래핑"]
+  },
+  "pros": {
+    "en": ["Isolation", "Parallel processing", "Contamination prevention"],
+    "ko": ["격리", "병렬 처리", "오염 방지"]
+  },
+  "cons": {
+    "en": ["Overhead", "Coordination complexity"],
+    "ko": ["오버헤드", "조정 복잡"]
+  },
+  "tags": ["map-reduce", "sub-agents", "isolation", "untrusted-data", "security"]
+}

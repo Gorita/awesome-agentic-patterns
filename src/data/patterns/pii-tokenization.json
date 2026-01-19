@@ -1,0 +1,32 @@
+{
+  "id": "pii-tokenization",
+  "title": "PII Tokenization",
+  "title_ko": "PII 토큰화",
+  "category": "Security & Safety",
+  "status": "established",
+  "original_url": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+  "problem": {
+    "en": "AI agents processing workflows involving PII create privacy risks when raw personal data enters model context.",
+    "ko": "PII가 포함된 워크플로우를 처리하는 AI 에이전트가 원시 개인 데이터가 모델 컨텍스트에 들어갈 때 프라이버시 위험을 생성합니다."
+  },
+  "solution": {
+    "en": "Implement an MCP interception layer that tokenizes PII before it reaches the model and untokenizes when making tool calls.",
+    "ko": "PII가 모델에 도달하기 전에 토큰화하고 도구 호출 시 토큰 해제하는 MCP 인터셉션 레이어를 구현합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│Tool Response│\n│john@ex.com │\n└──────┬──────┘\n       │ intercept\n┌──────▼──────┐\n│  Tokenize   │\n│ [EMAIL_1]   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│Model reasons│\n│with tokens  │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Untokenize  │\n│john@ex.com │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│   Execute   │\n└─────────────┘",
+  "mermaid_diagram": "flowchart LR\n    A[Tool Response] --> B[MCP Client]\n    B --> C{PII Detection}\n    C --> D[Tokenization]\n    D --> E[Model Context]\n    E --> F[Model Reasoning]\n    F --> G[Tool Call with Tokens]\n    G --> H[Untokenization]\n    H --> I[Actual Tool Call]",
+  "code_example": "# Tool returns customer data\ncustomer = get_customer(id='C123')\n# Raw: {'email': 'john@example.com', 'phone': '555-1234'}\n\n# MCP client tokenizes before sending to model\n# Context sees: {'email': '[EMAIL_1]', 'phone': '[PHONE_1]'}\n\n# Agent reasons with tokens\n# \"Send welcome email to [EMAIL_1]\"\n\n# MCP client untokenizes for tool execution\nsend_email(\n    to='john@example.com',  # Real value substituted\n    body='Welcome...'\n)",
+  "when_to_use": {
+    "en": ["Customer data processing", "Healthcare workflows", "GDPR/HIPAA compliance"],
+    "ko": ["고객 데이터 처리", "의료 워크플로우", "GDPR/HIPAA 준수"]
+  },
+  "pros": {
+    "en": ["Prevents raw PII in context", "Enables audit trails without PII", "Transparent to agent"],
+    "ko": ["컨텍스트에 원시 PII 방지", "PII 없는 감사 추적 가능", "에이전트에 투명"]
+  },
+  "cons": {
+    "en": ["PII detection must be accurate", "Secure token mapping storage needed", "May complicate debugging"],
+    "ko": ["PII 감지가 정확해야 함", "안전한 토큰 매핑 저장 필요", "디버깅 복잡해질 수 있음"]
+  },
+  "tags": ["privacy", "pii", "security", "mcp", "data-protection"]
+}

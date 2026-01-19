@@ -1,0 +1,32 @@
+{
+  "id": "spec-as-test-feedback-loop",
+  "title": "Spec-As-Test Feedback Loop",
+  "title_ko": "스펙을 테스트로 사용하는 피드백 루프",
+  "category": "Feedback Loops",
+  "status": "proposed",
+  "original_url": "http://jorypestorious.com/blog/ai-engineer-spec/",
+  "problem": {
+    "en": "Even in spec-first projects, implementations can drift as code evolves. Silent divergence erodes trust.",
+    "ko": "스펙 우선 프로젝트에서도 코드가 발전함에 따라 구현이 드리프트할 수 있습니다. 조용한 발산은 신뢰를 침식합니다."
+  },
+  "solution": {
+    "en": "Generate executable assertions directly from the spec and let the agent auto-regenerate test suites on spec/code commits.",
+    "ko": "스펙에서 직접 실행 가능한 어서션을 생성하고 스펙/코드 커밋 시 에이전트가 테스트 스위트를 자동 재생성하게 합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│    Spec     │\n└──────┬──────┘\n       │ generate\n┌──────▼──────┐\n│   Tests     │\n└──────┬──────┘\n       │ run\n┌──────▼──────┐\n│  Pass/Fail  │\n└──────┬──────┘\n   ┌───┴───┐\n   ▼       ▼\n [OK]   [Drift]\n          │\n    ┌─────▼─────┐\n    │ Agent PR  │\n    └───────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Spec Changes] --> B[Generate Tests]\n    C[Code Changes] --> B\n    B --> D[Run Tests]\n    D -->|Pass| E[Synchronized]\n    D -->|Fail| F[Agent PR: Fix or Flag]",
+  "code_example": "# On spec or code commit\ntests = generate_tests_from_spec(spec)\nresults = run_tests(tests)\nif results.failures:\n    pr = agent.create_fix_pr(results.failures)\n    # or flag unclear spec segments for review",
+  "when_to_use": {
+    "en": ["Spec-driven development", "Contract-first APIs", "Compliance-critical systems"],
+    "ko": ["스펙 주도 개발", "계약 우선 API", "컴플라이언스 중요 시스템"]
+  },
+  "pros": {
+    "en": ["Catches drift early", "Keeps spec and impl in lock-step"],
+    "ko": ["드리프트 조기 감지", "스펙과 구현을 동기화 유지"]
+  },
+  "cons": {
+    "en": ["Heavy CI usage", "False positives if spec wording is too loose"],
+    "ko": ["CI 사용량 많음", "스펙 문구가 느슨하면 오탐"]
+  },
+  "tags": ["validation", "drift-detection", "continuous-testing"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "progressive-tool-discovery",
+  "title": "Progressive Tool Discovery",
+  "title_ko": "점진적 도구 발견",
+  "category": "Tool Use & Environment",
+  "status": "established",
+  "original_url": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+  "problem": {
+    "en": "Loading all tools upfront wastes context on unused capabilities and slows initialization.",
+    "ko": "모든 도구를 미리 로드하면 사용하지 않는 기능에 컨텍스트가 낭비되고 초기화가 느려집니다."
+  },
+  "solution": {
+    "en": "Lazy-load tools based on task requirements, discovering and loading them progressively as needed.",
+    "ko": "작업 요구사항에 따라 도구를 지연 로드하고, 필요에 따라 점진적으로 발견하고 로드합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Task      │\n│ \"Edit file\" │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Discover:   │\n│ file_tools  │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│   Load:     │\n│ read, write │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│   Execute   │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Task Arrives] --> B{Tool Needed?}\n    B -->|Yes| C[Discover Available Tools]\n    C --> D[Load Required Tool]\n    D --> E[Execute with Tool]\n    E --> B\n    B -->|No| F[Complete Task]",
+  "code_example": "class ProgressiveToolLoader:\n    def __init__(self):\n        self.tool_registry = {}  # Not loaded yet\n        self.loaded_tools = {}\n    \n    def get_tool(self, task_type):\n        if task_type not in self.loaded_tools:\n            tool_name = self.discover(task_type)\n            self.loaded_tools[task_type] = self.load(tool_name)\n        return self.loaded_tools[task_type]",
+  "when_to_use": {
+    "en": ["Many tool environments", "Context optimization", "MCP server setups"],
+    "ko": ["많은 도구 환경", "컨텍스트 최적화", "MCP 서버 설정"]
+  },
+  "pros": {
+    "en": ["Context efficiency", "Fast startup", "Flexible scaling"],
+    "ko": ["컨텍스트 효율", "빠른 시작", "유연한 확장"]
+  },
+  "cons": {
+    "en": ["Discovery latency", "Tool indexing required"],
+    "ko": ["발견 지연", "도구 인덱싱 필요"]
+  },
+  "tags": ["mcp", "tool-discovery", "context-optimization", "lazy-loading"]
+}

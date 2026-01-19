@@ -1,0 +1,32 @@
+{
+  "id": "code-first-tool-interface-pattern",
+  "title": "Code Mode MCP Tool Interface Pattern",
+  "title_ko": "코드 모드 MCP 도구 인터페이스 패턴",
+  "category": "Tool Use & Environment",
+  "status": "established",
+  "original_url": "https://blog.cloudflare.com/code-mode/",
+  "problem": {
+    "en": "Traditional MCP forces inefficient token-heavy round-trips: every intermediate JSON response must flow through the model's context. For 100 emails, this means 100k+ tokens before any work begins.",
+    "ko": "전통적인 MCP는 비효율적인 토큰 중심 왕복을 강제합니다: 모든 중간 JSON 응답이 모델의 컨텍스트를 통해 흐릅니다. 100개의 이메일의 경우, 작업이 시작되기 전에 100k+ 토큰이 필요합니다."
+  },
+  "solution": {
+    "en": "LLM generates TypeScript code that orchestrates MCP tools in V8 isolates. Data processing happens in sandbox, only final results return to context. Dramatic token savings (10x+).",
+    "ko": "LLM이 V8 아이솔레이트에서 MCP 도구를 조율하는 TypeScript 코드를 생성합니다. 데이터 처리는 샌드박스에서 발생하고, 최종 결과만 컨텍스트로 반환됩니다. 극적인 토큰 절약 (10배 이상)."
+  },
+  "ascii_diagram": "TRADITIONAL MCP:\nLLM → tool#1 → JSON → LLM context\nLLM → tool#2 → JSON → LLM context\n→ Token bloat!\n\nCODE MODE:\nLLM → Generated Code → V8 Isolate\n                      ↓\n              All tool calls internally\n                      ↓\n              Condensed results → LLM\n→ Single round-trip!",
+  "mermaid_diagram": "sequenceDiagram\n    participant User\n    participant LLM\n    participant V8 as V8 Isolate\n    participant MCP as MCP Server\n\n    User->>LLM: Complex multi-step task\n    LLM->>V8: Generate TypeScript workflow\n    V8->>MCP: Execute tool calls internally\n    MCP-->>V8: Results stay in sandbox\n    V8-->>LLM: Only condensed results\n    Note over V8: Isolate destroyed\n    LLM-->>User: Final answer",
+  "code_example": "// LLM generates orchestration code\nconst vpc = await createVPC({name: 'demo-vpc'});\nconst igw = await createInternetGateway(vpc.id);\nconst sg = await createSecurityGroup(vpc.id, sshRules);\nconst instance = await launchEC2Instance({\n  type: 'm4.large', vpcId: vpc.id, sgId: sg.id\n});\nawait tagResources([vpc, igw, sg, instance]);\n\n// 6 AWS API calls → 1 condensed result\nreturn {vpcId, instanceId, publicIP, sshCommand};",
+  "when_to_use": {
+    "en": ["Workflow-like problems with known flow", "Fan-out scenarios (100+ items)", "Infrastructure provisioning"],
+    "ko": ["알려진 흐름의 워크플로우 문제", "팬아웃 시나리오 (100+ 항목)", "인프라 프로비저닝"]
+  },
+  "pros": {
+    "en": ["10x+ token savings", "Faster execution", "Enhanced security - credentials stay in MCP"],
+    "ko": ["10배 이상 토큰 절약", "더 빠른 실행", "향상된 보안 - 자격 증명이 MCP에 유지"]
+  },
+  "cons": {
+    "en": ["Infrastructure complexity", "Poor fit for dynamic research loops", "Intelligence-in-middle challenge"],
+    "ko": ["인프라 복잡성", "동적 리서치 루프에 부적합", "중간 지능 챌린지"]
+  },
+  "tags": ["tool-interface", "code-generation", "sandboxing", "mcp", "typescript", "v8-isolates", "token-optimization"]
+}

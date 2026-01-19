@@ -1,0 +1,32 @@
+{
+  "id": "agent-friendly-workflow-design",
+  "title": "Agent-Friendly Workflow Design",
+  "title_ko": "에이전트 친화적 워크플로우 설계",
+  "category": "UX & Collaboration",
+  "status": "best-practice",
+  "original_url": "https://www.nibzard.com/silent-revolution",
+  "problem": {
+    "en": "Simply providing an AI agent with a task is often not enough. If workflows are too rigid, or if humans micromanage the agent's technical decisions, the agent may struggle or produce suboptimal results. Agents perform best with appropriate freedom.",
+    "ko": "AI 에이전트에게 단순히 작업을 제공하는 것만으로는 충분하지 않은 경우가 많습니다. 워크플로우가 너무 경직되어 있거나 인간이 에이전트의 기술적 결정을 세세하게 관리하면 에이전트가 어려움을 겪거나 최적이 아닌 결과를 생성할 수 있습니다. 에이전트는 적절한 자유도가 있을 때 가장 잘 수행합니다."
+  },
+  "solution": {
+    "en": "Design workflows to be 'agent-friendly': clear goal definition instead of prescriptive steps, appropriate autonomy for implementation choices, structured I/O interfaces, iterative feedback loops, and proper tool provisioning.",
+    "ko": "워크플로우를 '에이전트 친화적'으로 설계합니다: 규범적 단계 대신 명확한 목표 정의, 구현 선택에 대한 적절한 자율성, 구조화된 I/O 인터페이스, 반복적 피드백 루프, 적절한 도구 제공."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│    Traditional Workflow         │\n│  (Step-by-step prescriptive)    │\n└───────────────┬─────────────────┘\n                │\n        ┌───────▼───────┐\n        │Agent-Friendly?│\n        └───────┬───────┘\n           No   │   Yes\n        ┌───────▼───────┐\n        │   Redesign    │\n        └───────┬───────┘\n                │\n    ┌───────────┼───────────┐\n    │           │           │\n┌───▼───┐ ┌─────▼─────┐ ┌───▼───────┐\n│Clear  │ │Appropriate│ │Structured │\n│Goals  │ │Autonomy   │ │I/O        │\n└───┬───┘ └─────┬─────┘ └───┬───────┘\n    │           │           │\n    └───────────┼───────────┘\n                │\n┌───────────────▼─────────────────┐\n│   Enhanced Agent Performance    │\n└─────────────────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Traditional Workflow] --> B{Agent-Friendly?}\n    B -->|No| C[Redesign Process]\n    C --> D[Clear Goal Definition]\n    C --> E[Appropriate Autonomy]\n    C --> F[Structured I/O]\n    C --> G[Feedback Loops]\n    C --> H[Tool Provisioning]\n    D --> I[Optimized Workflow]\n    E --> I\n    F --> I\n    G --> I\n    H --> I\n    B -->|Yes| I\n    I --> J[Enhanced Agent Performance]",
+  "code_example": "# Agent-Friendly Workflow Design Principles\n\n# BAD: Too prescriptive, micromanaging\nbad_prompt = '''\nStep 1: Open file auth.ts\nStep 2: Find the login function on line 45\nStep 3: Add a new parameter called 'timeout'\nStep 4: Update the call on line 78\n'''\n\n# GOOD: Clear goal with freedom\ngood_prompt = '''\nGoal: Add timeout support to the authentication flow\n\nRequirements:\n- Login should timeout after configurable duration\n- Default timeout: 30 seconds\n- Existing tests should pass\n\nYou have freedom to choose implementation approach.\n'''\n\n# The agent performs better with high-level goals\n# and appropriate autonomy to make technical decisions",
+  "when_to_use": {
+    "en": ["Complex agent tasks", "When agents struggle with rigid instructions", "Tasks requiring creative problem-solving", "Building sustainable human-agent collaboration"],
+    "ko": ["복잡한 에이전트 작업", "에이전트가 경직된 지시에 어려움을 겪을 때", "창의적 문제 해결이 필요한 작업", "지속 가능한 인간-에이전트 협업 구축"]
+  },
+  "pros": {
+    "en": ["Maximizes agent capabilities", "Enables creative solutions", "Reduces need for constant correction", "Creates sustainable collaboration patterns"],
+    "ko": ["에이전트 능력 극대화", "창의적 솔루션 가능", "지속적인 수정 필요성 감소", "지속 가능한 협업 패턴 생성"]
+  },
+  "cons": {
+    "en": ["Requires trust in agent judgment", "May produce unexpected approaches", "Less control over implementation details", "Needs clear success criteria"],
+    "ko": ["에이전트 판단에 대한 신뢰 필요", "예상치 못한 접근 방식 생성 가능", "구현 세부사항에 대한 통제력 감소", "명확한 성공 기준 필요"]
+  },
+  "tags": ["human-agent-collaboration", "workflow-design", "agent-autonomy", "task-decomposition", "hci"]
+}

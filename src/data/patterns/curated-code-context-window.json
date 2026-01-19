@@ -1,0 +1,32 @@
+{
+  "id": "curated-code-context-window",
+  "title": "Curated Code Context Window",
+  "title_ko": "큐레이션된 코드 컨텍스트 윈도우",
+  "category": "Context & Memory",
+  "status": "validated-in-production",
+  "original_url": "https://www.youtube.com/watch?v=Xkwok_XXQgw",
+  "problem": {
+    "en": "Loading all source files into context overwhelms the model with noise and wastes tokens.",
+    "ko": "모든 소스 파일을 컨텍스트에 로드하면 노이즈로 모델이 압도되고 토큰이 낭비됩니다."
+  },
+  "solution": {
+    "en": "Maintain minimal, high-signal context using search sub-agents to fetch only relevant code snippets.",
+    "ko": "검색 서브 에이전트를 사용하여 관련 코드 스니펫만 가져오는 최소한의 고신호 컨텍스트를 유지합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│ Main Agent  │\n│ \"Find User  │\n│  Model\"     │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│Search Subagt│\n│  (ripgrep)  │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│Top 3 files: │\n│ user.py     │\n│ auth.py     │\n│ models.py   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│ Inject to   │\n│  Context    │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Main Agent: Need UserModel] -->|Query| B[Search Sub-Agent]\n    B --> C[(Code Index/ripgrep)]\n    C --> D[Top K Relevant Files]\n    D --> E[Inject Snippets to Context]",
+  "code_example": "# Main agent delegates search\nquery = 'UserModel validation'\nresults = search_subagent.find(query, top_k=5)\n\n# Only inject relevant snippets\nfor file in results:\n    snippet = extract_relevant_code(file, query)\n    context.add(snippet)\n\n# Continue with focused context",
+  "when_to_use": {
+    "en": ["Large codebases", "Multi-file refactoring", "Long coding sessions"],
+    "ko": ["대규모 코드베이스", "멀티 파일 리팩토링", "긴 코딩 세션"]
+  },
+  "pros": {
+    "en": ["Noise reduction", "Token efficiency", "Clearer reasoning"],
+    "ko": ["노이즈 감소", "토큰 효율성", "명확한 추론"]
+  },
+  "cons": {
+    "en": ["Index freshness maintenance", "Complex pipeline"],
+    "ko": ["인덱스 최신성 유지", "복잡한 파이프라인"]
+  },
+  "tags": ["context-management", "code-agent", "file-selection", "search"]
+}

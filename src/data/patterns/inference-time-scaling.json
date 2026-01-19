@@ -1,0 +1,32 @@
+{
+  "id": "inference-time-scaling",
+  "title": "Inference-Time Scaling",
+  "title_ko": "추론 시간 스케일링",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://deepmind.google/research/",
+  "problem": {
+    "en": "Traditional language models have fixed performance once trained. For challenging problems, we cannot simply 'think harder' by allocating more computational resources at inference time.",
+    "ko": "전통적인 언어 모델은 훈련 후 성능이 고정됩니다. 어려운 문제에서 추론 시간에 더 많은 계산 자원을 할당하여 '더 열심히 생각'할 수 없습니다."
+  },
+  "solution": {
+    "en": "Allocate additional compute during inference: generate multiple candidates, perform extended reasoning chains, iterate and refine outputs, search solution spaces more thoroughly.",
+    "ko": "추론 중 추가 계산을 할당합니다: 여러 후보 생성, 확장된 추론 체인 수행, 출력 반복 및 개선, 솔루션 공간을 더 철저히 탐색."
+  },
+  "ascii_diagram": "┌────────────────┐\n│ Input Problem  │\n└───────┬────────┘\n        │\n┌───────▼────────┐\n│Assess Difficulty│\n└───────┬────────┘\n   ┌────┼────┬────┐\n   ▼    ▼    ▼    ▼\n[Low][Med][High][VHigh]\n   │    │    │    │\n┌──▼┐ ┌─▼─┐ ┌▼──┐┌▼───┐\n│Std│ │N  │ │CoT││Search│\n│Inf│ │Try│ │+  ││Space│\n└──┬┘ └─┬─┘ │Ref│└──┬──┘\n   │    │   └┬──┘   │\n   └────┴────┴──────┘\n             │\n     ┌───────▼───────┐\n     │  Select Best  │\n     └───────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Input Problem] --> B{Assess Difficulty}\n    B -->|Low| C[Standard Inference]\n    B -->|Medium| D[Multiple Attempts]\n    B -->|High| E[Deep Reasoning + Refine]\n    B -->|Very High| F[Solution Space Search]\n    D --> G[Score Each]\n    E --> G\n    F --> G\n    C --> H[Select Best]\n    G --> H\n    H --> I[Final Answer]",
+  "code_example": "class InferenceTimeScalingAgent:\n    def solve_with_scaling(self, problem, max_budget=100):\n        difficulty = self.estimate_difficulty(problem)\n        solutions = []\n        \n        # Low budget: multiple attempts\n        if difficulty >= 10:\n            solutions.extend(self.multiple_attempts(problem, n=5))\n        \n        # Medium: deep reasoning with verification\n        if difficulty >= 30:\n            solutions.append(self.deep_reasoning(problem))\n        \n        # High: solution space search\n        if difficulty >= 50:\n            solutions.append(self.solution_search(problem))\n        \n        return self.select_best_solution(solutions)",
+  "when_to_use": {
+    "en": ["Complex reasoning tasks", "Math/coding problems", "When quality matters more than latency"],
+    "ko": ["복잡한 추론 작업", "수학/코딩 문제", "지연보다 품질이 중요할 때"]
+  },
+  "pros": {
+    "en": ["Dramatically improves complex task performance", "Cost-effective vs larger models", "Dynamic resource allocation"],
+    "ko": ["복잡한 작업 성능 크게 향상", "대형 모델 대비 비용 효율적", "동적 자원 할당"]
+  },
+  "cons": {
+    "en": ["Increased latency", "Higher inference costs", "Diminishing returns beyond threshold"],
+    "ko": ["지연 증가", "높은 추론 비용", "임계값 이후 수확 체감"]
+  },
+  "tags": ["scaling", "inference", "compute", "reasoning", "performance", "test-time-compute"]
+}

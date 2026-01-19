@@ -1,0 +1,32 @@
+{
+  "id": "initializer-maintainer-dual-agent",
+  "title": "Initializer-Maintainer Dual Agent Architecture",
+  "title_ko": "초기화-유지관리 이중 에이전트 아키텍처",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents",
+  "problem": {
+    "en": "Long-running agent projects face distinct failure modes at different lifecycle stages. Single-agent approaches either over-engineer each session or under-invest in foundations.",
+    "ko": "장기 실행 에이전트 프로젝트는 다른 생명주기 단계에서 별개의 실패 모드에 직면합니다. 단일 에이전트 접근 방식은 각 세션을 과도하게 엔지니어링하거나 기초에 투자를 적게 합니다."
+  },
+  "solution": {
+    "en": "Use two-agent architecture: Initializer Agent (runs once) creates feature list, progress tracking, and environment setup. Maintainer Agent (subsequent sessions) reads context, selects tasks, implements, and commits.",
+    "ko": "이중 에이전트 아키텍처 사용: 초기화 에이전트(한 번 실행)는 기능 목록, 진행 추적, 환경 설정을 생성합니다. 유지관리 에이전트(후속 세션)는 컨텍스트를 읽고, 작업을 선택하고, 구현하고, 커밋합니다."
+  },
+  "ascii_diagram": "┌─────────────────────────┐\n│   INITIALIZER AGENT     │\n│     (runs ONCE)         │\n├─────────────────────────┤\n│• Create feature-list.json│\n│• Create init.sh          │\n│• Create progress.txt     │\n│• Initial git commit      │\n└────────────┬────────────┘\n             │\n┌────────────▼────────────┐\n│   MAINTAINER AGENT      │\n│  (each subsequent run)  │\n├─────────────────────────┤\n│1. Read git log + progress│\n│2. Read feature-list      │\n│3. Select next feature    │\n│4. Run init.sh            │\n│5. Implement + test       │\n│6. Update progress        │\n│7. Commit changes         │\n└─────────────────────────┘",
+  "mermaid_diagram": "sequenceDiagram\n    participant Init as Initializer Agent\n    participant FS as Filesystem\n    participant Code as Coding Agent\n    participant Git as Git\n\n    Note over Init: Runs ONCE\n    Init->>FS: Create feature-list.json\n    Init->>FS: Create init.sh\n    Init->>Git: Initial commit\n\n    Note over Code: Each subsequent session\n    loop Session N\n        Code->>Git: Read git log\n        Code->>FS: Read progress.txt\n        Code->>FS: Read feature-list.json\n        Code->>Code: Implement feature\n        Code->>FS: Update progress\n        Code->>Git: Commit\n    end",
+  "code_example": "# Handoff artifacts structure\n# project/\n# ├── feature-list.json  # All features with pass/fail status\n# ├── progress.txt       # Running log of decisions\n# ├── init.sh            # One-command environment startup\n# └── .git/              # Descriptive commits as context\n\n# Maintainer Agent session bootstrapping ritual:\n# 1. pwd (verify working directory)\n# 2. git log --oneline -10\n# 3. cat progress.txt\n# 4. cat feature-list.json | jq '.features[] | select(.passes==false)'\n# 5. ./init.sh\n# 6. npm test (verify baseline)\n# 7. Implement next feature",
+  "when_to_use": {
+    "en": ["Multi-session projects (days/weeks)", "50+ discrete features", "Team using agents for sustained development"],
+    "ko": ["다중 세션 프로젝트 (일/주)", "50개 이상의 개별 기능", "지속적인 개발을 위해 에이전트를 사용하는 팀"]
+  },
+  "pros": {
+    "en": ["Clear separation of concerns", "Session bootstrapping prevents context loss", "Git + progress files provide rich context"],
+    "ko": ["명확한 관심사 분리", "세션 부트스트래핑이 컨텍스트 손실 방지", "Git + 진행 파일이 풍부한 컨텍스트 제공"]
+  },
+  "cons": {
+    "en": ["Requires upfront feature specification", "Two prompts to maintain", "Not for exploratory projects"],
+    "ko": ["사전 기능 명세 필요", "유지할 두 개의 프롬프트", "탐색적 프로젝트에 부적합"]
+  },
+  "tags": ["long-running-agents", "session-handoff", "lifecycle-specialization", "project-bootstrap"]
+}

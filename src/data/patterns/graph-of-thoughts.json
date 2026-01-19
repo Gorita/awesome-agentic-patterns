@@ -1,0 +1,32 @@
+{
+  "id": "graph-of-thoughts",
+  "title": "Graph of Thoughts (GoT)",
+  "title_ko": "생각의 그래프 (GoT)",
+  "category": "Feedback Loops",
+  "status": "emerging",
+  "original_url": "https://arxiv.org/abs/2308.09687",
+  "problem": {
+    "en": "Tree structures cannot represent thought aggregation or cycles in reasoning processes.",
+    "ko": "트리 구조는 추론 과정에서 생각의 집계나 순환을 표현할 수 없습니다."
+  },
+  "solution": {
+    "en": "Model reasoning as a graph where thoughts can merge, aggregate, and form cycles for complex problem solving.",
+    "ko": "생각이 병합, 집계, 순환을 형성할 수 있는 그래프로 추론을 모델링하여 복잡한 문제를 해결합니다."
+  },
+  "ascii_diagram": "      ┌───┐\n      │ A │\n      └─┬─┘\n     ┌──┴──┐\n     ▼     ▼\n   ┌───┐ ┌───┐\n   │ B │ │ C │\n   └─┬─┘ └─┬─┘\n     │     │\n     └──┬──┘ (merge)\n        ▼\n      ┌───┐\n      │ D │\n      └─┬─┘\n        │\n        ▼ (may cycle back)",
+  "mermaid_diagram": "flowchart TD\n    A[Thought A] --> B[Thought B]\n    A --> C[Thought C]\n    B --> D[Merge D]\n    C --> D\n    D -->|Refine| A",
+  "code_example": "graph = ThoughtGraph()\ngraph.add_node('A', initial_thought)\ngraph.branch('A', ['B', 'C'])\ngraph.merge(['B', 'C'], 'D')\nif needs_refinement(graph.get('D')):\n    graph.add_edge('D', 'A')  # cycle back",
+  "when_to_use": {
+    "en": ["Complex problem solving", "Multi-perspective integration", "Iterative reasoning"],
+    "ko": ["복잡한 문제 해결", "다중 관점 통합", "반복적 추론"]
+  },
+  "pros": {
+    "en": ["Flexible reasoning structure", "Thought aggregation possible", "Supports cyclic reasoning"],
+    "ko": ["유연한 추론 구조", "생각 집계 가능", "순환 추론 지원"]
+  },
+  "cons": {
+    "en": ["High implementation complexity", "Difficult to track reasoning paths"],
+    "ko": ["구현 복잡도 높음", "추론 경로 추적 어려움"]
+  },
+  "tags": ["reasoning", "graph-based", "problem-solving", "aggregation"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "dynamic-context-injection",
+  "title": "Dynamic Context Injection",
+  "title_ko": "동적 컨텍스트 주입",
+  "category": "Context & Memory",
+  "status": "established",
+  "original_url": "https://www.nibzard.com/claude-code",
+  "problem": {
+    "en": "While layered config files provide good baseline context, agents often need specific information on-demand during sessions. Constantly editing static config files or pasting large text chunks into prompts is inefficient.",
+    "ko": "계층화된 구성 파일이 좋은 기본 컨텍스트를 제공하지만, 에이전트는 종종 세션 중 특정 정보를 온디맨드로 필요로 합니다. 정적 구성 파일을 지속적으로 편집하거나 큰 텍스트 청크를 프롬프트에 붙여넣는 것은 비효율적입니다."
+  },
+  "solution": {
+    "en": "Implement mechanisms for dynamic context injection during sessions: File/Folder at-mentions (@path/to/file), custom slash commands (/user:command) that load predefined prompts from files. Provides targeted context exactly when needed.",
+    "ko": "세션 중 동적 컨텍스트 주입 메커니즘 구현: 파일/폴더 @멘션(@path/to/file), 파일에서 사전 정의된 프롬프트를 로드하는 사용자 정의 슬래시 명령(/user:command). 필요한 시점에 정확히 대상 컨텍스트를 제공합니다."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│   User Working on Task          │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│  @src/components/Button.tsx     │\n│  (At-mention file)              │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│       File System               │\n│   Read Button.tsx contents      │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│  /user:deployment               │\n│  (Slash command)                │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│   Command Store                 │\n│ ~/.claude/commands/deployment.md│\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│   Agent with Enriched Context   │\n└─────────────────────────────────┘",
+  "mermaid_diagram": "sequenceDiagram\n    participant User\n    participant Agent\n    participant FS as File System\n    participant Commands as Command Store\n    User->>Agent: Working on task...\n    User->>Agent: @src/components/Button.tsx\n    Agent->>FS: Read Button.tsx\n    FS-->>Agent: File contents\n    Agent->>Agent: Inject into context\n    User->>Agent: /user:deployment\n    Agent->>Commands: Load ~/.claude/commands/deployment.md\n    Commands-->>Agent: Deployment instructions\n    Agent->>Agent: Inject into context\n    Agent-->>User: Continue with enriched context",
+  "code_example": "# At-mention for files\n# User types: @src/components/Button.tsx\n# Agent reads and injects file contents into context\n\n# At-mention for folders\n# User types: @app/tests/\n# Agent reads folder summary into context\n\n# Custom slash commands\n# File: ~/.claude/commands/deployment.md\n# Contains: \"When deploying, always run tests first...\"\n# User types: /user:deployment\n# Agent loads and injects deployment.md contents\n\n# Example conversation:\n# User: \"I need to update the Button component\"\n# User: @src/components/Button.tsx\n# Agent: [Now has Button.tsx in context]\n# User: /user:style-guide\n# Agent: [Now also has style guide in context]\n# Agent: \"I see the Button component uses Tailwind. Per your style guide...\"",
+  "when_to_use": {
+    "en": ["Need file context without copy-paste", "Frequently used complex instructions", "On-demand codebase exploration", "Interactive session context enrichment"],
+    "ko": ["복사-붙여넣기 없이 파일 컨텍스트 필요", "자주 사용하는 복잡한 지침", "온디맨드 코드베이스 탐색", "대화형 세션 컨텍스트 강화"]
+  },
+  "pros": {
+    "en": ["Fluid context injection", "Reusable slash commands", "No need to edit static configs", "Targeted context exactly when needed"],
+    "ko": ["유동적인 컨텍스트 주입", "재사용 가능한 슬래시 명령", "정적 구성 편집 불필요", "필요한 시점에 정확한 대상 컨텍스트"]
+  },
+  "cons": {
+    "en": ["Must remember command names", "Large files consume context", "Command files need maintenance", "May inject unnecessary content"],
+    "ko": ["명령 이름 기억 필요", "큰 파일은 컨텍스트 소비", "명령 파일 유지보수 필요", "불필요한 콘텐츠 주입 가능"]
+  },
+  "tags": ["context-management", "dynamic-context", "lazy-loading", "slash-commands", "at-mention", "interactive-context"]
+}

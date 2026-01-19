@@ -1,0 +1,32 @@
+{
+  "id": "agentic-search-over-vector-embeddings",
+  "title": "Agentic Search Over Vector Embeddings",
+  "title_ko": "벡터 임베딩 대신 에이전틱 검색",
+  "category": "Tool Use & Environment",
+  "status": "best-practice",
+  "original_url": "https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it",
+  "problem": {
+    "en": "Vector embeddings for code search require continuous re-indexing, handling local changes, additional security surface area, and infrastructure overhead. Traditional RAG adds complexity that may not be necessary.",
+    "ko": "코드 검색을 위한 벡터 임베딩은 지속적인 재인덱싱, 로컬 변경 처리, 추가 보안 표면, 인프라 오버헤드가 필요합니다. 전통적인 RAG는 필요하지 않을 수 있는 복잡성을 추가합니다."
+  },
+  "solution": {
+    "en": "Replace vector search with agentic search using bash, grep, file traversal. Modern LLMs are skilled at using search tools iteratively to achieve comparable accuracy without maintenance burden.",
+    "ko": "벡터 검색을 bash, grep, 파일 탐색을 사용한 에이전틱 검색으로 대체합니다. 현대 LLM은 유지 관리 부담 없이 비슷한 정확도를 달성하기 위해 검색 도구를 반복적으로 사용하는 데 능숙합니다."
+  },
+  "ascii_diagram": "TRADITIONAL RAG:\nvector_db.index(codebase) → continuous updates\nresults = vector_db.query(embedding)\n→ Maintenance overhead\n\nAGENTIC SEARCH:\nagent.call_tool('grep', pattern)\nagent.call_tool('find', pattern)\nagent.refine_search_based_on_results()\n→ No pre-indexing needed",
+  "mermaid_diagram": "flowchart TD\n    A[Search Query] --> B{Approach}\n    B -->|Traditional| C[Vector DB Index]\n    C --> D[Continuous Re-indexing]\n    D --> E[Query Embeddings]\n    B -->|Agentic| F[grep/ripgrep/find]\n    F --> G[Iterative Refinement]\n    G --> H[Current File State]\n    H --> I[Results]",
+  "code_example": "# Instead of vector search:\n# vector_db.index(codebase)  # requires continuous updates\n# results = vector_db.query(embedding(query))\n\n# Use agentic search:\nagent.call_tool('grep', pattern='function.*authenticate')\nagent.call_tool('find', pattern='**/auth/*.ts')\nagent.refine_search_based_on_results()\n\n# Benefits: Always searches current state, no stale results",
+  "when_to_use": {
+    "en": ["Frequently changing codebases", "Security-sensitive deployments", "Local development", "No vector infrastructure"],
+    "ko": ["자주 변경되는 코드베이스", "보안에 민감한 배포", "로컬 개발", "벡터 인프라 없음"]
+  },
+  "pros": {
+    "en": ["No indexing to maintain", "Always current state", "Simpler security model", "No embedding costs"],
+    "ko": ["유지할 인덱싱 없음", "항상 현재 상태", "더 간단한 보안 모델", "임베딩 비용 없음"]
+  },
+  "cons": {
+    "en": ["Multiple iterations needed", "Slower on very large codebases", "Less semantic understanding"],
+    "ko": ["여러 번 반복 필요", "매우 큰 코드베이스에서 느림", "의미적 이해 부족"]
+  },
+  "tags": ["search", "vector-embeddings", "bash", "grep", "RAG", "agentic-RAG"]
+}

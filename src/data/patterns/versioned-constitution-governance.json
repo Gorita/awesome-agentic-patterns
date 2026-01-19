@@ -1,0 +1,32 @@
+{
+  "id": "versioned-constitution-governance",
+  "title": "Versioned Constitution Governance",
+  "title_ko": "버전 관리 헌법 거버넌스",
+  "category": "Reliability & Eval",
+  "status": "emerging",
+  "original_url": "https://substack.com/home/post/p-161422949?utm_campaign=post&utm_medium=web",
+  "problem": {
+    "en": "When an agent rewrites its own constitution (alignment rules), it may accidentally violate safety constraints or regress on alignment objectives if changes aren't properly reviewed and tracked.",
+    "ko": "에이전트가 자체 헌법(정렬 규칙)을 재작성할 때, 변경 사항이 적절히 검토되고 추적되지 않으면 안전 제약을 실수로 위반하거나 정렬 목표에서 후퇴할 수 있습니다."
+  },
+  "solution": {
+    "en": "Store the constitution in a version-controlled, signed repository. YAML/TOML rules live in Git with signed commits (Sigstore). CI runs automated policy checks. Agent can propose changes but only approved reviewers can merge.",
+    "ko": "헌법을 버전 관리되고 서명된 저장소에 저장합니다. YAML/TOML 규칙은 서명된 커밋(Sigstore)과 함께 Git에 있습니다. CI는 자동화된 정책 검사를 실행합니다. 에이전트는 변경을 제안할 수 있지만 승인된 검토자만 병합할 수 있습니다."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│        Agent Runtime            │\n│  (reads constitution HEAD)      │\n└───────────────┬─────────────────┘\n                │ read-only\n┌───────────────▼─────────────────┐\n│    Git Repository               │\n│    (constitution.yaml)          │\n├─────────────────────────────────┤\n│  commit 3: v1.2 (current HEAD)  │\n│  commit 2: v1.1                 │\n│  commit 1: v1.0 (initial)       │\n└───────────────┬─────────────────┘\n                │\n        ┌───────┴───────┐\n        │               │\n┌───────▼───────┐ ┌─────▼─────────┐\n│ Agent Proposes│ │ Human Reviews │\n│ Changes (PR)  │ │ & Approves    │\n└───────────────┘ └───────┬───────┘\n                          │\n                  ┌───────▼───────┐\n                  │ CI Policy     │\n                  │ Checks        │\n                  └───────┬───────┘\n                          │\n                  ┌───────▼───────┐\n                  │ Signed Merge  │\n                  └───────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Agent Runtime] -->|read-only| B[Git Repo: constitution.yaml]\n    B --> C[Version History]\n    A -->|proposes| D[Pull Request]\n    D --> E[CI Policy Checks]\n    E --> F{Passes?}\n    F -->|Yes| G[Human Review]\n    F -->|No| H[Reject - Safety Violation]\n    G --> I{Approved?}\n    I -->|Yes| J[Signed Commit Merge]\n    I -->|No| K[Reject]\n    J --> B",
+  "code_example": "# constitution.yaml - Version controlled alignment rules\nversion: 1.2\nrules:\n  - id: no_harmful_content\n    description: Never generate harmful or illegal content\n    severity: critical\n    \n  - id: respect_privacy\n    description: Do not expose personal information\n    severity: critical\n    \n  - id: cite_sources\n    description: Provide citations for factual claims\n    severity: warning\n\n# Git workflow\ngit commit -S -m 'Update rule: cite_sources'  # Signed commit\n# CI runs: python check_policy.py constitution.yaml\n# - Flags deletions of critical rules\n# - Validates rule schema\n# - Only approved reviewers can merge",
+  "when_to_use": {
+    "en": ["Self-modifying agent systems", "Safety-critical alignment rules", "Multi-stakeholder AI governance", "Auditable AI systems"],
+    "ko": ["자기 수정 에이전트 시스템", "안전이 중요한 정렬 규칙", "다중 이해관계자 AI 거버넌스", "감사 가능한 AI 시스템"]
+  },
+  "pros": {
+    "en": ["Complete audit trail of changes", "Prevents accidental safety regression", "Multiple stakeholders can review", "Cryptographic integrity via signing"],
+    "ko": ["변경 사항의 완전한 감사 추적", "실수로 인한 안전 후퇴 방지", "여러 이해관계자가 검토 가능", "서명을 통한 암호화 무결성"]
+  },
+  "cons": {
+    "en": ["Slower iteration on rules", "Requires governance process", "May bottleneck rapid experimentation", "Git complexity for non-technical reviewers"],
+    "ko": ["규칙에 대한 느린 반복", "거버넌스 프로세스 필요", "빠른 실험의 병목이 될 수 있음", "비기술 검토자를 위한 Git 복잡성"]
+  },
+  "tags": ["constitution", "alignment", "governance", "signed-commits", "policy", "safety"]
+}

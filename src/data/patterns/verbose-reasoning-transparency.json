@@ -1,0 +1,32 @@
+{
+  "id": "verbose-reasoning-transparency",
+  "title": "Verbose Reasoning Transparency",
+  "title_ko": "상세 추론 투명성",
+  "category": "UX & Collaboration",
+  "status": "best-practice",
+  "original_url": "https://www.nibzard.com/claude-code",
+  "problem": {
+    "en": "Black-box agent outputs are hard to debug, verify, and trust without visibility into reasoning.",
+    "ko": "블랙박스 에이전트 출력은 추론에 대한 가시성 없이 디버깅, 검증, 신뢰하기 어렵습니다."
+  },
+  "solution": {
+    "en": "Expose detailed reasoning chains and decision steps for debugging, verification, and user understanding.",
+    "ko": "디버깅, 검증, 사용자 이해를 위해 상세한 추론 체인과 결정 단계를 노출합니다."
+  },
+  "ascii_diagram": "┌───────────────────────────┐\n│   Verbose Mode            │\n├───────────────────────────┤\n│ Step 1: Analyzing task... │\n│ Step 2: Found files...    │\n│ Step 3: Planning edits... │\n│ Step 4: Executing...      │\n│ Step 5: Verifying...      │\n│                           │\n│ [User can inspect each]   │\n└───────────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Agent] -->|Log| B[Step 1: Analyze]\n    B -->|Log| C[Step 2: Search]\n    C -->|Log| D[Step 3: Plan]\n    D -->|Log| E[Step 4: Execute]\n    B & C & D & E --> F[User Inspection Panel]",
+  "code_example": "class VerboseAgent:\n    def execute(self, task, verbose=True):\n        steps = []\n        \n        step = self.analyze(task)\n        if verbose: steps.append(f'Analyzing: {step}')\n        \n        files = self.search(step)\n        if verbose: steps.append(f'Found {len(files)} files')\n        \n        plan = self.plan(files)\n        if verbose: steps.append(f'Plan: {plan}')\n        \n        result = self.run(plan)\n        if verbose: steps.append(f'Result: {result}')\n        \n        return {'result': result, 'reasoning': steps}",
+  "when_to_use": {
+    "en": ["Debugging sessions", "Trust building", "Learning/training purposes"],
+    "ko": ["디버깅 세션", "신뢰 구축", "학습/훈련 목적"]
+  },
+  "pros": {
+    "en": ["Transparency", "Easy debugging", "Improved trust"],
+    "ko": ["투명성", "쉬운 디버깅", "향상된 신뢰"]
+  },
+  "cons": {
+    "en": ["Increased output volume", "Higher token costs"],
+    "ko": ["출력량 증가", "토큰 비용 증가"]
+  },
+  "tags": ["explainability", "debugging", "transparency", "verbose-mode"]
+}

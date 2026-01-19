@@ -1,0 +1,32 @@
+{
+  "id": "isolated-vm-per-rl-rollout",
+  "title": "Isolated VM per RL Rollout",
+  "title_ko": "RL 롤아웃당 격리된 VM",
+  "category": "Security & Safety",
+  "status": "emerging",
+  "original_url": "https://youtu.be/1s_7RMG4O4U",
+  "problem": {
+    "en": "During RL training with tool-using agents, parallel rollouts may run destructive commands, causing cross-contamination, state leakage, and corrupted reward signals.",
+    "ko": "도구 사용 에이전트를 통한 RL 훈련 중 병렬 롤아웃이 파괴적인 명령을 실행하여 교차 오염, 상태 누출, 손상된 보상 신호를 유발할 수 있습니다."
+  },
+  "solution": {
+    "en": "Spin up an isolated VM or container for each RL rollout, ensuring complete environment isolation. Each VM starts fresh and is destroyed after rollout completion.",
+    "ko": "각 RL 롤아웃에 대해 격리된 VM 또는 컨테이너를 생성하여 완전한 환경 격리를 보장합니다. 각 VM은 새로 시작하고 롤아웃 완료 후 파괴됩니다."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│ RL Training     │\n│ (500 rollouts)  │\n└────────┬────────┘\n         │\n    ┌────┴────┐\n    ▼         ▼\n┌──────┐  ┌──────┐\n│VM #1 │  │VM #2 │ ...\n│(iso) │  │(iso) │\n└──┬───┘  └──┬───┘\n   │         │\n┌──▼───┐  ┌──▼───┐\n│shell │  │shell │\n│grep..│  │rm... │\n└──────┘  └──────┘\n   │         │\n   ▼         ▼\n [Safe]   [Safe]\n (no cross-contamination)",
+  "mermaid_diagram": "sequenceDiagram\n    participant OAI as OpenAI Training\n    participant LB as Load Balancer\n    participant VM1 as VM (Rollout 1)\n    participant VM2 as VM (Rollout 2)\n\n    Note over OAI: Training Step\n    OAI->>LB: Rollout 1: shell(\"grep TODO\")\n    OAI->>LB: Rollout 2: shell(\"rm temp.txt\")\n    LB->>VM1: Route to isolated VM 1\n    LB->>VM2: Route to isolated VM 2\n    VM1->>LB: grep results\n    VM2->>LB: success\n    Note over VM1,VM2: VMs destroyed",
+  "code_example": "from modal import Image, App, method\n\nbase_image = Image.debian_slim().pip_install(\"openai\")\n\n@app.cls(image=base_image, cpu=2, timeout=600)\nclass IsolatedToolExecutor:\n    def __init__(self):\n        self.rollout_id = None\n        \n    @method()\n    def execute_shell(self, rollout_id: str, command: str):\n        # Safe: this VM is dedicated to this rollout\n        result = subprocess.run(\n            command, shell=True, capture_output=True, text=True\n        )\n        return {\n            \"stdout\": result.stdout,\n            \"returncode\": result.returncode\n        }",
+  "when_to_use": {
+    "en": ["Agent RFT with tool access", "Training with destructive commands", "Production parity requirements"],
+    "ko": ["도구 접근이 있는 Agent RFT", "파괴적인 명령을 사용한 훈련", "프로덕션 동등성 요구사항"]
+  },
+  "pros": {
+    "en": ["Complete isolation", "Safe destructive commands", "Deterministic rewards"],
+    "ko": ["완전한 격리", "안전한 파괴적 명령", "결정론적 보상"]
+  },
+  "cons": {
+    "en": ["High cost (100s of VMs)", "Provisioning latency", "Infrastructure complexity"],
+    "ko": ["높은 비용 (수백 개 VM)", "프로비저닝 지연", "인프라 복잡성"]
+  },
+  "tags": ["isolation", "security", "reinforcement-learning", "infrastructure", "agent-rft"]
+}

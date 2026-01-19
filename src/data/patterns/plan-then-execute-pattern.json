@@ -1,0 +1,32 @@
+{
+  "id": "plan-then-execute-pattern",
+  "title": "Plan-Then-Execute Pattern",
+  "title_ko": "계획 후 실행 패턴",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://arxiv.org/abs/2506.08837",
+  "problem": {
+    "en": "Agents that plan and execute simultaneously are vulnerable to prompt injection mid-execution.",
+    "ko": "계획과 실행을 동시에 수행하는 에이전트는 실행 중 프롬프트 인젝션에 취약합니다."
+  },
+  "solution": {
+    "en": "Separate planning phase from execution, locking the plan before any untrusted data processing begins.",
+    "ko": "계획 단계를 실행과 분리하고, 신뢰할 수 없는 데이터 처리 시작 전에 계획을 잠급니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Task      │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│   PLAN      │\n│  (locked)   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│  EXECUTE    │\n│ (no modify) │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│   Result    │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Task] --> B[Planning Phase]\n    B -->|Lock Plan| C[Execution Phase]\n    C --> D[Result]\n    E[Untrusted Data] -->|Cannot modify| B",
+  "code_example": "plan = agent.create_plan(task)  # No untrusted data\nplan.lock()  # Freeze the plan\nfor step in plan.steps:\n    result = agent.execute(step, untrusted_data)\n# Plan cannot be modified during execution",
+  "when_to_use": {
+    "en": ["Security-sensitive agents", "Multi-step tasks", "External input processing"],
+    "ko": ["보안 민감 에이전트", "다단계 작업", "외부 입력 처리"]
+  },
+  "pros": {
+    "en": ["Prompt injection defense", "Predictable execution", "Auditable"],
+    "ko": ["프롬프트 인젝션 방어", "예측 가능한 실행", "감사 가능"]
+  },
+  "cons": {
+    "en": ["Reduced flexibility", "Harder dynamic adaptation"],
+    "ko": ["유연성 감소", "동적 적응 어려움"]
+  },
+  "tags": ["planning", "control-flow-integrity", "prompt-injection", "security"]
+}

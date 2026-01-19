@@ -1,0 +1,32 @@
+{
+  "id": "progressive-autonomy-with-model-evolution",
+  "title": "Progressive Autonomy with Model Evolution",
+  "title_ko": "모델 진화에 따른 점진적 자율성",
+  "category": "Orchestration & Control",
+  "status": "best-practice",
+  "original_url": "https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it",
+  "problem": {
+    "en": "Agent scaffolding built for older models becomes unnecessary overhead as models improve, causing prompt bloat.",
+    "ko": "이전 모델을 위해 구축된 에이전트 스캐폴딩이 모델이 개선됨에 따라 불필요한 오버헤드가 되어 프롬프트 비대화를 유발합니다."
+  },
+  "solution": {
+    "en": "Actively remove scaffolding as models become more capable. Push complexity into the model itself rather than external scaffolding.",
+    "ko": "모델이 더 능력이 높아지면 스캐폴딩을 적극적으로 제거합니다. 외부 스캐폴딩보다 모델 자체에 복잡성을 밀어 넣습니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│  Model v1   │\n│ +Scaffolding│\n└──────┬──────┘\n       │ new model\n┌──────▼──────┐\n│  Model v2   │\n│ -Some Scaff │\n└──────┬──────┘\n       │ newer model\n┌──────▼──────┐\n│  Model v3   │\n│  Minimal    │\n└─────────────┘",
+  "mermaid_diagram": "flowchart LR\n    A[Model v1 + Heavy Scaffolding] --> B[Model v2 Released]\n    B --> C[Remove Unnecessary Instructions]\n    C --> D[Simpler, Faster Agent]\n    D --> E[Model v3 Released]\n    E --> F[Further Simplification]",
+  "code_example": "# Claude Opus 4.1 (older model)\nsystem_prompt_old = \"\"\"\nWhen writing code:\n1. First check if file exists\n2. Read current contents\n... [2000 tokens of instructions]\n\"\"\"\n\n# Claude Sonnet 4.5 (newer model)\nsystem_prompt_new = \"\"\"Write clean, tested code.\"\"\"\n# Model already knows the steps!",
+  "when_to_use": {
+    "en": ["After model upgrades", "Prompt optimization", "Cost reduction efforts"],
+    "ko": ["모델 업그레이드 후", "프롬프트 최적화", "비용 절감 노력"]
+  },
+  "pros": {
+    "en": ["Reduced token costs", "Faster execution", "Simpler maintenance"],
+    "ko": ["토큰 비용 절감", "빠른 실행", "간단한 유지보수"]
+  },
+  "cons": {
+    "en": ["Requires testing", "Version management complexity", "Risk of regression"],
+    "ko": ["테스트 필요", "버전 관리 복잡", "회귀 위험"]
+  },
+  "tags": ["model-evolution", "scaffolding", "autonomy", "prompt-optimization"]
+}

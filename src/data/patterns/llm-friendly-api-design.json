@@ -1,0 +1,32 @@
+{
+  "id": "llm-friendly-api-design",
+  "title": "LLM-Friendly API Design",
+  "title_ko": "LLM 친화적 API 설계",
+  "category": "Tool Use & Environment",
+  "status": "emerging",
+  "original_url": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+  "problem": {
+    "en": "APIs designed solely for human consumption might be ambiguous or overly complex for an LLM to use correctly without extensive fine-tuning or elaborate prompting.",
+    "ko": "인간 소비만을 위해 설계된 API는 광범위한 미세조정이나 정교한 프롬프팅 없이는 LLM이 올바르게 사용하기에 모호하거나 지나치게 복잡할 수 있습니다."
+  },
+  "solution": {
+    "en": "Design APIs with LLM consumption in mind: explicit versioning visible to model, self-descriptive function names, simplified interaction patterns, clear error messaging, reduced indirection levels.",
+    "ko": "LLM 소비를 염두에 둔 API 설계: 모델에 보이는 명시적 버전 관리, 자기 설명적 함수 이름, 단순화된 상호작용 패턴, 명확한 오류 메시지, 감소된 간접 수준."
+  },
+  "ascii_diagram": "HUMAN-CENTRIC API:\n├── Complex nested calls\n├── Implicit versioning\n├── Ambiguous error codes\n└── Many indirection levels\n\nLLM-FRIENDLY API:\n├── Flat, direct calls\n├── Visible version: v2.1.0\n├── Actionable error messages\n└── 2 levels of indirection max",
+  "mermaid_diagram": "flowchart TD\n    A[API Design] --> B{Consumer Focus}\n    B -->|Human-Centric| C[Implicit Versions]\n    C --> D[Nested Calls]\n    D --> E[LLM Struggles]\n    B -->|LLM-Friendly| F[Explicit Versions]\n    F --> G[Self-Descriptive Names]\n    G --> H[Clear Errors]\n    H --> I[Reduced Indirection]\n    I --> J[LLM Success]",
+  "code_example": "# Human-centric (problematic for LLM)\nresult = client.v2.users.get_by_id(id).profile.settings\n# Ambiguous: what version? many indirections\n\n# LLM-friendly design\nresult = get_user_settings(\n    user_id=123,\n    api_version='v2.1.0'  # Explicit, visible\n)\n# Error: {'code': 'USER_NOT_FOUND', \n#         'action': 'Verify user_id exists before calling'}",
+  "when_to_use": {
+    "en": ["Building tools for AI agents", "Internal libraries for automation", "Public APIs expecting AI consumers"],
+    "ko": ["AI 에이전트용 도구 구축", "자동화를 위한 내부 라이브러리", "AI 소비자를 기대하는 공개 API"]
+  },
+  "pros": {
+    "en": ["Improved reliability", "Fewer LLM errors", "Better self-correction"],
+    "ko": ["향상된 신뢰성", "LLM 오류 감소", "더 나은 자기 수정"]
+  },
+  "cons": {
+    "en": ["May sacrifice human ergonomics", "Requires intentional design effort"],
+    "ko": ["인간 인체공학 희생 가능", "의도적인 설계 노력 필요"]
+  },
+  "tags": ["api-design", "llm-interaction", "tool-use", "system-design", "agent-compatibility"]
+}

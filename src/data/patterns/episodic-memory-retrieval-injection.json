@@ -1,0 +1,32 @@
+{
+  "id": "episodic-memory-retrieval-injection",
+  "title": "Episodic Memory Retrieval & Injection",
+  "title_ko": "일화적 메모리 검색 및 주입",
+  "category": "Context & Memory",
+  "status": "validated-in-production",
+  "original_url": "https://forum.cursor.com/t/agentic-memory-management-for-cursor/78021",
+  "problem": {
+    "en": "Agents lack persistent memory across sessions, forgetting relevant past experiences and decisions.",
+    "ko": "에이전트가 세션 간 영구 메모리가 부족하여 관련 과거 경험과 결정을 잊어버립니다."
+  },
+  "solution": {
+    "en": "Store episodic memories in vector databases and retrieve relevant ones based on semantic similarity to current context.",
+    "ko": "벡터 데이터베이스에 일화적 메모리를 저장하고 현재 컨텍스트와의 의미적 유사성에 따라 관련 메모리를 검색합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Query     │\n└──────┬──────┘\n       │ embed\n┌──────▼──────┐\n│  Vector     │\n│  Embed      │\n└──────┬──────┘\n       │ search\n┌──────▼──────┐\n│ Vector DB   │\n│ (memories)  │\n└──────┬──────┘\n       │ top-k\n┌──────▼──────┐\n│ Inject to   │\n│ Context     │\n└─────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Current Query] --> B[Embed Query]\n    B --> C[(Vector Database)]\n    C --> D[Top K Similar Memories]\n    D --> E[Inject to Context]\n    E --> F[Enhanced Response]",
+  "code_example": "# Store memory after task completion\nmemory = {\n    'task': 'Fixed auth bug in login.py',\n    'context': code_changes,\n    'outcome': 'success'\n}\nvector_db.upsert(embed(memory), memory)\n\n# Retrieve relevant memories\nquery = 'authentication error handling'\nrelevant = vector_db.query(embed(query), top_k=3)\ncontext.inject(relevant)",
+  "when_to_use": {
+    "en": ["Long-running projects", "Personalized assistants", "Repetitive tasks"],
+    "ko": ["장기 프로젝트", "개인화된 어시스턴트", "반복 작업"]
+  },
+  "pros": {
+    "en": ["Cross-session continuity", "Relevant context retrieval", "Learning effect"],
+    "ko": ["세션 간 연속성", "관련 맥락 검색", "학습 효과"]
+  },
+  "cons": {
+    "en": ["Vector DB management", "Retrieval quality variance", "Privacy concerns"],
+    "ko": ["벡터 DB 관리", "검색 품질 차이", "프라이버시 우려"]
+  },
+  "tags": ["episodic-memory", "vector-db", "retrieval-augmented", "persistence"]
+}

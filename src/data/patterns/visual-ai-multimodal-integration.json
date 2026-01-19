@@ -1,0 +1,32 @@
+{
+  "id": "visual-ai-multimodal-integration",
+  "title": "Visual AI Multimodal Integration",
+  "title_ko": "비주얼 AI 멀티모달 통합",
+  "category": "Tool Use & Environment",
+  "status": "emerging",
+  "original_url": "https://openai.com/research/gpt-4v-system-card",
+  "problem": {
+    "en": "Many real-world tasks require visual information alongside text. Text-only agents miss critical information in images, videos, diagrams, and visual interfaces.",
+    "ko": "많은 실제 작업은 텍스트와 함께 시각 정보가 필요합니다. 텍스트 전용 에이전트는 이미지, 비디오, 다이어그램, 시각적 인터페이스의 중요 정보를 놓칩니다."
+  },
+  "solution": {
+    "en": "Integrate large multimodal models (LMMs) for visual understanding: accept images/videos as input, analyze visual content, combine visual and textual reasoning, take actions based on visual understanding.",
+    "ko": "시각적 이해를 위해 대형 멀티모달 모델(LMM) 통합: 이미지/비디오를 입력으로 받고, 시각적 콘텐츠 분석, 시각적 및 텍스트 추론 결합, 시각적 이해에 기반한 행동 수행."
+  },
+  "ascii_diagram": "┌──────────────────────┐\n│User Query + Visual   │\n└──────────┬───────────┘\n           │\n┌──────────▼───────────┐\n│    Input Type?       │\n├──────────────────────┤\n│Image│Video│Screenshot│\n└──┬────┬────┬─────────┘\n   │    │    │\n   ▼    ▼    ▼\n┌──────────────────────┐\n│  Visual Analysis     │\n├──────────────────────┤\n│• Object Detection    │\n│• OCR/Text Extract    │\n│• Spatial Relations   │\n└──────────┬───────────┘\n           │\n┌──────────▼───────────┐\n│Multimodal Integration│\n└──────────┬───────────┘\n           │\n┌──────────▼───────────┐\n│   Task Solution      │\n└──────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[User Query + Visual Input] --> B{Input Type}\n    B -->|Image| C[Image Analysis]\n    B -->|Video| D[Video Processing]\n    B -->|Screenshot| E[UI Analysis]\n    C --> F[Object Detection]\n    C --> G[OCR/Text Extraction]\n    D --> H[Key Frame Extraction]\n    H --> I[Temporal Reasoning]\n    E --> J[Element Identification]\n    F & G & I & J --> K[Multimodal Integration]\n    K --> L[Task Solution]",
+  "code_example": "class VisualAIAgent:\n    async def process_visual_task(self, task, visual_inputs):\n        # Analyze each visual input\n        analyses = []\n        for visual in visual_inputs:\n            analysis = await self.mm_llm.analyze(\n                prompt=f'Task: {task}\\nAnalyze this {visual.type}',\n                image=visual.data\n            )\n            analyses.append(analysis)\n        \n        # Combine visual analyses with task\n        return await self.solve_with_visual_context(\n            task, analyses\n        )\n\n# Use cases: UI debugging, document processing,\n# video analysis, security monitoring",
+  "when_to_use": {
+    "en": ["UI/UX debugging", "Document processing with charts", "Video analysis", "Security monitoring"],
+    "ko": ["UI/UX 디버깅", "차트가 있는 문서 처리", "비디오 분석", "보안 모니터링"]
+  },
+  "pros": {
+    "en": ["Enables new task categories", "More natural interaction", "Better accuracy for visual tasks"],
+    "ko": ["새로운 작업 카테고리 활성화", "더 자연스러운 상호작용", "시각적 작업에 더 나은 정확도"]
+  },
+  "cons": {
+    "en": ["Higher computational costs", "Larger model requirements", "Privacy concerns with visual data"],
+    "ko": ["높은 계산 비용", "더 큰 모델 요구사항", "시각적 데이터의 프라이버시 우려"]
+  },
+  "tags": ["multimodal", "vision", "video", "image-processing", "visual-understanding"]
+}

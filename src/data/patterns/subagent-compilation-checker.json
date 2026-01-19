@@ -1,0 +1,32 @@
+{
+  "id": "subagent-compilation-checker",
+  "title": "Subagent Compilation Checker",
+  "title_ko": "서브에이전트 컴파일 검사기",
+  "category": "Tool Use & Environment",
+  "status": "emerging",
+  "original_url": "https://www.youtube.com/watch?v=Xkwok_XXQgw",
+  "problem": {
+    "en": "Large coding tasks with multiple components blow up context length when main agent handles all compilation. Build logs in prompts are impractical and slow down inference.",
+    "ko": "여러 컴포넌트가 있는 대규모 코딩 작업은 메인 에이전트가 모든 컴파일을 처리할 때 컨텍스트 길이를 폭발시킵니다. 프롬프트의 빌드 로그는 비실용적이고 추론을 느리게 합니다."
+  },
+  "solution": {
+    "en": "Spawn specialized Compilation Subagents to independently build and verify each module, reporting back only concise error summaries (file, line, error message) or artifact references.",
+    "ko": "각 모듈을 독립적으로 빌드하고 검증하는 전문 컴파일 서브에이전트를 생성하고, 간결한 오류 요약(파일, 라인, 오류 메시지) 또는 아티팩트 참조만 반환합니다."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│   Main Agent    │\n│ 'Compile auth'  │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│CompileSubagent  │\n│  (auth-service) │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ go build ./auth │\n└────────┬────────┘\n    ┌────┴────┐\n    ▼         ▼\n[Success] [Failure]\n    │         │\n    │    [{file, line, error}]\n    │         │\n    └────┬────┘\n         │\n┌────────▼────────┐\n│  Concise Report │\n│  to Main Agent  │\n└─────────────────┘",
+  "mermaid_diagram": "sequenceDiagram\n    MainAgent->>CompileSubagent: Compile service A\n    CompileSubagent->>BuildEnv: go build ./serviceA\n    alt Build Success\n        CompileSubagent-->>MainAgent: {status: 'success', artifact: 'serviceA.bin'}\n    else Build Failure\n        CompileSubagent-->>MainAgent: [{file: 'fileA.go', line: 10, error: 'Syntax error'}]\n    end\n    MainAgent->>Context: Inject concise error summary",
+  "code_example": "# Main agent spawns compilation subagent\nresult = spawn_subagent(\n    type='compile',\n    target='auth-service',\n    command='go build ./auth-service'\n)\n\n# Subagent returns structured report\n# Success: {status: 'success', artifact: 'auth.bin'}\n# Failure: [{file: 'auth.go', line: 85, error: 'undefined: UserModel'}]\n\n# Main agent sees only concise summary, not full build log",
+  "when_to_use": {
+    "en": ["Multi-module projects", "Long build processes", "Parallel compilation needed"],
+    "ko": ["다중 모듈 프로젝트", "긴 빌드 프로세스", "병렬 컴파일 필요"]
+  },
+  "pros": {
+    "en": ["Modular isolation", "Parallel builds possible", "Context length preserved"],
+    "ko": ["모듈식 격리", "병렬 빌드 가능", "컨텍스트 길이 보존"]
+  },
+  "cons": {
+    "en": ["Infrastructure overhead for build environments", "Subagent synchronization needed"],
+    "ko": ["빌드 환경을 위한 인프라 오버헤드", "서브에이전트 동기화 필요"]
+  },
+  "tags": ["subagent", "compilation", "modularity", "error-isolation"]
+}

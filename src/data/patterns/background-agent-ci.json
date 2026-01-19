@@ -1,0 +1,32 @@
+{
+  "id": "background-agent-ci",
+  "title": "Background Agent with CI Feedback",
+  "title_ko": "CI 피드백을 포함한 백그라운드 에이전트",
+  "category": "Feedback Loops",
+  "status": "validated-in-production",
+  "original_url": "https://ampcode.com/manual#background",
+  "problem": {
+    "en": "Long-running tasks tie up the editor and require developers to babysit the agent. Developers can't step away while the agent works on complex tasks like upgrades or migrations.",
+    "ko": "장시간 실행되는 작업은 에디터를 점유하고 개발자가 에이전트를 지켜봐야 합니다. 개발자는 에이전트가 업그레이드나 마이그레이션과 같은 복잡한 작업을 수행하는 동안 자리를 비울 수 없습니다."
+  },
+  "solution": {
+    "en": "Run the agent asynchronously: it pushes a branch, waits for CI, ingests pass/fail output, iterates on failures, and pings the user when green. Perfect for mobile kick-offs ('fix flaky test while I'm at soccer practice').",
+    "ko": "에이전트를 비동기적으로 실행: 브랜치를 푸시하고, CI를 기다리고, 통과/실패 출력을 수집하고, 실패에 대해 반복하고, 녹색이 되면 사용자에게 알림. 모바일 시작에 완벽('축구 연습하는 동안 불안정한 테스트 수정')."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│  Developer: \"Upgrade to React 19\"│\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│   Agent Runs in Background      │\n│   (Developer can leave)         │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│   Push branch react19-upgrade   │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│   CI: 12 failures               │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│   Agent patches imports         │\n│   Re-triggers CI                │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│   CI: All green                 │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│   Ping Developer: PR ready!     │\n└─────────────────────────────────┘",
+  "mermaid_diagram": "sequenceDiagram\n    Dev->>Agent: \"Upgrade to React 19\"\n    Agent->>Git: push branch react19-upgrade\n    Agent-->>CI: trigger tests\n    CI-->>Agent: 12 failures\n    Agent->>Files: patch imports\n    Agent-->>CI: re-run\n    CI-->>Agent: All green\n    Agent-->>Dev: PR ready",
+  "code_example": "# Background agent with CI feedback loop\n\nclass BackgroundAgent:\n    async def run_with_ci_feedback(self, task):\n        # Step 1: Make changes\n        await self.implement_changes(task)\n        \n        # Step 2: Push branch\n        branch = await git.push_branch(f'agent/{task.id}')\n        \n        while True:\n            # Step 3: Wait for CI\n            ci_result = await ci.wait_for_result(branch)\n            \n            if ci_result.success:\n                # Step 5: Notify user\n                await notify_user('PR ready!', pr_url=branch.pr_url)\n                break\n            else:\n                # Step 4: Fix failures and iterate\n                await self.fix_ci_failures(ci_result.failures)\n                await git.push_branch(branch)  # Re-trigger CI\n\n# Usage: \"Fix flaky test while I'm at soccer practice\"\n# Agent works autonomously with CI as the feedback loop",
+  "when_to_use": {
+    "en": ["Long-running upgrade tasks", "Flaky test fixes", "Migration tasks", "When developer can't monitor continuously"],
+    "ko": ["장시간 업그레이드 작업", "불안정한 테스트 수정", "마이그레이션 작업", "개발자가 지속적으로 모니터링할 수 없을 때"]
+  },
+  "pros": {
+    "en": ["Frees developer from babysitting", "Uses existing CI as feedback", "Iterates automatically on failures", "Perfect for mobile workflows"],
+    "ko": ["개발자를 지켜보기에서 해방", "기존 CI를 피드백으로 사용", "실패에 대해 자동으로 반복", "모바일 워크플로우에 완벽"]
+  },
+  "cons": {
+    "en": ["CI costs for multiple runs", "May iterate too many times", "Needs good CI coverage", "Notification infrastructure needed"],
+    "ko": ["여러 실행에 대한 CI 비용", "너무 많이 반복할 수 있음", "좋은 CI 커버리지 필요", "알림 인프라 필요"]
+  },
+  "tags": ["asynchronous", "ci", "feedback", "background-agent", "automation"]
+}

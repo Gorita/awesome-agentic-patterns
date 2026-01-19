@@ -1,0 +1,32 @@
+{
+  "id": "democratization-of-tooling-via-agents",
+  "title": "Democratization of Tooling via Agents",
+  "title_ko": "에이전트를 통한 도구화 민주화",
+  "category": "UX & Collaboration",
+  "status": "emerging",
+  "original_url": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+  "problem": {
+    "en": "Many individuals in non-software engineering roles (sales, marketing, operations) could benefit from custom software tools tailored to their workflows, but lack traditional programming skills to build them.",
+    "ko": "비소프트웨어 엔지니어링 역할(영업, 마케팅, 운영)의 많은 개인은 워크플로우에 맞춤화된 소프트웨어 도구의 혜택을 받을 수 있지만, 이를 구축할 전통적인 프로그래밍 기술이 부족합니다."
+  },
+  "solution": {
+    "en": "Empower non-programmers to create or modify software using AI agents. Users describe desired tools in natural language, agents generate necessary code, and users iteratively refine with agent help. This democratizes software development to domain experts.",
+    "ko": "AI 에이전트를 사용하여 비프로그래머가 소프트웨어를 생성하거나 수정할 수 있도록 권한을 부여합니다. 사용자는 원하는 도구를 자연어로 설명하고, 에이전트는 필요한 코드를 생성하며, 사용자는 에이전트의 도움으로 반복적으로 개선합니다. 이는 도메인 전문가에게 소프트웨어 개발을 민주화합니다."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│   Non-Technical User            │\n│   (Sales, Marketing, Ops)       │\n└───────────────┬─────────────────┘\n                │ Natural Language\n                │ Description\n┌───────────────▼─────────────────┐\n│         AI Agent                │\n│   • Understands intent          │\n│   • Generates code              │\n│   • Explains changes            │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│      Generated Tool             │\n│   • Dashboard                   │\n│   • Automation script           │\n│   • Simple web app              │\n└───────────────┬─────────────────┘\n                │\n        ┌───────┴───────┐\n        │ Iterate       │\n        │ & Refine      │\n        └───────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Non-Technical User] -->|Describe Need| B[AI Agent]\n    B -->|Generate Code| C[Custom Tool]\n    C --> D{Satisfactory?}\n    D -->|No| E[Provide Feedback]\n    E --> B\n    D -->|Yes| F[Use Tool]\n    F --> G[Even Fix Bugs]\n    G --> B",
+  "code_example": "# Example: Sales team member creates custom dashboard\n\n# User prompt:\n\"Create a dashboard that pulls our Salesforce pipeline data\nand shows weekly trends with a chart comparing to quota\"\n\n# Agent generates:\n# - Python script for Salesforce API integration\n# - Data processing for weekly aggregation\n# - Simple web dashboard with Chart.js\n# - Deployment configuration\n\n# User iterates:\n\"Add a filter for my territory only\"\n\"Make the quota line red\"\n\"Send me a Slack notification when pipeline drops 20%\"\n\n# Real example from Anthropic:\n# Communications team member shipping bug fixes to claude.ai",
+  "when_to_use": {
+    "en": ["Domain experts need custom tools", "Business users want automation", "Simple bug fixes by non-engineers", "Rapid prototyping of internal tools"],
+    "ko": ["도메인 전문가가 맞춤 도구 필요", "비즈니스 사용자가 자동화 원함", "비엔지니어의 간단한 버그 수정", "내부 도구의 빠른 프로토타이핑"]
+  },
+  "pros": {
+    "en": ["Domain experts build own tools", "Reduces engineering bottlenecks", "Faster iteration on business needs", "Enables citizen development"],
+    "ko": ["도메인 전문가가 자체 도구 구축", "엔지니어링 병목 감소", "비즈니스 요구에 빠른 반복", "시민 개발 가능"]
+  },
+  "cons": {
+    "en": ["Quality and security concerns", "May create unmaintainable code", "Support burden on engineering", "Not suitable for complex systems"],
+    "ko": ["품질 및 보안 우려", "유지보수 불가능한 코드 생성 가능", "엔지니어링의 지원 부담", "복잡한 시스템에 적합하지 않음"]
+  },
+  "tags": ["no-code", "low-code", "citizen-developer", "tool-creation", "business-users", "automation"]
+}

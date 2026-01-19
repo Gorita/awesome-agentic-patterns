@@ -1,0 +1,32 @@
+{
+  "id": "asynchronous-coding-agent-pipeline",
+  "title": "Asynchronous Coding Agent Pipeline",
+  "title_ko": "비동기 코딩 에이전트 파이프라인",
+  "category": "Reliability & Eval",
+  "status": "proposed",
+  "original_url": "https://www.youtube.com/watch?v=Xkwok_XXQgw",
+  "problem": {
+    "en": "Synchronous execution of coding tasks creates compute bubbles and idle resources. When a coding agent issues a tool call (compile, test), it blocks further reasoning until that tool returns, leading to underutilized GPUs and slower RL rollouts.",
+    "ko": "코딩 작업의 동기 실행은 계산 버블과 유휴 리소스를 생성합니다. 코딩 에이전트가 도구 호출(컴파일, 테스트)을 발행하면 해당 도구가 반환될 때까지 추론이 차단되어 GPU 활용도가 낮아지고 RL 롤아웃이 느려집니다."
+  },
+  "solution": {
+    "en": "Decouple inference, tool execution, and learning into parallel asynchronous components: Inference Workers (GPU) sample from policy, Tool Executors (CPU) run compilations/tests in parallel, Reward Models compute rewards, and Learner aggregates gradients.",
+    "ko": "추론, 도구 실행, 학습을 병렬 비동기 구성 요소로 분리: 추론 워커(GPU)는 정책에서 샘플링, 도구 실행기(CPU)는 컴파일/테스트 병렬 실행, 보상 모델은 보상 계산, 학습기는 그래디언트 집계."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│       Inference Workers (GPU)   │\n│  Sample actions from policy     │\n└────────────────┬────────────────┘\n                 │ Actions/Tool Calls\n┌────────────────▼────────────────┐\n│         Tool Queue              │\n└────────────────┬────────────────┘\n                 │\n┌────────────────▼────────────────┐\n│    Tool Executors (CPU)         │\n│  compile, test, lint (parallel) │\n└────────────────┬────────────────┘\n                 │ Results\n┌────────────────▼────────────────┐\n│       Replay Buffer             │\n└────────────────┬────────────────┘\n                 │\n    ┌────────────┴────────────┐\n    │                         │\n┌───▼───┐               ┌─────▼─────┐\n│Reward │               │  Learner  │\n│Model  │───rewards────▶│(GPU)      │\n└───────┘               └───────────┘",
+  "mermaid_diagram": "flowchart LR\n    subgraph InferenceCluster\n        A[Inference Worker] -->|Tool Call| B[Tool Queue]\n        B -->|request| C[Tool Executor]\n        C -->|result| A\n        A -->|trajectory| D[Replay Buffer]\n    end\n    subgraph TrainingCluster\n        D -->|batch| E[Learner]\n        E -->|checkpoint| A\n    end\n    subgraph RewardCluster\n        F[Reward Model] -->|rewards| D\n    end",
+  "code_example": "# Async pipeline components communicate via queues\nclass AsyncCodingPipeline:\n    def __init__(self):\n        self.tool_queue = RedisQueue('tool_requests')\n        self.result_queue = RedisQueue('tool_results')\n        self.replay_buffer = ReplayBuffer()\n    \n    async def inference_worker(self):\n        while True:\n            action = await self.policy.sample(state)\n            if action.is_tool_call:\n                await self.tool_queue.put(action)\n                # Don't block - continue with other trajectories\n            self.replay_buffer.add(state, action)\n    \n    async def tool_executor(self):\n        while True:\n            request = await self.tool_queue.get()\n            result = await run_in_sandbox(request)\n            await self.result_queue.put(result)",
+  "when_to_use": {
+    "en": ["Large-scale RL training for coding agents", "Multi-hour training runs", "Parallel tool execution needed", "High GPU utilization required"],
+    "ko": ["코딩 에이전트의 대규모 RL 훈련", "다시간 훈련 실행", "병렬 도구 실행 필요", "높은 GPU 활용도 필요"]
+  },
+  "pros": {
+    "en": ["High GPU utilization", "Scalable compute for each component", "Parallel tool execution", "Reduced training time"],
+    "ko": ["높은 GPU 활용도", "각 구성 요소의 확장 가능한 컴퓨트", "병렬 도구 실행", "훈련 시간 단축"]
+  },
+  "cons": {
+    "en": ["Complex system maintenance", "Staleness management needed", "Requires robust monitoring", "Infrastructure overhead"],
+    "ko": ["복잡한 시스템 유지보수", "오래된 데이터 관리 필요", "강력한 모니터링 필요", "인프라 오버헤드"]
+  },
+  "tags": ["asynchronous", "pipeline", "code-agent", "parallelism", "rl-training"]
+}

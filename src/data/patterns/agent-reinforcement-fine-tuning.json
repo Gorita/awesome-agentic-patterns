@@ -1,0 +1,32 @@
+{
+  "id": "agent-reinforcement-fine-tuning",
+  "title": "Agent Reinforcement Fine-Tuning (Agent RFT)",
+  "title_ko": "에이전트 강화 미세조정 (Agent RFT)",
+  "category": "Learning & Adaptation",
+  "status": "emerging",
+  "original_url": "https://youtu.be/1s_7RMG4O4U",
+  "problem": {
+    "en": "Agents underperform on specific business tasks due to domain shift, inefficient tool use, and suboptimal reasoning. Traditional fine-tuning can't train end-to-end on multi-step tool interactions.",
+    "ko": "도메인 이동, 비효율적인 도구 사용, 최적이 아닌 추론으로 인해 에이전트가 특정 비즈니스 작업에서 성능이 저하됩니다. 전통적인 미세조정은 다단계 도구 상호작용을 엔드투엔드로 훈련할 수 없습니다."
+  },
+  "solution": {
+    "en": "Train model weights end-to-end on agentic tasks using real tool calls during training, custom reward signals, and exploration-based learning.",
+    "ko": "훈련 중 실제 도구 호출, 사용자 정의 보상 신호, 탐색 기반 학습을 사용하여 에이전틱 작업에서 모델 가중치를 엔드투엔드로 훈련합니다."
+  },
+  "ascii_diagram": "┌──────────────┐\n│Training Sample│\n└──────┬───────┘\n       │\n┌──────▼───────┐\n│Model Rollout │\n└──────┬───────┘\n   ┌───┴───┐\n   ▼       ▼\n[Tool]  [Answer]\n   │       │\n┌──▼──┐    │\n│Call │    │\n│Tool │    │\n└──┬──┘    │\n   │       │\n   └───┬───┘\n       ▼\n┌──────────────┐\n│   Grader     │\n│  (Reward)    │\n└──────┬───────┘\n       │\n┌──────▼───────┐\n│Update Weights│\n└──────────────┘",
+  "mermaid_diagram": "graph TD\n    A[Training Sample] --> B[Model Generates Rollout]\n    B --> C{Tool Call?}\n    C -->|Yes| D[Call Your Tool Endpoint]\n    D --> E[Tool Response]\n    E --> F[Add to Context]\n    F --> B\n    C -->|No| G[Final Answer]\n    G --> H[Call Your Grader]\n    H --> I[Reward Signal]\n    I --> J[Update Model Weights]",
+  "code_example": "from openai import OpenAI\nclient = OpenAI()\n\n# Define tools with hosted endpoints\ntools = [{\n    \"name\": \"search\",\n    \"url\": \"https://your-tools.modal.run/search\",\n    \"headers\": {\"Authorization\": \"Bearer TOKEN\"}\n}]\n\n# Define grader for rewards\ngrader = {\n    \"type\": \"model\",\n    \"model\": \"gpt-4o\",\n    \"prompt\": \"Evaluate agent answer vs ground truth...\"\n}\n\n# Start Agent RFT job\njob = client.fine_tuning.jobs.create(\n    training_file=\"file-abc123\",\n    model=\"gpt-4o-2024-08-06\",\n    method=\"rft\",\n    rft={\n        \"tools\": tools,\n        \"grader\": grader,\n        \"hyperparameters\": {\n            \"compute_multiplier\": 1\n        }\n    }\n)",
+  "when_to_use": {
+    "en": ["Domain-specific agent optimization", "Reducing tool call latency", "Sample-scarce specialized domains"],
+    "ko": ["도메인 특화 에이전트 최적화", "도구 호출 지연 감소", "샘플이 부족한 전문 도메인"]
+  },
+  "pros": {
+    "en": ["End-to-end optimization", "Sample efficient (100-1000 samples)", "Natural latency reduction"],
+    "ko": ["엔드투엔드 최적화", "샘플 효율적 (100-1000개 샘플)", "자연스러운 지연 감소"]
+  },
+  "cons": {
+    "en": ["Infrastructure complexity", "Bursty traffic during training", "Requires careful reward engineering"],
+    "ko": ["인프라 복잡성", "훈련 중 버스트 트래픽", "신중한 보상 엔지니어링 필요"]
+  },
+  "tags": ["reinforcement-learning", "fine-tuning", "tool-use", "multi-step-rl", "agent-training"]
+}

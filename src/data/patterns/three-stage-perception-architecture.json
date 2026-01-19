@@ -1,0 +1,32 @@
+{
+  "id": "three-stage-perception-architecture",
+  "title": "Three-Stage Perception Architecture",
+  "title_ko": "3단계 인식 아키텍처",
+  "category": "Orchestration & Control",
+  "status": "proposed",
+  "original_url": "https://www.oreilly.com/library/view/software-architecture-patterns/9781491971437/",
+  "problem": {
+    "en": "Complex AI agents struggle with unstructured inputs. Without clear separation of concerns, agents become monolithic and difficult to debug, extend, or scale independently.",
+    "ko": "복잡한 AI 에이전트는 비구조화된 입력으로 어려움을 겪습니다. 명확한 관심사 분리 없이는 에이전트가 모놀리식이 되어 디버그, 확장, 독립적 스케일링이 어려워집니다."
+  },
+  "solution": {
+    "en": "Implement three-stage pipeline: Perception (input gathering/normalization), Processing (reasoning/decision-making), Action (execution in environment).",
+    "ko": "3단계 파이프라인 구현: 인식(입력 수집/정규화), 처리(추론/의사결정), 행동(환경에서 실행)."
+  },
+  "ascii_diagram": "┌─────────────────────────────────────┐\n│         PERCEPTION STAGE           │\n│  Raw Input → Type Detection →      │\n│  Normalization → Feature Extract   │\n└─────────────────┬───────────────────┘\n                  │\n┌─────────────────▼───────────────────┐\n│         PROCESSING STAGE           │\n│  Reasoning Engine → Analysis →     │\n│  Decision Making → Validation      │\n└─────────────────┬───────────────────┘\n                  │\n┌─────────────────▼───────────────────┐\n│           ACTION STAGE             │\n│  Executor Selection → Execute →    │\n│  Error Handling → Results          │\n└─────────────────────────────────────┘",
+  "mermaid_diagram": "flowchart LR\n    subgraph Perception\n        A[Raw Input] --> B[Type Detection]\n        B --> C[Normalization]\n        C --> D[Feature Extraction]\n    end\n    subgraph Processing\n        D --> E[Reasoning Engine]\n        E --> F[Decision Making]\n        F --> G[Validation]\n    end\n    subgraph Action\n        G --> H[Executor Selection]\n        H --> I[Action Execution]\n        I --> J[Results]\n    end",
+  "code_example": "class ThreeStageAgent:\n    def __init__(self):\n        self.perception = PerceptionPipeline()\n        self.processor = ProcessingPipeline()\n        self.action = ActionPipeline()\n    \n    async def run(self, raw_input):\n        # Stage 1: Perception\n        perceived_data = await self.perception.process(raw_input)\n        \n        # Stage 2: Processing\n        decisions = await self.processor.analyze(perceived_data)\n        \n        # Stage 3: Action\n        results = await self.action.execute(decisions)\n        \n        return results",
+  "when_to_use": {
+    "en": ["Multi-modal input handling", "Complex agent systems", "Team-based development"],
+    "ko": ["다중 모달 입력 처리", "복잡한 에이전트 시스템", "팀 기반 개발"]
+  },
+  "pros": {
+    "en": ["Modularity", "Easier debugging", "Independent scaling per stage"],
+    "ko": ["모듈성", "쉬운 디버깅", "단계별 독립적 스케일링"]
+  },
+  "cons": {
+    "en": ["Additional complexity for simple tasks", "Latency from stage transitions", "Interface design overhead"],
+    "ko": ["단순 작업에 추가 복잡성", "단계 전환으로 인한 지연", "인터페이스 설계 오버헤드"]
+  },
+  "tags": ["architecture", "perception", "processing", "action", "pipeline", "modular-design"]
+}

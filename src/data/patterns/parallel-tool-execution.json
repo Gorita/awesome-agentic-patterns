@@ -1,0 +1,32 @@
+{
+  "id": "parallel-tool-execution",
+  "title": "Conditional Parallel Tool Execution",
+  "title_ko": "조건부 병렬 도구 실행",
+  "category": "Orchestration & Control",
+  "status": "validated-in-production",
+  "original_url": "https://gerred.github.io/building-an-agentic-system/parallel-tool-execution.html",
+  "problem": {
+    "en": "Executing all tools strictly sequentially causes delays, while parallel execution without consideration risks race conditions.",
+    "ko": "모든 도구를 엄격하게 순차적으로 실행하면 지연이 발생하고, 고려 없이 병렬 실행하면 경쟁 조건 위험이 있습니다."
+  },
+  "solution": {
+    "en": "Classify tools as read-only or state-modifying, executing read-only tools in parallel and state-modifying tools sequentially.",
+    "ko": "도구를 읽기 전용 또는 상태 수정으로 분류하여 읽기 전용 도구는 병렬로, 상태 수정 도구는 순차적으로 실행합니다."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│ Tool Batch      │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Classify Tools  │\n└────────┬────────┘\n    ┌────┴────┐\n    ▼         ▼\n[All Read] [Any Write]\n    │         │\n    ▼         ▼\nParallel  Sequential\n    │         │\n    └────┬────┘\n┌────────▼────────┐\n│ Collect Results │\n└─────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Agent Requests Tools] --> B{All Read-Only?}\n    B -->|Yes| C[Execute in Parallel]\n    B -->|No| D[Execute Sequentially]\n    C --> E[Collect & Order Results]\n    D --> E\n    E --> F[Return to Agent]",
+  "code_example": "tools = agent.requested_tools()\n\nif all(tool.is_read_only for tool in tools):\n    # Safe to parallelize\n    results = await asyncio.gather(*[t.execute() for t in tools])\nelse:\n    # Must serialize for state safety\n    results = [await t.execute() for t in tools]\n\n# Return in original request order\nreturn sorted(results, key=lambda r: r.original_index)",
+  "when_to_use": {
+    "en": ["Multi-tool agents", "Performance optimization", "File system operations"],
+    "ko": ["멀티 도구 에이전트", "성능 최적화", "파일 시스템 작업"]
+  },
+  "pros": {
+    "en": ["Significant performance improvement for reads", "Safety for writes", "Simpler than dependency graphs"],
+    "ko": ["읽기에 대한 상당한 성능 개선", "쓰기 안전성", "의존성 그래프보다 간단"]
+  },
+  "cons": {
+    "en": ["Single write in batch forces serialization", "Requires accurate tool classification"],
+    "ko": ["배치의 단일 쓰기가 직렬화 강제", "정확한 도구 분류 필요"]
+  },
+  "tags": ["parallel-execution", "tool-orchestration", "concurrency", "safety"]
+}

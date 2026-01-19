@@ -1,0 +1,32 @@
+{
+  "id": "ai-web-search-agent-loop",
+  "title": "AI Web Search Agent Loop",
+  "title_ko": "AI 웹 검색 에이전트 루프",
+  "category": "Tool Use & Environment",
+  "status": "emerging",
+  "original_url": "https://www.amplifypartners.com/blog-posts/how-ai-web-search-works",
+  "problem": {
+    "en": "LLMs have training cutoffs and need to decide when to search, translate conversational context into effective queries, find diverse results, iterate based on findings, and cite sources properly.",
+    "ko": "LLM은 훈련 컷오프가 있으며 언제 검색할지 결정하고, 대화 컨텍스트를 효과적인 쿼리로 번역하고, 다양한 결과를 찾고, 발견에 따라 반복하고, 소스를 적절히 인용해야 합니다."
+  },
+  "solution": {
+    "en": "Implement iterative web search with coordinating agent managing parallel workers: search decision layer, query translation, parallel worker spawning, iterative refinement, and citation indexing.",
+    "ko": "병렬 워커를 관리하는 조정 에이전트로 반복적 웹 검색 구현: 검색 결정 레이어, 쿼리 번역, 병렬 워커 생성, 반복적 개선, 인용 인덱싱."
+  },
+  "ascii_diagram": "┌──────────────┐\n│  User Query  │\n└──────┬───────┘\n       │\n┌──────▼───────┐\n│Search Needed?│\n└──────┬───────┘\n       │ Yes\n┌──────▼───────┐\n│Query Translate│\n└──────┬───────┘\n       │\n┌──────▼───────┐\n│ Coordinator  │\n└──────┬───────┘\n   ┌───┼───┐\n   ▼   ▼   ▼\n[W1] [W2] [W3]\nReddit News Temporal\n   │   │   │\n   └───┼───┘\n       │\n┌──────▼───────┐\n│  Synthesize  │\n│ + Citations  │\n└──────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[User Query] --> B{Search Decision}\n    B -->|No search needed| C[Answer from Internal Knowledge]\n    B -->|Search needed| D[Query Translation]\n    D --> E[Coordinating Agent]\n    E --> F1[Worker 1: Reddit]\n    E --> F2[Worker 2: News Sites]\n    E --> F3[Worker 3: Temporal Filter]\n    F1 & F2 & F3 --> G[SERP API]\n    G --> H[Results Aggregation]\n    H --> I{Satisfactory?}\n    I -->|No| J[Refine Queries]\n    J --> E\n    I -->|Yes| K[Synthesize with Citations]",
+  "code_example": "class WebSearchAgent:\n    def search(self, query):\n        if not self.needs_search(query):\n            return self.answer_from_knowledge(query)\n        \n        search_queries = self.translate_query(query)\n        \n        # Parallel workers with different strategies\n        workers = [\n            Worker(domain='reddit.com'),\n            Worker(domain='news'),\n            Worker(temporal='last_3_months')\n        ]\n        \n        results = await asyncio.gather(*[\n            w.search(search_queries) for w in workers\n        ])\n        \n        return self.synthesize_with_citations(results)",
+  "when_to_use": {
+    "en": ["Real-time information needs", "Factual accuracy with citations", "Diverse long-tail content research"],
+    "ko": ["실시간 정보 필요", "인용이 있는 사실적 정확성", "다양한 롱테일 콘텐츠 리서치"]
+  },
+  "pros": {
+    "en": ["Access to real-time information", "Reduced hallucinations", "Source citations build trust"],
+    "ko": ["실시간 정보 접근", "환각 감소", "소스 인용이 신뢰 구축"]
+  },
+  "cons": {
+    "en": ["SERP APIs not optimized for AI", "Complex multi-part system", "Higher latency and cost"],
+    "ko": ["SERP API가 AI에 최적화되지 않음", "복잡한 다중 부분 시스템", "높은 지연 및 비용"]
+  },
+  "tags": ["web-search", "serp-api", "citations", "parallel-agents", "query-translation", "grounding"]
+}

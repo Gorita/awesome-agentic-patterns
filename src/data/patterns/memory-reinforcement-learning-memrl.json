@@ -1,0 +1,32 @@
+{
+  "id": "memory-reinforcement-learning-memrl",
+  "title": "Memory Reinforcement Learning (MemRL)",
+  "title_ko": "메모리 강화 학습 (MemRL)",
+  "category": "Learning & Adaptation",
+  "status": "proposed",
+  "original_url": "https://arxiv.org/html/2601.03192v1",
+  "problem": {
+    "en": "LLMs struggle with runtime self-evolution. Fine-tuning causes catastrophic forgetting, and RAG relies on semantic similarity that retrieves noise rather than actually useful memories.",
+    "ko": "LLM은 런타임 자기 진화에 어려움을 겪습니다. 미세조정은 치명적 망각을 유발하고, RAG는 실제로 유용한 메모리보다 노이즈를 검색하는 의미적 유사성에 의존합니다."
+  },
+  "solution": {
+    "en": "Add learned utility scores to episodic memory. Rank memories by past success rather than just semantic similarity, filtering out look-alike bad solutions.",
+    "ko": "에피소딕 메모리에 학습된 유틸리티 점수를 추가합니다. 의미적 유사성만이 아닌 과거 성공을 기준으로 메모리를 순위화하여 유사해 보이는 나쁜 솔루션을 필터링합니다."
+  },
+  "ascii_diagram": "┌─────────────┐\n│   Query     │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│Phase A:     │\n│Find Similar │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│Phase B:     │\n│Rank by      │\n│Utility Score│\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│Use Top Mems │\n│Get Result   │\n└──────┬──────┘\n       │\n┌──────▼──────┐\n│Update       │\n│Utilities    │\n└─────────────┘",
+  "mermaid_diagram": "graph LR\n    A[Query] --> B[Find Similar Memories]\n    B --> C[Rank by Utility Scores]\n    C --> D[Use Top Memories]\n    D --> E[Get Result]\n    E --> F[Update Utilities]\n    F --> G[Store New Experience]",
+  "code_example": "# Memory structure: intent + experience + utility\nmemory_bank.append({\n    \"intent\": embed(query),\n    \"experience\": solution_trace,\n    \"utility\": 0.5  # Initial score, learned over time\n})\n\n# Retrieve with utility ranking\ncandidates = similar_memories(query, threshold=0.7)\nranked = sorted(candidates, key=lambda m: m.utility, reverse=True)\ncontext = ranked[:k]\n\n# Update utilities based on outcome\nreward = 1 if success else 0\nfor mem in retrieved_contexts:\n    mem.utility += learning_rate * (reward - mem.utility)",
+  "when_to_use": {
+    "en": ["Multi-step tasks with clear success signals", "Reusable problem-solving patterns", "Can't afford fine-tuning"],
+    "ko": ["명확한 성공 신호가 있는 다단계 작업", "재사용 가능한 문제 해결 패턴", "미세조정 비용을 감당할 수 없을 때"]
+  },
+  "pros": {
+    "en": ["No catastrophic forgetting", "Self-improves from experience", "No retraining needed"],
+    "ko": ["치명적 망각 없음", "경험으로 자기 개선", "재훈련 불필요"]
+  },
+  "cons": {
+    "en": ["Needs reliable success/failure signals", "Memory overhead grows", "Cold start problem"],
+    "ko": ["신뢰할 수 있는 성공/실패 신호 필요", "메모리 오버헤드 증가", "콜드 스타트 문제"]
+  },
+  "tags": ["reinforcement-learning", "episodic-memory", "self-evolution", "value-aware-retrieval", "runtime-learning"]
+}

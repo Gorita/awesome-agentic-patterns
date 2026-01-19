@@ -1,0 +1,32 @@
+{
+  "id": "inference-healed-code-review-reward",
+  "title": "Inference-Healed Code Review Reward",
+  "title_ko": "추론 치유 코드 리뷰 보상",
+  "category": "Feedback Loops",
+  "status": "proposed",
+  "original_url": "https://www.youtube.com/watch?v=Xkwok_XXQgw",
+  "problem": {
+    "en": "Simple reward functions checking only 'tests passed' fail to capture nuanced code quality (performance regressions, style violations, missing edge cases). A single binary signal can't guide agents to produce maintainable, high-quality code.",
+    "ko": "'테스트 통과'만 확인하는 단순한 보상 함수는 미묘한 코드 품질(성능 저하, 스타일 위반, 누락된 엣지 케이스)을 포착하지 못합니다. 단일 이진 신호는 에이전트가 유지보수 가능하고 고품질의 코드를 생성하도록 안내할 수 없습니다."
+  },
+  "solution": {
+    "en": "Use an inference-healed reward model that: 1) Decomposes quality into subcriteria (correctness, style, performance, security), 2) Runs internal CoT reasoning to explain each score, 3) Aggregates weighted subscores, 4) Generates human-readable feedback.",
+    "ko": "추론 치유 보상 모델 사용: 1) 품질을 하위 기준(정확성, 스타일, 성능, 보안)으로 분해, 2) 각 점수를 설명하기 위한 내부 CoT 추론 실행, 3) 가중 하위 점수 집계, 4) 인간이 읽을 수 있는 피드백 생성."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│       Code Patch Input          │\n└───────────────┬─────────────────┘\n                │\n┌───────────────▼─────────────────┐\n│   Inference-Healed Critic       │\n└───────────────┬─────────────────┘\n                │\n    ┌───────────┼───────────┬───────────┐\n    │           │           │           │\n┌───▼───┐ ┌─────▼─────┐ ┌───▼───┐ ┌─────▼─────┐\n│Correct│ │  Style    │ │Perf   │ │ Security  │\n│ness   │ │  Check    │ │Check  │ │ Check     │\n│(0.4)  │ │  (0.2)    │ │(0.2)  │ │  (0.2)    │\n└───┬───┘ └─────┬─────┘ └───┬───┘ └─────┬─────┘\n    │           │           │           │\n    │   CoT: \"Baseline: 50ms,           │\n    │    New: 65ms, Regression\"         │\n    │           │           │           │\n    └───────────┼───────────┴───────────┘\n                │\n┌───────────────▼─────────────────┐\n│   Weighted Score + Comments     │\n│   {score: 0.72, comments:       │\n│    \"O(n²) loop regression\"}    │\n└─────────────────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Code Patch] --> B[Inference-Healed Critic]\n    B --> C[Correctness Score]\n    B --> D[Style Score]\n    B --> E[Performance Score]\n    B --> F[Security Score]\n    C --> G[CoT Reasoning]\n    D --> G\n    E --> G\n    F --> G\n    G --> H[Weighted Aggregation]\n    H --> I[Final Score + Comments]\n    I --> J[RL Training Loop]",
+  "code_example": "# Inference-healed code review reward\n\ndef inference_healed_reward(patch):\n    subscores = {\n        'correctness': test_critic.score(patch),      # Tests pass?\n        'style': linter_critic.score(patch),          # Linter warnings?\n        'performance': perf_critic.score(patch),      # Benchmark regression?\n        'security': security_critic.score(patch),     # Static analysis issues?\n    }\n    \n    weights = {\n        'correctness': 0.4,\n        'style': 0.2,\n        'performance': 0.2,\n        'security': 0.2\n    }\n    \n    final_score = sum(weights[k] * subscores[k] for k in subscores)\n    \n    # CoT reasoning for explainability\n    comments = generate_cot_explanation(patch, subscores)\n    \n    return {\n        'score': final_score,\n        'subscores': subscores,\n        'comments': comments  # e.g., \"Performance regression due to O(n²) loop\"\n    }\n\n# Example output:\n# {'correctness': 1.0, 'style': 0.8, 'performance': 0.4, 'security': 0.6,\n#  'comments': 'Performance regression due to O(n²) loop.'}",
+  "when_to_use": {
+    "en": ["RL training for code agents", "When test-only rewards are insufficient", "Need explainable feedback for agents", "Multi-criteria code quality evaluation"],
+    "ko": ["코드 에이전트를 위한 RL 훈련", "테스트 전용 보상이 불충분할 때", "에이전트에 대한 설명 가능한 피드백 필요", "다중 기준 코드 품질 평가"]
+  },
+  "pros": {
+    "en": ["Explainable feedback for targeted improvements", "Captures non-functional quality criteria", "Agent knows WHY patch scored poorly", "Higher overall code quality"],
+    "ko": ["대상 개선을 위한 설명 가능한 피드백", "비기능적 품질 기준 포착", "에이전트가 패치가 왜 낮은 점수를 받았는지 앎", "전반적으로 높은 코드 품질"]
+  },
+  "cons": {
+    "en": ["Compute overhead for multiple checks", "Critic maintenance as standards evolve", "Complexity of multi-criteria aggregation", "May slow down training loop"],
+    "ko": ["여러 검사에 대한 계산 오버헤드", "표준이 발전함에 따른 비평가 유지보수", "다중 기준 집계의 복잡성", "훈련 루프 느려질 수 있음"]
+  },
+  "tags": ["reward-modeling", "code-review", "inference-healing", "quality-assessment", "rl-training"]
+}

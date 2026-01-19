@@ -1,0 +1,126 @@
+---
+interface Props {
+  placeholder?: string;
+  placeholderKo?: string;
+  lang?: 'en' | 'ko';
+}
+
+const {
+  placeholder = 'Search patterns...',
+  placeholderKo = '패턴 검색...',
+  lang = 'ko'
+} = Astro.props;
+
+const displayPlaceholder = lang === 'ko' ? placeholderKo : placeholder;
+---
+
+<div class="search-container relative w-full max-w-md">
+  <div class="relative">
+    <input
+      type="text"
+      id="pattern-search"
+      placeholder={displayPlaceholder}
+      class="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-2.5 pl-10 text-dark-text placeholder-dark-muted focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all"
+    />
+    <svg
+      class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-muted"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+      />
+    </svg>
+    <button
+      id="search-clear"
+      class="absolute right-3 top-1/2 -translate-y-1/2 text-dark-muted hover:text-dark-text hidden"
+      aria-label="Clear search"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Search Results Count -->
+  <div id="search-results" class="mt-2 text-sm text-dark-muted hidden">
+    <span id="results-count">0</span> <span data-lang="en">patterns found</span><span data-lang="ko">개 패턴 발견</span>
+  </div>
+</div>
+
+<script>
+  const searchInput = document.getElementById('pattern-search') as HTMLInputElement;
+  const clearBtn = document.getElementById('search-clear');
+  const resultsDiv = document.getElementById('search-results');
+  const resultsCount = document.getElementById('results-count');
+
+  function filterPatterns(query: string) {
+    const patterns = document.querySelectorAll('.pattern-card');
+    const normalizedQuery = query.toLowerCase().trim();
+    let visibleCount = 0;
+
+    patterns.forEach((card) => {
+      const title = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+      const description = card.querySelector('p')?.textContent?.toLowerCase() || '';
+      const tags = card.getAttribute('data-tags')?.toLowerCase() || '';
+      const category = card.getAttribute('data-category')?.toLowerCase() || '';
+
+      const matches = !normalizedQuery ||
+        title.includes(normalizedQuery) ||
+        description.includes(normalizedQuery) ||
+        tags.includes(normalizedQuery) ||
+        category.includes(normalizedQuery);
+
+      (card as HTMLElement).style.display = matches ? '' : 'none';
+      if (matches) visibleCount++;
+    });
+
+    // Update results count
+    if (resultsDiv && resultsCount) {
+      resultsDiv.classList.toggle('hidden', !normalizedQuery);
+      resultsCount.textContent = String(visibleCount);
+    }
+
+    // Update category visibility
+    document.querySelectorAll('.category-section').forEach(section => {
+      const visibleCards = section.querySelectorAll('.pattern-card[style=""],.pattern-card:not([style])');
+      let hasVisible = false;
+      visibleCards.forEach(card => {
+        if ((card as HTMLElement).style.display !== 'none') {
+          hasVisible = true;
+        }
+      });
+      (section as HTMLElement).style.display = hasVisible ? '' : 'none';
+    });
+  }
+
+  searchInput?.addEventListener('input', (e) => {
+    const query = (e.target as HTMLInputElement).value;
+    filterPatterns(query);
+
+    if (clearBtn) {
+      clearBtn.classList.toggle('hidden', !query);
+    }
+  });
+
+  clearBtn?.addEventListener('click', () => {
+    if (searchInput) {
+      searchInput.value = '';
+      filterPatterns('');
+      clearBtn.classList.add('hidden');
+      searchInput.focus();
+    }
+  });
+
+  // Keyboard shortcut: Cmd/Ctrl + K to focus search
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput?.focus();
+    }
+  });
+</script>

@@ -1,0 +1,32 @@
+{
+  "id": "seamless-background-to-foreground-handoff",
+  "title": "Seamless Background-to-Foreground Handoff",
+  "title_ko": "원활한 백그라운드-포그라운드 핸드오프",
+  "category": "UX & Collaboration",
+  "status": "emerging",
+  "original_url": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+  "problem": {
+    "en": "Background agents achieve 90% correctness but the remaining 10% requires human finesse; clunky handoffs negate automation benefits.",
+    "ko": "백그라운드 에이전트가 90% 정확도를 달성하지만 나머지 10%는 인간의 손길이 필요합니다. 어색한 핸드오프가 자동화 이점을 무효화합니다."
+  },
+  "solution": {
+    "en": "Design seamless transitions from background agent work to foreground human control, preserving context and enabling easy refinement.",
+    "ko": "백그라운드 에이전트 작업에서 포그라운드 인간 제어로의 원활한 전환을 설계하여 컨텍스트를 보존하고 쉬운 개선을 가능하게 합니다."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│ Background Agent│\n│   Works on X    │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│  Agent PR: 90%  │\n│    Correct      │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ User Reviews    │\n│ Takes Control   │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│Use Foreground   │\n│Tools to Refine  │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│   Finalized PR  │\n└─────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[User: Refactor X in background] --> B[Background Agent Works]\n    B --> C[Agent Proposes PR]\n    C --> D{User Reviews}\n    D -->|90% Correct| E[User Takes Over]\n    E --> F[Use Foreground Tools to Refine]\n    F --> G[Finalized PR]\n    D -->|100% Correct| G",
+  "code_example": "# Background agent produces PR\npr = background_agent.create_pr(task)\n\n# User reviews and takes control\nif pr.needs_refinement:\n    # Seamlessly switch to interactive mode\n    # Context from background work is available\n    foreground_session = open_with_context(pr.context)\n    foreground_agent.refine(pr, foreground_session)",
+  "when_to_use": {
+    "en": ["Complex code generation", "PR workflows", "Near-complete automation"],
+    "ko": ["복잡한 코드 생성", "PR 워크플로우", "거의 완전한 자동화"]
+  },
+  "pros": {
+    "en": ["Best of both worlds", "No lost context", "Efficient human time"],
+    "ko": ["두 세계의 장점", "컨텍스트 손실 없음", "효율적인 인간 시간"]
+  },
+  "cons": {
+    "en": ["Context transfer complexity", "UI design challenges"],
+    "ko": ["컨텍스트 전송 복잡성", "UI 설계 도전"]
+  },
+  "tags": ["background-agent", "human-in-the-loop", "task-handoff", "workflow"]
+}

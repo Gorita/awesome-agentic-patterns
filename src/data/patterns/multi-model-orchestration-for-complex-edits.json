@@ -1,0 +1,32 @@
+{
+  "id": "multi-model-orchestration-for-complex-edits",
+  "title": "Multi-Model Orchestration for Complex Edits",
+  "title_ko": "복잡한 편집을 위한 다중 모델 오케스트레이션",
+  "category": "Orchestration & Control",
+  "status": "validated-in-production",
+  "original_url": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+  "problem": {
+    "en": "A single large language model may not be optimally suited for all sub-tasks in complex operations like multi-file code editing. Tasks like context retrieval, code generation, and edit application have different requirements.",
+    "ko": "단일 대형 언어 모델은 다중 파일 코드 편집과 같은 복잡한 작업의 모든 하위 작업에 최적으로 적합하지 않을 수 있습니다. 컨텍스트 검색, 코드 생성, 편집 적용과 같은 작업은 다른 요구사항을 가집니다."
+  },
+  "solution": {
+    "en": "Employ a pipeline of multiple specialized models: retrieval model for context gathering, large generation model for code modifications, custom models for applying edits accurately.",
+    "ko": "여러 전문 모델의 파이프라인을 사용합니다: 컨텍스트 수집을 위한 검색 모델, 코드 수정을 위한 대형 생성 모델, 정확한 편집 적용을 위한 사용자 정의 모델."
+  },
+  "ascii_diagram": "┌─────────────────┐\n│  User Request   │\n│ Multi-File Edit │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Retrieval Model │\n│ Gather Context  │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Generation Model│\n│ (Claude Sonnet) │\n│ Generate Edits  │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│Application Model│\n│ Apply Across    │\n│    Files        │\n└────────┬────────┘\n         │\n┌────────▼────────┐\n│ Edited Codebase │\n└─────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[User Request: Multi-File Edit] --> B[Retrieval Model: Gather Context]\n    B --> C[Main Generation Model: Generate Edits]\n    C --> D[Edit Application Model: Apply Edits Across Files]\n    D --> E[Edited Codebase]",
+  "code_example": "class MultiModelOrchestrator:\n    def __init__(self):\n        self.retriever = RetrievalModel()  # Fast, specialized\n        self.generator = ClaudeSonnet()     # Intelligent, general\n        self.applier = EditApplicationModel()  # Precise, focused\n    \n    def process_edit_request(self, request):\n        # Phase 1: Retrieve relevant context\n        context = self.retriever.gather_context(request)\n        \n        # Phase 2: Generate edits with main model\n        edits = self.generator.generate_edits(request, context)\n        \n        # Phase 3: Apply edits precisely\n        result = self.applier.apply_edits(edits)\n        \n        return result",
+  "when_to_use": {
+    "en": ["Multi-file code editing", "Complex codebase modifications", "Tasks needing specialized capabilities"],
+    "ko": ["다중 파일 코드 편집", "복잡한 코드베이스 수정", "전문 기능이 필요한 작업"]
+  },
+  "pros": {
+    "en": ["Leverages specialized model strengths", "More robust outcomes", "Efficient resource usage"],
+    "ko": ["전문 모델 강점 활용", "더 견고한 결과", "효율적인 자원 사용"]
+  },
+  "cons": {
+    "en": ["Increased complexity", "Model coordination overhead", "Latency from multiple calls"],
+    "ko": ["복잡성 증가", "모델 조정 오버헤드", "다중 호출로 인한 지연"]
+  },
+  "tags": ["multi-model", "code-generation", "code-editing", "retrieval", "pipeline"]
+}

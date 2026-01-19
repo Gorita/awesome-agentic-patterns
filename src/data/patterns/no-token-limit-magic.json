@@ -1,0 +1,32 @@
+{
+  "id": "no-token-limit-magic",
+  "title": "No-Token-Limit Magic",
+  "title_ko": "토큰 제한 없는 마법",
+  "category": "Reliability & Eval",
+  "status": "experimental-but-awesome",
+  "original_url": "https://www.nibzard.com/ampcode",
+  "problem": {
+    "en": "Aggressive prompt compression to save tokens stifles reasoning depth and self-correction. Premature optimization of token usage prevents discovery of what the model can actually achieve.",
+    "ko": "토큰 절약을 위한 공격적인 프롬프트 압축은 추론 깊이와 자기 수정을 억제합니다. 토큰 사용의 조기 최적화는 모델이 실제로 달성할 수 있는 것의 발견을 방해합니다."
+  },
+  "solution": {
+    "en": "During prototyping, remove hard token limits. Allow lavish context and multiple reasoning passes. Yes, it's pricier - but dramatically better outputs surface valuable patterns before optimizing for production.",
+    "ko": "프로토타이핑 중에는 하드 토큰 제한을 제거합니다. 풍부한 컨텍스트와 여러 추론 패스를 허용합니다. 네, 더 비쌉니다 - 하지만 극적으로 더 나은 출력이 프로덕션 최적화 전에 가치 있는 패턴을 표면화합니다."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│      Development Phase          │\n└───────────────┬─────────────────┘\n                │\n        ┌───────▼───────┐\n        │Token Strategy?│\n        └───────┬───────┘\n          ┌─────┴─────┐\n          │           │\n    ┌─────▼─────┐ ┌───▼───────────┐\n    │ Prototype │ │  Production   │\n    │ Phase     │ │  Phase        │\n    └─────┬─────┘ └───────────────┘\n          │\n    ┌─────▼─────────────────┐\n    │ No Token Limits       │\n    │ • Lavish context      │\n    │ • Multiple passes     │\n    │ • Rich self-correction│\n    └─────┬─────────────────┘\n          │\n    ┌─────▼─────────────────┐\n    │ Better Output Quality │\n    │ Discover Patterns     │\n    └─────┬─────────────────┘\n          │\n    ┌─────▼─────────────────┐\n    │ THEN Optimize         │\n    └───────────────────────┘",
+  "mermaid_diagram": "flowchart TD\n    A[Development Phase] --> B{Token Strategy}\n    B -->|Prototype| C[No Token Limits]\n    B -->|Production| D[Optimized Limits]\n    C --> E[Lavish Context]\n    C --> F[Multiple Reasoning Passes]\n    C --> G[Rich Self-Correction]\n    E --> H[Better Output Quality]\n    F --> H\n    G --> H\n    H --> I[Identify Valuable Patterns]\n    I --> J[Optimize for Production]\n    J --> D",
+  "code_example": "# Prototype phase: No token limits\nclass PrototypeAgent:\n    def __init__(self):\n        # Don't set max_tokens during prototype\n        self.max_tokens = None\n        self.allow_multiple_passes = True\n    \n    async def solve(self, task):\n        # First pass: full context, no compression\n        result = await self.model.complete(\n            prompt=self.build_full_context(task),\n            max_tokens=None  # Let it think freely\n        )\n        \n        # Multiple reasoning passes if needed\n        if self.allow_multiple_passes:\n            result = await self.self_correct(result)\n        \n        return result\n\n# $1000 prototype spend justified by productivity\n# Optimize AFTER discovering what works",
+  "when_to_use": {
+    "en": ["Early prototyping and exploration", "Discovering optimal patterns", "Complex reasoning tasks", "Before production optimization"],
+    "ko": ["초기 프로토타이핑 및 탐색", "최적 패턴 발견", "복잡한 추론 작업", "프로덕션 최적화 전"]
+  },
+  "pros": {
+    "en": ["Discovers what model can actually achieve", "Better output quality surfaces patterns", "Prevents premature optimization", "Justified by productivity gains"],
+    "ko": ["모델이 실제로 달성할 수 있는 것 발견", "더 나은 출력 품질이 패턴 표면화", "조기 최적화 방지", "생산성 향상으로 정당화"]
+  },
+  "cons": {
+    "en": ["Higher prototyping costs", "Not suitable for production", "Requires later optimization phase", "May develop habits that don't scale"],
+    "ko": ["높은 프로토타이핑 비용", "프로덕션에 적합하지 않음", "나중에 최적화 단계 필요", "확장되지 않는 습관 개발 가능"]
+  },
+  "tags": ["performance", "cost", "experimentation", "prototyping", "token-optimization"]
+}

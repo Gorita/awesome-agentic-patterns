@@ -1,0 +1,32 @@
+{
+  "id": "spectrum-of-control-blended-initiative",
+  "title": "Spectrum of Control / Blended Initiative",
+  "title_ko": "제어 스펙트럼 / 혼합 주도권",
+  "category": "UX & Collaboration",
+  "status": "validated-in-production",
+  "original_url": "https://www.youtube.com/watch?v=BGgsoIgbT_Y",
+  "problem": {
+    "en": "One-size-fits-all agent autonomy doesn't cater to diverse user needs or varying task complexity.",
+    "ko": "획일적인 에이전트 자율성은 다양한 사용자 요구나 다양한 작업 복잡성을 충족시키지 못합니다."
+  },
+  "solution": {
+    "en": "Design interaction to support a spectrum of control levels, from simple completions to fully autonomous operations.",
+    "ko": "간단한 완성부터 완전 자율 작업까지 다양한 제어 수준을 지원하도록 상호작용을 설계합니다."
+  },
+  "ascii_diagram": "┌─────────────────────────────────┐\n│        Control Spectrum         │\n├─────────────────────────────────┤\n│ Tab     Cmd+K   Agent   BG Agent│\n│ Compl   Edit    Multi   Auto    │\n│   │       │       │       │     │\n│   ▼       ▼       ▼       ▼     │\n│ Human ◄──────────────────► AI   │\n│ Control                  Control│\n└─────────────────────────────────┘",
+  "mermaid_diagram": "flowchart LR\n    subgraph Human Control\n        A[Tab Completion]\n    end\n    subgraph Shared Control\n        B[Command K - Edit Region]\n    end\n    subgraph Agent Control\n        C[Agent - Multi-File Edits]\n    end\n    subgraph Autonomous\n        D[Background Agent - PRs]\n    end\n    A --> B --> C --> D",
+  "code_example": "class InteractionModes:\n    TAB_COMPLETE = 'low_autonomy'    # Human drives\n    COMMAND_K = 'medium_autonomy'    # Human defines scope\n    AGENT = 'high_autonomy'          # Agent multi-step\n    BACKGROUND = 'full_autonomy'     # Agent async, entire PRs\n\n# User can switch modes fluidly\nif task.complexity == 'simple':\n    use_mode(InteractionModes.TAB_COMPLETE)\nelse:\n    use_mode(InteractionModes.AGENT)",
+  "when_to_use": {
+    "en": ["IDE integrations", "Coding assistants", "Varied task complexity"],
+    "ko": ["IDE 통합", "코딩 어시스턴트", "다양한 작업 복잡성"]
+  },
+  "pros": {
+    "en": ["User flexibility", "Appropriate control for each task", "Gradual trust building"],
+    "ko": ["사용자 유연성", "각 작업에 적합한 제어", "점진적 신뢰 구축"]
+  },
+  "cons": {
+    "en": ["Mode switching complexity", "UI/UX design challenges"],
+    "ko": ["모드 전환 복잡성", "UI/UX 설계 도전"]
+  },
+  "tags": ["human-agent-collaboration", "autonomy-spectrum", "interactive-control"]
+}

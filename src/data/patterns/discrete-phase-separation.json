@@ -1,0 +1,32 @@
+{
+  "id": "discrete-phase-separation",
+  "title": "Discrete Phase Separation",
+  "title_ko": "분리된 단계 분리",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://claude.com/blog/building-companies-with-claude-code",
+  "problem": {
+    "en": "Mixing research, planning, and implementation in one context degrades output quality and causes context pollution.",
+    "ko": "리서치, 계획, 구현을 하나의 컨텍스트에서 혼합하면 출력 품질이 저하되고 컨텍스트 오염이 발생합니다."
+  },
+  "solution": {
+    "en": "Break workflows into isolated phases with clean handoffs and fresh contexts, using different models optimized for each phase.",
+    "ko": "깨끗한 핸드오프와 새로운 컨텍스트로 워크플로우를 격리된 단계로 분리하고, 각 단계에 최적화된 다른 모델을 사용합니다."
+  },
+  "ascii_diagram": "┌──────────┐\n│ Research │ (Opus)\n│  Phase   │\n└────┬─────┘\n     │ distilled findings\n┌────▼─────┐\n│ Planning │ (Opus)\n│  Phase   │\n└────┬─────┘\n     │ roadmap\n┌────▼─────┐\n│ Execute  │ (Sonnet)\n│  Phase   │\n└──────────┘",
+  "mermaid_diagram": "flowchart LR\n    A[Research Phase] -->|Findings| B[Planning Phase]\n    B -->|Roadmap| C[Execution Phase]\n    style A fill:#e1f5ff\n    style B fill:#fff4e1\n    style C fill:#e8f5e9",
+  "code_example": "# Phase 1: Research with Opus\nfindings = opus.research(codebase, requirements)\n\n# Phase 2: Planning with Opus (fresh context)\nplan = opus.plan(findings.summary)\n\n# Phase 3: Execute with Sonnet (fresh context)\nfor task in plan.tasks:\n    sonnet.execute(task)",
+  "when_to_use": {
+    "en": ["Complex feature development", "New codebase exploration", "Large-scale refactoring"],
+    "ko": ["복잡한 기능 개발", "신규 코드베이스 탐색", "대규모 리팩토링"]
+  },
+  "pros": {
+    "en": ["Higher quality output", "Context pollution prevention", "Model strength utilization"],
+    "ko": ["높은 품질 출력", "컨텍스트 오염 방지", "모델별 강점 활용"]
+  },
+  "cons": {
+    "en": ["Requires explicit management", "Overkill for simple tasks"],
+    "ko": ["명시적 관리 필요", "간단한 작업에 과함"]
+  },
+  "tags": ["orchestration", "planning", "research", "context-management", "multi-model"]
+}
