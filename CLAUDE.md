@@ -54,6 +54,53 @@ npm run generate:ai-manifest
 
 ---
 
+## 🤖 Claude Code Skill
+
+Claude Code에서 `/pattern-scout` 명령으로 패턴을 검색하고 추천받을 수 있습니다.
+
+### 설치
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Gorita/pattern-scout/main/scripts/install-skill.sh | bash
+```
+
+### 사용법
+
+```
+/pattern-scout
+```
+
+**예시:**
+- "멀티 에이전트 협업 패턴 추천해줘"
+- "Reflection Loop 패턴 자세히 알려줘"
+- "Plan-Then-Execute vs Sub-Agent Spawning 비교해줘"
+
+### 패턴 업데이트
+
+```bash
+python3 ~/.claude/skills/pattern-scout/scripts/sync_patterns.py
+```
+
+### 스킬 파일 위치
+
+설치 후 `~/.claude/skills/pattern-scout/`에 다음 구조로 저장됩니다:
+
+```
+~/.claude/skills/pattern-scout/
+├── SKILL.md              # 스킬 정의 (프롬프트)
+├── scripts/
+│   └── sync_patterns.py  # 패턴 데이터 동기화 스크립트
+└── references/           # 패턴 데이터 (자동 생성)
+    ├── patterns-index.md # 전체 패턴 인덱스
+    ├── meta.json         # 메타 정보
+    └── patterns/         # 카테고리별 상세
+        ├── orchestration-control.md
+        ├── context-memory.md
+        └── ...
+```
+
+---
+
 ## 📁 프로젝트 구조
 
 ```
@@ -88,6 +135,10 @@ awesome-agentic-patterns/
 ├── scripts/
 │   ├── build-standalone-html.js # 단일 HTML 파일 생성기 (팀 공유용) ⭐
 │   ├── generate-ai-manifest.js  # AI Manifest 생성기 ⭐
+│   ├── install-skill.sh         # Claude Code Skill 설치 스크립트 ⭐
+│   ├── pattern-scout/           # Claude Code Skill 소스 ⭐
+│   │   ├── SKILL.md             # 스킬 정의
+│   │   └── sync_patterns.py     # 패턴 동기화 스크립트
 │   ├── README.md                # 스크립트 문서
 │   └── sync-upstream.sh         # upstream 동기화 (예정)
 ├── astro.config.mjs

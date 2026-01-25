@@ -52,6 +52,34 @@ npm run preview            # 빌드 미리보기
 
 ---
 
+## 🤖 Claude Code Skill
+
+Claude Code에서 `/pattern-scout` 명령으로 패턴을 검색하고 추천받을 수 있습니다.
+
+### 설치
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Gorita/pattern-scout/main/scripts/install-skill.sh | bash
+```
+
+### 사용법
+
+```
+/pattern-scout
+```
+
+- "멀티 에이전트 협업 패턴 추천해줘"
+- "Reflection Loop 패턴 자세히 알려줘"
+- "Plan-Then-Execute vs Sub-Agent Spawning 비교해줘"
+
+### 패턴 업데이트
+
+```bash
+python3 ~/.claude/skills/pattern-scout/scripts/sync_patterns.py
+```
+
+---
+
 ## 🤝 기여
 
 패턴 추가, 번역 개선, 버그 수정 등 모든 기여를 환영합니다.
