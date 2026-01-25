@@ -211,3 +211,6 @@ apps/
 
 # Standalone builds
 pattern-scout-standalone.zip
+
+# Claude Code local settings
+.claude/settings.local.json
