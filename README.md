@@ -2,38 +2,40 @@
 
 ![Pattern Scout](./public/pattern-scout-banner.png)
 
-**Pattern Scout**는 AI 에이전트를 구축할 때 적합한 디자인 패턴을 빠르게 찾아주는 웹 애플리케이션입니다. [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns)의 **117개 패턴**을 한국어와 영어로 제공하며, 카테고리별 탐색과 실시간 검색을 지원합니다.
+[한국어](./README_KR.md)
 
-🌐 **웹사이트**: [https://gorita.github.io/pattern-scout](https://gorita.github.io/pattern-scout)
+**Pattern Scout** is a web application that helps you quickly find the right design patterns when building AI agents. It provides **117 patterns** from [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns) in both Korean and English, with category-based navigation and real-time search.
 
----
-
-## ✨ 주요 특징
-
-- 🇰🇷 **한국어/영어 지원** - 모든 패턴의 이중 언어 제공
-- 📂 **카테고리별 정리** - 8개 주요 카테고리, 117개 패턴
-- 🗂️ **사이드바 네비게이션** - 데스크톱/모바일 최적화
-- 🔍 **실시간 검색** - 제목, 설명, 태그 검색
-- 📊 **상세 모달** - 문제, 해결책, 다이어그램, 코드 예제, 장단점
+🌐 **Website**: [https://gorita.github.io/pattern-scout](https://gorita.github.io/pattern-scout)
 
 ---
 
-## 📂 8개 카테고리
+## ✨ Key Features
 
-- 🎛️ **Orchestration & Control** (31개) - 태스크 분해, 서브 에이전트 생성
-- 🧠 **Context & Memory** (13개) - 슬라이딩 윈도우, 벡터 캐시
-- 🔄 **Feedback Loops** (13개) - 컴파일러, CI, 자가 치유 재시도
-- 📚 **Learning & Adaptation** (5개) - 에이전트 RFT, 스킬 라이브러리
-- ✅ **Reliability & Eval** (13개) - 가드레일, 평가 프레임워크
-- 🔒 **Security & Safety** (3개) - 격리된 VM, PII 토큰화
-- 🔧 **Tool Use & Environment** (26개) - 셸, 브라우저, DB
-- 👥 **UX & Collaboration** (13개) - 프롬프트 핸드오프, 단계별 커밋
+- 🇰🇷 **Korean/English Support** - Bilingual support for all patterns
+- 📂 **Category Organization** - 8 major categories, 117 patterns
+- 🗂️ **Sidebar Navigation** - Optimized for desktop/mobile
+- 🔍 **Real-time Search** - Search by title, description, tags
+- 📊 **Detail Modal** - Problem, solution, diagrams, code examples, pros/cons
 
 ---
 
-## 🚀 빠른 시작
+## 📂 8 Categories
 
-### 로컬 실행
+- 🎛️ **Orchestration & Control** (31) - Task decomposition, sub-agent spawning
+- 🧠 **Context & Memory** (13) - Sliding window, vector cache
+- 🔄 **Feedback Loops** (13) - Compiler, CI, self-healing retry
+- 📚 **Learning & Adaptation** (5) - Agent RFT, skill library
+- ✅ **Reliability & Eval** (13) - Guardrails, evaluation framework
+- 🔒 **Security & Safety** (3) - Isolated VM, PII tokenization
+- 🔧 **Tool Use & Environment** (26) - Shell, browser, DB
+- 👥 **UX & Collaboration** (13) - Prompt handoff, step-by-step commit
+
+---
+
+## 🚀 Quick Start
+
+### Local Development
 
 ```bash
 git clone https://github.com/gorita/pattern-scout.git
@@ -42,37 +44,37 @@ npm install
 npm run dev  # http://localhost:4321
 ```
 
-### 빌드 및 배포
+### Build & Deploy
 
 ```bash
-npm run build              # 프로덕션 빌드 (GitHub Pages)
-npm run build:standalone   # 단일 HTML 파일 생성 (팀 공유용)
-npm run preview            # 빌드 미리보기
+npm run build              # Production build (GitHub Pages)
+npm run build:standalone   # Single HTML file (for team sharing)
+npm run preview            # Preview build
 ```
 
 ---
 
 ## 🤖 Claude Code Skill
 
-Claude Code에서 `/pattern-scout` 명령으로 패턴을 검색하고 추천받을 수 있습니다.
+Search and get pattern recommendations with the `/pattern-scout` command in Claude Code.
 
-### 설치
+### Installation
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Gorita/pattern-scout/main/scripts/install-skill.sh | bash
 ```
 
-### 사용법
+### Usage
 
 ```
 /pattern-scout
 ```
 
-- "멀티 에이전트 협업 패턴 추천해줘"
-- "Reflection Loop 패턴 자세히 알려줘"
-- "Plan-Then-Execute vs Sub-Agent Spawning 비교해줘"
+- "Recommend multi-agent collaboration patterns"
+- "Tell me more about the Reflection Loop pattern"
+- "Compare Plan-Then-Execute vs Sub-Agent Spawning"
 
-### 패턴 업데이트
+### Update Patterns
 
 ```bash
 python3 ~/.claude/skills/pattern-scout/scripts/sync_patterns.py
@@ -80,18 +82,18 @@ python3 ~/.claude/skills/pattern-scout/scripts/sync_patterns.py
 
 ---
 
-## 🤝 기여
+## 🤝 Contributing
 
-패턴 추가, 번역 개선, 버그 수정 등 모든 기여를 환영합니다.
+We welcome all contributions including pattern additions, translation improvements, and bug fixes.
 
-AI 에이전트를 위한 상세한 가이드는 [CLAUDE.md](./CLAUDE.md)를 참고하세요.
-
----
-
-## 📄 라이선스
-
-Apache-2.0 License - [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns)와 동일
+For detailed guidelines for AI agents, see [CLAUDE.md](./CLAUDE.md).
 
 ---
 
-이 프로젝트는 [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns)를 기반으로 Astro + Tailwind CSS로 재구현하고 한국어 번역을 추가한 버전입니다.
+## 📄 License
+
+Apache-2.0 License - Same as [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns)
+
+---
+
+This project is a reimplementation of [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns) using Astro + Tailwind CSS with Korean translation added.
