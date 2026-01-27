@@ -479,15 +479,29 @@ npm run preview
 # - 모달에서 모든 정보가 표시되는지
 ```
 
-#### Step 7: 커밋
+#### Step 7: README 패턴 갯수 업데이트
+
+패턴 추가 후 README 파일들의 패턴 갯수를 업데이트합니다:
 
 ```bash
-git add src/data/patterns/new-pattern-name.json
+# 현재 패턴 갯수 확인
+ls src/data/patterns/ | wc -l
+
+# README.md와 README_KR.md의 패턴 갯수 업데이트
+# 예: "117 patterns" → "127 patterns"
+# 예: "117개 패턴" → "127개 패턴"
+```
+
+#### Step 8: 커밋
+
+```bash
+git add src/data/patterns/*.json README.md README_KR.md
 git commit -m "feat: Add [Pattern Title]
 
 - Translate from upstream nibzard/awesome-agentic-patterns
 - Add Korean translation
 - Include diagrams and code examples
+- Update pattern count in README
 
 Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
 git push
