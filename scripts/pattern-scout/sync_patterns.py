@@ -38,6 +38,7 @@ DEFAULT_BRANCH = "main"
 SKILL_DIR = Path(__file__).parent.parent
 REFERENCES_DIR = SKILL_DIR / "references"
 PATTERNS_DIR = REFERENCES_DIR / "patterns"
+SKILL_MD_PATH = SKILL_DIR / "SKILL.md"
 
 # 카테고리 순서 및 슬러그
 CATEGORY_ORDER = [
@@ -85,6 +86,11 @@ def fetch_pattern_detail(pattern_id: str, branch: str) -> dict:
     if content:
         return json.loads(content)
     return None
+
+def fetch_skill_md(branch: str) -> str:
+    """SKILL.md 가져오기"""
+    url = f"https://raw.githubusercontent.com/{GITHUB_REPO}/{branch}/scripts/pattern-scout/SKILL.md"
+    return fetch_url(url)
 
 def get_text(obj, lang='en') -> str:
     """다국어 객체에서 텍스트 추출 (영문 우선)"""
@@ -290,6 +296,15 @@ def sync(branch: str = DEFAULT_BRANCH, verbose: bool = True):
     # 디렉토리 생성
     REFERENCES_DIR.mkdir(parents=True, exist_ok=True)
     PATTERNS_DIR.mkdir(parents=True, exist_ok=True)
+
+    # 0. SKILL.md 업데이트
+    print("📥 Updating SKILL.md...")
+    skill_md = fetch_skill_md(branch)
+    if skill_md:
+        SKILL_MD_PATH.write_text(skill_md, encoding='utf-8')
+        print("  ✅ SKILL.md updated")
+    else:
+        print("  ⚠️  Failed to fetch SKILL.md (keeping existing)")
 
     # 1. Manifest 가져오기
     manifest = fetch_manifest(branch)
