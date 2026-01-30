@@ -49,6 +49,12 @@ const BILINGUAL_FIELDS = ['problem', 'solution', 'when_to_use', 'pros', 'cons'];
 
 const verbose = process.argv.includes('--verbose');
 
+// README 파일 경로
+const README_FILES = [
+  path.join(__dirname, '../README.md'),
+  path.join(__dirname, '../README_KR.md')
+];
+
 function log(msg) {
   if (verbose) console.log(msg);
 }
@@ -120,6 +126,55 @@ function validatePattern(filePath) {
   return { fileName, errors, warnings, pattern };
 }
 
+function validateReadmeCounts(actualTotal, actualCategoryCounts) {
+  const errors = [];
+
+  for (const readmePath of README_FILES) {
+    if (!fs.existsSync(readmePath)) continue;
+
+    const fileName = path.basename(readmePath);
+    const content = fs.readFileSync(readmePath, 'utf-8');
+
+    // 1. 전체 패턴 수 검증 (예: "129 patterns", "129개 패턴")
+    const totalPatterns = content.match(/\*\*(\d+)(?:개)?\s*patterns?\*\*|\*\*(\d+)개\s*패턴\*\*/gi);
+    if (totalPatterns) {
+      for (const match of totalPatterns) {
+        const num = parseInt(match.match(/\d+/)[0]);
+        if (num !== actualTotal) {
+          errors.push(`${fileName}: 전체 패턴 수 불일치 - 문서="${num}", 실제=${actualTotal}`);
+        }
+      }
+    }
+
+    // 2. 카테고리별 패턴 수 검증 (예: "(37)", "(37개)")
+    for (const [category, count] of Object.entries(actualCategoryCounts)) {
+      // 카테고리 이름과 숫자를 함께 찾기
+      const categoryRegex = new RegExp(
+        category.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\**\\s*\\((\\d+)개?\\)',
+        'i'
+      );
+      const match = content.match(categoryRegex);
+      if (match) {
+        const docCount = parseInt(match[1]);
+        if (docCount !== count) {
+          errors.push(`${fileName}: ${category} 수 불일치 - 문서="${docCount}", 실제=${count}`);
+        }
+      }
+    }
+
+    // 3. "X개 주요 카테고리, Y개 패턴" 형식 검증
+    const summaryMatch = content.match(/(\d+)개\s*(?:주요\s*)?카테고리[,\s]+(\d+)개\s*패턴/);
+    if (summaryMatch) {
+      const docPatternCount = parseInt(summaryMatch[2]);
+      if (docPatternCount !== actualTotal) {
+        errors.push(`${fileName}: 요약 패턴 수 불일치 - 문서="${docPatternCount}", 실제=${actualTotal}`);
+      }
+    }
+  }
+
+  return errors;
+}
+
 function main() {
   console.log('🔍 패턴 JSON 검증 시작...\n');
 
@@ -183,6 +238,18 @@ function main() {
   console.log('\n📈 상태별 분포:');
   for (const [status, count] of Object.entries(statusCount).sort((a, b) => b[1] - a[1])) {
     console.log(`   ${status}: ${count}`);
+  }
+
+  // README 문서 검증
+  console.log('\n📄 README 문서 검증:');
+  const readmeErrors = validateReadmeCounts(files.length, categoryCount);
+  if (readmeErrors.length > 0) {
+    for (const err of readmeErrors) {
+      console.log(`   ❌ ${err}`);
+    }
+    totalErrors += readmeErrors.length;
+  } else {
+    console.log('   ✅ 문서와 실제 패턴 수 일치');
   }
 
   console.log('\n' + '='.repeat(50));
