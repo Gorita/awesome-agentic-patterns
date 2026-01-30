@@ -1,0 +1,30 @@
+{
+  "id": "adaptive-sandbox-fanout-controller",
+  "title": "Adaptive Sandbox Fan-Out Controller",
+  "title_ko": "적응형 샌드박스 팬아웃 컨트롤러",
+  "category": "Reliability & Eval",
+  "status": "emerging",
+  "original_url": "https://github.com/nibzard/labruno-agent",
+  "problem": {
+    "en": "Parallel sandboxes can spawn many runs, but static fan-out policies don't adapt to task difficulty. After some N, you're paying for redundant failures. If prompts are underspecified, scaling N just scales errors. Unbounded fan-out can overwhelm budgets and rate limits.",
+    "ko": "병렬 샌드박스는 많은 실행을 생성할 수 있지만, 정적 팬아웃 정책은 작업 난이도에 적응하지 못합니다. 일정 N 이후에는 중복 실패에 비용을 지불합니다. 프롬프트가 불충분하면 N을 늘려도 오류만 확대됩니다. 무제한 팬아웃은 예산과 속도 제한을 초과할 수 있습니다."
+  },
+  "solution": {
+    "en": "Add a controller that adapts fan-out in real time based on observed signals. Start small (N=3-5), sample early signals (success rate, diversity, error clustering), then decide: scale up if variance is high, stop early if confident, refine prompt if errors cluster, or decompose if repeated failures occur.",
+    "ko": "관찰된 신호를 기반으로 실시간으로 팬아웃을 조정하는 컨트롤러를 추가합니다. 작게 시작(N=3-5)하고, 초기 신호(성공률, 다양성, 오류 클러스터링)를 샘플링한 후 결정합니다: 분산이 높으면 확장, 확신이 있으면 조기 중단, 오류가 클러스터링되면 프롬프트 개선, 반복 실패 시 분해합니다."
+  },
+  "when_to_use": {
+    "en": ["Best-of-N codegen with sandbox execution", "Tasks with cheap objective checks (unit tests, schema validation)", "When latency and cost matter - need minimum N for reliability"],
+    "ko": ["샌드박스 실행이 있는 Best-of-N 코드 생성", "저렴한 객관적 검사가 있는 작업(단위 테스트, 스키마 검증)", "지연과 비용이 중요할 때 - 신뢰성을 위한 최소 N 필요"]
+  },
+  "pros": {
+    "en": ["Prevents scaling errors when prompts are bad", "Lowers spend by stopping early when winner is clear", "Makes sandbox swarms production-safe via budgets"],
+    "ko": ["프롬프트가 나쁠 때 오류 확산 방지", "승자가 명확할 때 조기 중단으로 비용 절감", "예산을 통한 샌드박스 스웜 프로덕션 안전화"]
+  },
+  "cons": {
+    "en": ["Requires instrumentation for failure signatures and confidence", "Needs careful defaults to avoid oscillation", "Bad scoring functions can cause premature stopping"],
+    "ko": ["실패 서명과 신뢰도를 위한 계측 필요", "진동을 피하기 위한 신중한 기본값 필요", "나쁜 점수 함수는 조기 중단 유발 가능"]
+  },
+  "mermaid_diagram": "flowchart TD\n    A[Task] --> B[Launch small batch N=3-5]\n    B --> C[Collect early results]\n    C --> D{Signals}\n    D -->|Good success + high variance| E[Increase N]\n    D -->|Good success + high confidence| F[Stop early + return winner]\n    D -->|Clustered failures| G[Prompt/spec refinement step]\n    D -->|Ambiguous / large task| H[Decompose + sub-agent investigation]\n    E --> C\n    G --> B\n    H --> B",
+  "tags": ["fan-out", "adaptive", "parallel-sandboxes", "early-stopping", "controller", "variance", "prompt-refinement"]
+}

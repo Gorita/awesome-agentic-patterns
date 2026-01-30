@@ -4,7 +4,7 @@
 
 [한국어](./README_KR.md)
 
-**Pattern Scout** is a web application that helps you quickly find the right design patterns when building AI agents. It provides **127 patterns** from [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns) in both Korean and English, with category-based navigation and real-time search.
+**Pattern Scout** is a web application that helps you quickly find the right design patterns when building AI agents. It provides **129 patterns** from [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns) in both Korean and English, with category-based navigation and real-time search.
 
 🌐 **Website**: [https://gorita.github.io/pattern-scout](https://gorita.github.io/pattern-scout)
 
@@ -22,11 +22,11 @@
 
 ## 📂 8 Categories
 
-- 🎛️ **Orchestration & Control** (36) - Task decomposition, sub-agent spawning
+- 🎛️ **Orchestration & Control** (37) - Task decomposition, sub-agent spawning
 - 🧠 **Context & Memory** (17) - Sliding window, vector cache
 - 🔄 **Feedback Loops** (14) - Compiler, CI, self-healing retry
 - 📚 **Learning & Adaptation** (5) - Agent RFT, skill library
-- ✅ **Reliability & Eval** (15) - Guardrails, evaluation framework
+- ✅ **Reliability & Eval** (16) - Guardrails, evaluation framework
 - 🔒 **Security & Safety** (5) - Isolated VM, PII tokenization
 - 🔧 **Tool Use & Environment** (22) - Shell, browser, DB
 - 👥 **UX & Collaboration** (13) - Prompt handoff, step-by-step commit

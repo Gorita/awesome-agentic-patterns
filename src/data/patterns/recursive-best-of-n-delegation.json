@@ -1,0 +1,30 @@
+{
+  "id": "recursive-best-of-n-delegation",
+  "title": "Recursive Best-of-N Delegation",
+  "title_ko": "재귀적 Best-of-N 위임",
+  "category": "Orchestration & Control",
+  "status": "emerging",
+  "original_url": "https://github.com/nibzard/labruno-agent",
+  "problem": {
+    "en": "Recursive delegation (parent -> sub-agents -> sub-sub-agents) has a failure mode: a single weak sub-agent result can poison parent's next steps. Errors compound up the tree. Pure recursion also underuses parallelism when a node is uncertain.",
+    "ko": "재귀적 위임(부모 -> 서브에이전트 -> 서브서브에이전트)에는 실패 모드가 있습니다: 단일 약한 서브에이전트 결과가 부모의 다음 단계를 오염시킬 수 있습니다. 오류가 트리 위로 누적됩니다. 순수 재귀는 노드가 불확실할 때 병렬성을 제대로 활용하지 못합니다."
+  },
+  "solution": {
+    "en": "At each node in a recursive agent tree, run best-of-N for the current subtask before expanding. Decompose into subtasks, spawn K candidate workers per subtask in isolated sandboxes, score with judge (tests + LLM rubric), select top candidate, escalate uncertainty if confidence is low.",
+    "ko": "재귀 에이전트 트리의 각 노드에서 확장 전에 현재 하위 작업에 대해 best-of-N을 실행합니다. 하위 작업으로 분해하고, 격리된 샌드박스에서 하위 작업당 K개의 후보 워커를 생성하고, 심판(테스트 + LLM 루브릭)으로 점수를 매기고, 최상위 후보를 선택하고, 신뢰도가 낮으면 불확실성을 에스컬레이션합니다."
+  },
+  "when_to_use": {
+    "en": ["Shardable subtasks with tricky individual shards", "Tasks with cheap output scoring (unit tests, lint, type checks)", "High-stakes changes where one wrong move is costly"],
+    "ko": ["개별 샤드가 까다로운 샤딩 가능한 하위 작업", "저렴한 출력 점수 매기기가 가능한 작업(단위 테스트, 린트, 타입 검사)", "하나의 잘못된 움직임이 비용이 큰 고위험 변경"]
+  },
+  "pros": {
+    "en": ["Much more robust than single-recursion", "Compute is targeted where uncertainty is high", "Works naturally with sandboxed execution and patch workflows"],
+    "ko": ["단일 재귀보다 훨씬 강건함", "불확실성이 높은 곳에 컴퓨팅 집중", "샌드박스 실행 및 패치 워크플로우와 자연스럽게 작동"]
+  },
+  "cons": {
+    "en": ["More orchestration complexity (judge, scoring, thresholds)", "Higher cost/latency if K is overused", "Judge quality becomes bottleneck"],
+    "ko": ["더 많은 오케스트레이션 복잡성(심판, 점수, 임계값)", "K를 과도하게 사용하면 비용/지연 증가", "심판 품질이 병목이 됨"]
+  },
+  "mermaid_diagram": "flowchart TD\n    A[Parent task] --> B[Decompose into subtasks]\n    B --> C1[Subtask 1]\n    B --> C2[Subtask 2]\n    C1 --> D1[Worker 1a]\n    C1 --> D2[Worker 1b]\n    C1 --> D3[Worker 1c]\n    D1 --> J1[Judge + tests]\n    D2 --> J1\n    D3 --> J1\n    J1 --> S1[Select best result 1]\n    C2 --> E1[Worker 2a]\n    C2 --> E2[Worker 2b]\n    E1 --> J2[Judge + tests]\n    E2 --> J2\n    J2 --> S2[Select best result 2]\n    S1 --> Z[Aggregate + continue recursion]\n    S2 --> Z",
+  "tags": ["recursion", "best-of-n", "parallel-sandboxes", "judge", "delegation", "rlms", "selection", "sub-agents"]
+}
