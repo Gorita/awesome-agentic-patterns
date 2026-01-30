@@ -2046,6 +2046,41 @@
     "related": []
   },
   {
+    "id": "recursive-best-of-n-delegation",
+    "title": "Recursive Best-of-N Delegation",
+    "title_ko": "재귀적 Best-of-N 위임",
+    "category": "Orchestration & Control",
+    "description": "Recursive delegation (parent -> sub-agents -> sub-sub-agents) has a failure mode: a single weak sub-agent result can poison parent's next steps At each node in a recursive agent tree, run best-of-N fo",
+    "problem": "Recursive delegation (parent -> sub-agents -> sub-sub-agents) has a failure mode: a single weak sub-agent result can poison parent's next steps. Errors compound up the tree. Pure recursion also underuses parallelism when a node is uncertain.",
+    "solution": "At each node in a recursive agent tree, run best-of-N for the current subtask before expanding. Decompose into subtasks, spawn K candidate workers per subtask in isolated sandboxes, score with judge (tests + LLM rubric), select top candidate, escalate uncertainty if confidence is low.",
+    "when_to_use": [
+      "Shardable subtasks with tricky individual shards",
+      "Tasks with cheap output scoring (unit tests, lint, type checks)",
+      "High-stakes changes where one wrong move is costly"
+    ],
+    "pros": [
+      "Much more robust than single-recursion",
+      "Compute is targeted where uncertainty is high",
+      "Works naturally with sandboxed execution and patch workflows"
+    ],
+    "cons": [
+      "More orchestration complexity (judge, scoring, thresholds)",
+      "Higher cost/latency if K is overused",
+      "Judge quality becomes bottleneck"
+    ],
+    "tags": [
+      "recursion",
+      "best-of-n",
+      "parallel-sandboxes",
+      "judge",
+      "delegation",
+      "rlms",
+      "selection",
+      "sub-agents"
+    ],
+    "related": []
+  },
+  {
     "id": "self-rewriting-meta-prompt-loop",
     "title": "Self-Rewriting Meta-Prompt Loop",
     "title_ko": "자기 재작성 메타 프롬프트 루프",
@@ -2326,6 +2361,40 @@
       "cost-reduction",
       "deterministic",
       "xpath"
+    ],
+    "related": []
+  },
+  {
+    "id": "adaptive-sandbox-fanout-controller",
+    "title": "Adaptive Sandbox Fan-Out Controller",
+    "title_ko": "적응형 샌드박스 팬아웃 컨트롤러",
+    "category": "Reliability & Eval",
+    "description": "Parallel sandboxes can spawn many runs, but static fan-out policies don't adapt to task difficulty Add a controller that adapts fan-out in real time based on observed signals",
+    "problem": "Parallel sandboxes can spawn many runs, but static fan-out policies don't adapt to task difficulty. After some N, you're paying for redundant failures. If prompts are underspecified, scaling N just scales errors. Unbounded fan-out can overwhelm budgets and rate limits.",
+    "solution": "Add a controller that adapts fan-out in real time based on observed signals. Start small (N=3-5), sample early signals (success rate, diversity, error clustering), then decide: scale up if variance is high, stop early if confident, refine prompt if errors cluster, or decompose if repeated failures occur.",
+    "when_to_use": [
+      "Best-of-N codegen with sandbox execution",
+      "Tasks with cheap objective checks (unit tests, schema validation)",
+      "When latency and cost matter - need minimum N for reliability"
+    ],
+    "pros": [
+      "Prevents scaling errors when prompts are bad",
+      "Lowers spend by stopping early when winner is clear",
+      "Makes sandbox swarms production-safe via budgets"
+    ],
+    "cons": [
+      "Requires instrumentation for failure signatures and confidence",
+      "Needs careful defaults to avoid oscillation",
+      "Bad scoring functions can cause premature stopping"
+    ],
+    "tags": [
+      "fan-out",
+      "adaptive",
+      "parallel-sandboxes",
+      "early-stopping",
+      "controller",
+      "variance",
+      "prompt-refinement"
     ],
     "related": []
   },
